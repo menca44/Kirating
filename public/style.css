@@ -1,0 +1,824 @@
+/* =========================================================
+   RESET GENERALE
+   ========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+
+/* =========================================================
+   STILE GENERALE
+   ========================================================= */
+
+body {
+  background-color: #ffffff;
+  color: #171717;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   BARRA SUPERIORE
+   ========================================================= */
+
+.topbar {
+  width: 100%;
+  height: 82px;
+  padding: 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #b40000;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+
+/* Parte destra della barra */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo {
+  width: 200px;
+  height: 54px;
+
+  display: block;
+  position: relative;
+  overflow: hidden;
+
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.logo img {
+  width: 235px;
+  height: 235px;
+
+  object-fit: cover;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  display: block;
+}
+
+
+/* =========================================================
+   LINK LOGIN
+   ========================================================= */
+
+.login-link {
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    opacity 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+
+.login-link:hover {
+  opacity: 0.78;
+
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+
+/* =========================================================
+   CONTENITORE DEL MENU
+   ========================================================= */
+
+.dropdown {
+  position: relative;
+}
+
+
+/* =========================================================
+   ICONA HAMBURGER STILIZZATA
+   ========================================================= */
+
+/*
+  Contenitore cliccabile dell'icona.
+
+  Non ha bordo esterno, così resta leggero
+  e integrato nella barra rossa.
+*/
+.menu-button {
+  width: 48px;
+  height: 48px;
+  padding: 9px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  border: none;
+  border-radius: 50%;
+
+  background-color: transparent;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* Effetto al passaggio del mouse */
+.menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+
+/* Effetto quando viene premuto */
+.menu-button:active {
+  transform: scale(0.94);
+}
+
+
+/* Contorno quando si usa la tastiera */
+.menu-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+
+/* Pane superiore */
+.burger-top {
+  width: 27px;
+  height: 8px;
+
+  display: block;
+
+  background-color: #ffffff;
+
+  border-radius: 14px 14px 5px 5px;
+
+  transition:
+    transform 0.25s ease,
+    width 0.25s ease,
+    border-radius 0.25s ease;
+}
+
+
+/* Stile comune dei ripieni */
+.burger-filling {
+  display: block;
+
+  border-radius: 999px;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s ease;
+}
+
+
+/* Ripieno superiore */
+.burger-lettuce {
+  width: 25px;
+  height: 3px;
+
+  background-color: #ffffff;
+
+  opacity: 0.82;
+}
+
+
+/* Ripieno centrale */
+.burger-meat {
+  width: 23px;
+  height: 4px;
+
+  background-color: #ffffff;
+}
+
+
+/* Pane inferiore */
+.burger-bottom {
+  width: 27px;
+  height: 7px;
+
+  display: block;
+
+  background-color: #ffffff;
+
+  border-radius: 5px 5px 12px 12px;
+
+  transition:
+    transform 0.25s ease,
+    width 0.25s ease,
+    border-radius 0.25s ease;
+}
+
+
+/* =========================================================
+   ANIMAZIONE DELL'ICONA APERTA
+   L'hamburger diventa una X.
+   ========================================================= */
+
+.menu-button[aria-expanded="true"] .burger-top {
+  width: 26px;
+
+  transform:
+    translateY(9px)
+    rotate(45deg);
+
+  border-radius: 999px;
+}
+
+.menu-button[aria-expanded="true"] .burger-lettuce,
+.menu-button[aria-expanded="true"] .burger-meat {
+  opacity: 0;
+
+  transform: scaleX(0);
+}
+
+.menu-button[aria-expanded="true"] .burger-bottom {
+  width: 26px;
+
+  transform:
+    translateY(-8px)
+    rotate(-45deg);
+
+  border-radius: 999px;
+}
+
+
+/* =========================================================
+   MENU A TENDINA APERTO
+   ========================================================= */
+
+.dropdown-menu {
+  width: 210px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  background-color: #ffffff;
+
+  border: 1px solid #eeeeee;
+  border-radius: 14px;
+
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+
+  z-index: 2000;
+}
+
+
+/* Collegamenti del menu */
+.dropdown-menu a {
+  padding: 12px 14px;
+
+  color: #171717;
+
+  border-radius: 9px;
+
+  font-size: 15px;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+
+/* Effetto sulle voci del menu */
+.dropdown-menu a:hover {
+  padding-left: 18px;
+
+  background-color: #f8eaea;
+  color: #b40000;
+}
+
+
+/* Nasconde gli elementi */
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   CONTENUTO PRINCIPALE
+   ========================================================= */
+
+.home {
+  min-height: calc(100vh - 82px);
+
+  background-color: #ffffff;
+}
+
+
+/* =========================================================
+   SEZIONE DELLA MAPPA
+   ========================================================= */
+
+.map-section {
+  width: min(1350px, 100%);
+  margin: 0 auto;
+  padding: 40px 32px 60px;
+
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+
+  align-items: start;
+  gap: 45px;
+}
+
+
+/* Colonna sinistra */
+.map-information {
+  max-width: 430px;
+  padding-top: 45px;
+}
+
+
+/* Etichetta sopra il titolo */
+.section-label {
+  margin-bottom: 14px;
+
+  color: #b40000;
+
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+
+/* Titolo principale */
+.map-information h1 {
+  margin-bottom: 18px;
+
+  font-size: clamp(38px, 5vw, 62px);
+
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+
+/* Descrizione */
+.map-information > p:last-of-type {
+  color: #666666;
+
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   PULSANTE DI RIPRISTINO
+   ========================================================= */
+
+.reset-button {
+  margin-top: 28px;
+  padding: 13px 20px;
+
+  border: 1px solid #b40000;
+  border-radius: 9px;
+
+  background-color: #ffffff;
+  color: #b40000;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.reset-button:hover {
+  background-color: #b40000;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   ELENCO DEI RISTORANTI
+   ========================================================= */
+
+.restaurants-section {
+  margin-top: 38px;
+}
+
+.restaurants-section h2 {
+  margin-bottom: 18px;
+
+  font-size: 23px;
+  line-height: 1.2;
+}
+
+.restaurants-list {
+  max-height: 355px;
+  padding-right: 7px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+
+  overflow-y: auto;
+}
+
+
+/* Scheda del ristorante */
+.restaurant-card {
+  padding: 17px;
+
+  border: 1px solid #e4e4e4;
+  border-radius: 13px;
+
+  background-color: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.restaurant-card:hover {
+  border-color: #b40000;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.08);
+}
+
+.restaurant-card h3 {
+  margin-bottom: 7px;
+
+  font-size: 18px;
+}
+
+.restaurant-location {
+  margin-bottom: 4px;
+
+  color: #333333;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.restaurant-address {
+  margin-bottom: 10px;
+
+  color: #777777;
+
+  font-size: 13px;
+}
+
+.restaurant-cuisine {
+  padding: 6px 9px;
+
+  display: inline-block;
+
+  border-radius: 999px;
+
+  background-color: #f8eaea;
+  color: #b40000;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.restaurant-description {
+  margin-top: 11px;
+
+  color: #666666;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* Messaggi informativi */
+.restaurants-message {
+  padding: 18px;
+
+  border-radius: 10px;
+
+  background-color: #f7f7f7;
+  color: #666666;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.restaurants-error {
+  color: #b40000;
+}
+
+
+/* =========================================================
+   CONTENITORE DELLA MAPPA
+   ========================================================= */
+
+.map-panel {
+  width: 100%;
+  min-height: 680px;
+
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid #eeeeee;
+  border-radius: 24px;
+
+  background-color: #fafafa;
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Mappa Leaflet */
+#italyMap {
+  width: 100%;
+  height: 680px;
+
+  background-color: #fafafa;
+}
+
+
+/* Font interno della mappa */
+.leaflet-container {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* Elementi interattivi della mappa */
+.leaflet-interactive {
+  cursor: pointer;
+
+  transition:
+    fill 0.2s ease,
+    fill-opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   TOOLTIP DELLE REGIONI
+   ========================================================= */
+
+.region-tooltip {
+  padding: 7px 11px;
+
+  border: none;
+  border-radius: 7px;
+
+  background-color: #171717;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+}
+
+.region-tooltip::before {
+  display: none;
+}
+
+
+/* =========================================================
+   POPUP DEI RISTORANTI
+   ========================================================= */
+
+.restaurant-popup {
+  min-width: 180px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.restaurant-popup strong {
+  color: #b40000;
+
+  font-size: 16px;
+}
+
+.restaurant-popup span {
+  color: #555555;
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   ERRORE DELLA MAPPA
+   ========================================================= */
+
+.map-error {
+  width: 100%;
+  min-height: 680px;
+  padding: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #b40000;
+
+  text-align: center;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   SCHERMI MEDI
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .map-section {
+    width: min(1000px, 100%);
+
+    grid-template-columns: 0.8fr 1.2fr;
+
+    gap: 30px;
+  }
+
+  .map-panel {
+    min-height: 620px;
+  }
+
+  #italyMap {
+    height: 620px;
+  }
+
+  .map-error {
+    min-height: 620px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .map-section {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+    padding-top: 42px;
+  }
+
+  .map-information {
+    max-width: none;
+    padding-top: 0;
+
+    text-align: center;
+  }
+
+  .restaurants-list {
+    max-height: none;
+
+    text-align: left;
+  }
+
+  .map-panel {
+    min-height: 560px;
+  }
+
+  #italyMap {
+    height: 560px;
+  }
+
+  .map-error {
+    min-height: 560px;
+  }
+}
+
+
+/* =========================================================
+   SMARTPHONE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .topbar {
+    height: 72px;
+    padding: 0 14px;
+  }
+
+  .logo {
+    width: 125px;
+    height: 42px;
+  }
+
+  .logo img {
+    width: 155px;
+    height: 155px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .login-link {
+    font-size: 14px;
+  }
+
+  .menu-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .burger-top {
+    width: 24px;
+    height: 7px;
+  }
+
+  .burger-lettuce {
+    width: 22px;
+  }
+
+  .burger-meat {
+    width: 21px;
+  }
+
+  .burger-bottom {
+    width: 24px;
+    height: 6px;
+  }
+
+  .menu-button[aria-expanded="true"] .burger-top,
+  .menu-button[aria-expanded="true"] .burger-bottom {
+    width: 24px;
+  }
+
+  .dropdown-menu {
+    width: 190px;
+  }
+
+  .home {
+    min-height: calc(100vh - 72px);
+  }
+
+  .map-section {
+    padding: 28px 12px 45px;
+  }
+
+  .map-information h1 {
+    font-size: 38px;
+  }
+
+  .map-information > p:last-of-type {
+    font-size: 16px;
+  }
+
+  .map-panel {
+    min-height: 500px;
+
+    border-radius: 18px;
+  }
+
+  #italyMap {
+    height: 500px;
+  }
+
+  .map-error {
+    min-height: 500px;
+  }
+}

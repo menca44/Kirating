@@ -1,0 +1,16 @@
+# Dipendenze installate tramite npm.
+# Chi scaricherà il progetto potrà ricrearle con npm install.
+node_modules/
+
+# Contiene le credenziali del database.
+# Non deve mai essere caricato su GitHub.
+.env
+
+# File di log generati da Node.js.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# File creati automaticamente dal sistema operativo.
+.DS_Store
+Thumbs.db
