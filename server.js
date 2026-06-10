@@ -26,6 +26,17 @@ const PORT = process.env.PORT || 3000;
 // CARTELLA DELLE FOTOGRAFIE
 // =========================================================
 
+/*
+  In locale:
+  progetto/uploads
+
+  Su Railway:
+  /app/uploads
+
+  Su Railway /app/uploads deve essere collegato
+  a un Volume, così le fotografie non spariscono
+  dopo un redeploy.
+*/
 const uploadsDirectory =
   process.env.UPLOADS_PATH ||
   path.join(__dirname, "uploads");
@@ -45,12 +56,24 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+/*
+  Rende pubblici i file della cartella public.
+*/
 app.use(
   express.static(
     path.join(__dirname, "public")
   )
 );
 
+/*
+  Rende visibili dal browser le immagini caricate.
+
+  Se un file viene salvato fisicamente in:
+  /app/uploads/foto.jpg
+
+  sarà raggiungibile dal browser come:
+  /uploads/foto.jpg
+*/
 app.use(
   "/uploads",
   express.static(uploadsDirectory)
@@ -64,9 +87,6 @@ app.use(
 /*
   La sessione permette al server di ricordare
   che un utente ha fatto login.
-
-  In produzione sarebbe meglio usare un session store
-  collegato al database. Per ora va bene per sviluppo locale.
 */
 app.use(
   session({
@@ -84,16 +104,16 @@ app.use(
       httpOnly: true,
 
       /*
-        In locale secure deve essere false,
-        perché usiamo http://localhost.
+        In locale usiamo http://localhost,
+        quindi secure deve restare false.
+
+        Se un giorno userai HTTPS con dominio definitivo,
+        potremo configurarlo meglio.
       */
       secure: false,
 
       sameSite: "lax",
 
-      /*
-        La sessione dura 7 giorni.
-      */
       maxAge: 7 * 24 * 60 * 60 * 1000
     }
   })
@@ -118,7 +138,7 @@ const db = mysql.createPool({
 
 
 // =========================================================
-// CONFIGURAZIONE DI MULTER
+// CONFIGURAZIONE DI MULTER PER LE FOTO
 // =========================================================
 
 const photoStorage = multer.diskStorage({
@@ -230,9 +250,8 @@ function cleanText(value) {
 
 
 /*
-  Middleware che controlla se l'utente è loggato.
-
-  Se non è loggato, blocca la richiesta.
+  Middleware che blocca le operazioni
+  riservate agli utenti non loggati.
 */
 function requireLogin(req, res, next) {
   if (!req.session.user) {
@@ -247,8 +266,138 @@ function requireLogin(req, res, next) {
 }
 
 
+/*
+  Normalizza una ricerca geografica.
+
+  Serve perché Nominatim può fallire quando
+  trova civici con lettere, CAP o sigle provincia.
+*/
+function normalizeGeocodeText(text) {
+  return cleanText(text)
+    /*
+      83/A diventa 83
+      12/B diventa 12
+    */
+    .replace(/\b([0-9]+)\/[A-Za-z]\b/g, "$1")
+
+    /*
+      Rimuove CAP italiani.
+      Esempio: 74122
+    */
+    .replace(/\b\d{5}\b/g, "")
+
+    /*
+      Rimuove alcune sigle provincia.
+      Per ora inseriamo quelle più comuni.
+    */
+    .replace(/\b(TA|RM|MI|NA|BA|FI|BO|TO|PA|CT|LE|BR)\b/gi, "")
+
+    /*
+      Sistema spazi multipli e virgole strane.
+    */
+    .replace(/\s+/g, " ")
+    .replace(/\s+,/g, ",")
+    .replace(/,\s*,/g, ",")
+    .trim();
+}
+
+
+/*
+  Crea più tentativi di ricerca per Nominatim.
+
+  Il primo tentativo usa il testo completo.
+  Gli altri usano versioni più semplici.
+*/
+function buildGeocodeAttempts(searchText) {
+  const cleanedSearchText =
+    cleanText(searchText);
+
+  const normalizedSearchText =
+    normalizeGeocodeText(cleanedSearchText);
+
+  const attempts = [
+    cleanedSearchText,
+    normalizedSearchText
+  ];
+
+  const parts =
+    normalizedSearchText
+      .split(",")
+      .map(function (part) {
+        return part.trim();
+      })
+      .filter(Boolean);
+
+  /*
+    Se l'indirizzo è tipo:
+    Via Domenico Savino, 83/A, 74122 Taranto TA, Puglia, Italia
+
+    proviamo anche versioni più semplici.
+  */
+  const cityMatch =
+    normalizedSearchText.match(
+      /\b(Taranto|Roma|Milano|Napoli|Bari|Firenze|Bologna|Torino|Palermo|Catania|Lecce|Brindisi|Genova|Venezia|Verona|Padova|Parma|Perugia|Pescara|Ancona|Cagliari|Sassari|Matera|Potenza|Catanzaro|Reggio Calabria|Campobasso|Aosta|Trento|Bolzano)\b/i
+    );
+
+  const city =
+    cityMatch ? cityMatch[0] : "";
+
+  if (parts.length >= 2 && city) {
+    attempts.push(
+      parts[0] +
+        ", " +
+        parts[1] +
+        ", " +
+        city +
+        ", Italia"
+    );
+
+    attempts.push(
+      parts[0] +
+        " " +
+        parts[1] +
+        ", " +
+        city +
+        ", Italia"
+    );
+
+    attempts.push(
+      parts[0] +
+        ", " +
+        city +
+        ", Italia"
+    );
+  }
+
+  /*
+    Caso tipico:
+    Via Domenico Savino 83, Taranto, Puglia, Italia
+  */
+  if (city) {
+    attempts.push(
+      normalizedSearchText
+        .replace(/\b(Puglia|Lazio|Lombardia|Toscana|Sicilia|Campania|Piemonte|Veneto|Liguria|Marche|Abruzzo|Molise|Basilicata|Calabria|Sardegna|Umbria)\b/gi, "")
+        .replace(/\s+/g, " ")
+        .replace(/,\s*,/g, ",")
+        .trim()
+    );
+  }
+
+  /*
+    Rimuove duplicati e tentativi troppo corti.
+  */
+  return [...new Set(attempts)]
+    .map(function (attempt) {
+      return attempt.trim();
+    })
+    .filter(function (attempt) {
+      return attempt.length >= 3;
+    });
+}
+
+
 // =========================================================
-// CREAZIONE / AGGIORNAMENTO DELLE TABELLE
+// CREAZIONE / CONTROLLO TABELLE
 // =========================================================
 
 async function inizializzaDatabase() {
@@ -352,9 +501,14 @@ async function inizializzaDatabase() {
 // =========================================================
 
 app.post("/register", async (req, res) => {
-  const name = cleanText(req.body.name);
-  const email = cleanText(req.body.email).toLowerCase();
-  const password = cleanText(req.body.password);
+  const name =
+    cleanText(req.body.name);
+
+  const email =
+    cleanText(req.body.email).toLowerCase();
+
+  const password =
+    cleanText(req.body.password);
 
   if (!name || !email || !password) {
     return res.status(400).json({
@@ -372,10 +526,6 @@ app.post("/register", async (req, res) => {
   }
 
   try {
-    /*
-      Cripta la password prima di salvarla.
-      Nel database non verrà più salvata la password in chiaro.
-    */
     const hashedPassword =
       await bcrypt.hash(password, 12);
 
@@ -426,8 +576,11 @@ app.post("/register", async (req, res) => {
 // =========================================================
 
 app.post("/login", async (req, res) => {
-  const email = cleanText(req.body.email).toLowerCase();
-  const password = cleanText(req.body.password);
+  const email =
+    cleanText(req.body.email).toLowerCase();
+
+  const password =
+    cleanText(req.body.password);
 
   if (!email || !password) {
     return res.status(400).json({
@@ -461,14 +614,26 @@ app.post("/login", async (req, res) => {
     const user = users[0];
 
     /*
-      Confronta la password scritta
-      con quella criptata nel database.
+      Compatibilità con vecchi utenti:
+      - se la password inizia con $2, è bcrypt;
+      - altrimenti è una vecchia password in chiaro.
     */
-    const passwordMatches =
-      await bcrypt.compare(
-        password,
-        user.password
-      );
+    const passwordIsHashed =
+      typeof user.password === "string" &&
+      user.password.startsWith("$2");
+
+    let passwordMatches = false;
+
+    if (passwordIsHashed) {
+      passwordMatches =
+        await bcrypt.compare(
+          password,
+          user.password
+        );
+    } else {
+      passwordMatches =
+        password === user.password;
+    }
 
     if (!passwordMatches) {
       return res.status(401).json({
@@ -478,9 +643,26 @@ app.post("/login", async (req, res) => {
     }
 
     /*
-      Salva nella sessione solo dati non sensibili.
-      La password non viene mai messa in sessione.
+      Se era una vecchia password in chiaro,
+      la convertiamo automaticamente.
     */
+    if (!passwordIsHashed) {
+      const newHashedPassword =
+        await bcrypt.hash(password, 12);
+
+      await db.query(
+        `
+          UPDATE users
+          SET password = ?
+          WHERE id = ?
+        `,
+        [
+          newHashedPassword,
+          user.id
+        ]
+      );
+    }
+
     req.session.user = {
       id: user.id,
       name: user.name,
@@ -562,7 +744,8 @@ app.post("/logout", (req, res) => {
 // =========================================================
 
 app.get("/restaurants", async (req, res) => {
-  const region = cleanText(req.query.region);
+  const region =
+    cleanText(req.query.region);
 
   try {
     let query;
@@ -777,7 +960,8 @@ app.get("/restaurants/:id", async (req, res) => {
       }
     );
 
-    const restaurant = restaurants[0];
+    const restaurant =
+      restaurants[0];
 
     res.json({
       success: true,
@@ -853,56 +1037,71 @@ app.get("/geocode", async (req, res) => {
     });
   }
 
+  const searchAttempts =
+    buildGeocodeAttempts(searchText);
+
   try {
-    const nominatimUrl =
-      "https://nominatim.openstreetmap.org/search" +
-      "?format=jsonv2" +
-      "&limit=1" +
-      "&countrycodes=it" +
-      "&q=" +
-      encodeURIComponent(searchText);
+    let foundResult = null;
+    let usedQuery = null;
 
-    const response = await fetch(nominatimUrl, {
-      headers: {
-        "User-Agent":
-          "KiRating/1.0 restaurant-map-application",
+    for (const attempt of searchAttempts) {
+      const nominatimUrl =
+        "https://nominatim.openstreetmap.org/search" +
+        "?format=jsonv2" +
+        "&limit=1" +
+        "&countrycodes=it" +
+        "&q=" +
+        encodeURIComponent(attempt);
 
-        "Referer":
-          process.env.APP_URL ||
-          "http://localhost:3000",
+      const response = await fetch(nominatimUrl, {
+        headers: {
+          "User-Agent":
+            "KiRating/1.0 restaurant-map-application",
 
-        "Accept-Language": "it"
+          "Referer":
+            process.env.APP_URL ||
+            "http://localhost:3000",
+
+          "Accept-Language": "it"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          "Nominatim ha restituito lo stato " +
+          response.status
+        );
       }
-    });
 
-    if (!response.ok) {
-      throw new Error(
-        "Nominatim ha restituito lo stato " +
-        response.status
-      );
+      const results =
+        await response.json();
+
+      if (
+        Array.isArray(results) &&
+        results.length > 0
+      ) {
+        foundResult = results[0];
+        usedQuery = attempt;
+        break;
+      }
     }
 
-    const results = await response.json();
-
-    if (
-      !Array.isArray(results) ||
-      results.length === 0
-    ) {
+    if (!foundResult) {
       return res.status(404).json({
         success: false,
-        message: "Posizione non trovata."
+        message:
+          "Posizione non trovata. Prova a scrivere l'indirizzo senza interno, scala, CAP o sigla provincia. Esempio: Via Domenico Savino 83, Taranto."
       });
     }
-
-    const result = results[0];
 
     res.json({
       success: true,
 
       location: {
-        displayName: result.display_name,
-        latitude: Number(result.lat),
-        longitude: Number(result.lon)
+        displayName: foundResult.display_name,
+        latitude: Number(foundResult.lat),
+        longitude: Number(foundResult.lon),
+        usedQuery: usedQuery
       }
     });
   } catch (error) {
@@ -925,9 +1124,14 @@ app.get("/geocode", async (req, res) => {
 // =========================================================
 
 app.get("/restaurants/nearby", async (req, res) => {
-  const latitude = Number(req.query.lat);
-  const longitude = Number(req.query.lng);
-  const radius = Number(req.query.radius || 10);
+  const latitude =
+    Number(req.query.lat);
+
+  const longitude =
+    Number(req.query.lng);
+
+  const radius =
+    Number(req.query.radius || 10);
 
   if (
     !Number.isFinite(latitude) ||
@@ -1033,12 +1237,6 @@ app.get("/restaurants/nearby", async (req, res) => {
 // INSERIMENTO DI UNA RECENSIONE
 // =========================================================
 
-/*
-  Qui c'è requireLogin.
-
-  Quindi la recensione può essere pubblicata
-  solo da un utente che ha fatto login.
-*/
 app.post(
   "/reviews",
 
@@ -1071,10 +1269,6 @@ app.post(
     const experience =
       cleanText(req.body.experience);
 
-    /*
-      L'userId non viene più preso dal form.
-      Viene preso dalla sessione.
-    */
     const userId =
       req.session.user.id;
 
