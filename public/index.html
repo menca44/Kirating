@@ -3,447 +3,1078 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- Adatta correttamente il sito a computer, tablet e smartphone -->
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>KiRating</title>
+  <title>KiRating | Mappa ristoranti</title>
 
-  <!-- CSS della libreria Leaflet per la mappa -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-
-  <!-- Libreria Font Awesome per le icone -->
+  <!-- Font Awesome per le icone -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
   />
 
-  <!-- CSS principale del sito -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Leaflet per la mappa -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+
+      background-color: #f7f2ec;
+      color: #2b2118;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    /* =====================================================
+       NAVBAR
+       ===================================================== */
+
+    .navbar {
+      min-height: 78px;
+      padding: 12px 26px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      box-shadow:
+        0 10px 28px
+        rgba(0, 0, 0, 0.22);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 54px;
+      height: 54px;
+
+      border: 2px solid rgba(255, 255, 255, 0.72);
+      border-radius: 50%;
+
+      object-fit: cover;
+
+      background-color: #ffffff;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-subtitle {
+      color: rgba(255, 255, 255, 0.82);
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .navbar-link {
+      padding: 10px 14px;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+
+      background-color: rgba(255, 255, 255, 0.12);
+
+      font-size: 13px;
+      font-weight: 800;
+
+      transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .navbar-link:hover {
+      background-color: rgba(255, 255, 255, 0.22);
+
+      transform: translateY(-1px);
+    }
+
+    .menu-wrapper {
+      position: relative;
+    }
+
+    .menu-button {
+      width: 43px;
+      height: 43px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 50%;
+
+      background-color: rgba(255, 255, 255, 0.13);
+      color: #ffffff;
+
+      font-size: 18px;
+
+      cursor: pointer;
+    }
+
+    .menu-panel {
+      width: 230px;
+      padding: 9px;
+
+      display: none;
+
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      z-index: 1100;
+
+      border: 1px solid rgba(72, 54, 38, 0.10);
+      border-radius: 17px;
+
+      background-color: #ffffff;
+      color: #2b2118;
+
+      box-shadow:
+        0 18px 45px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    .menu-panel.open {
+      display: block;
+    }
+
+    .menu-panel a {
+      padding: 12px 12px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      border-radius: 11px;
+
+      color: #3d3027;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .menu-panel a:hover {
+      background-color: #f7f2ec;
+      color: #b40000;
+    }
+
+    /* =====================================================
+       CATEGORIE
+       ===================================================== */
+
+    .categories-bar {
+      padding: 14px 24px;
+
+      display: flex;
+      gap: 10px;
+
+      overflow-x: auto;
+
+      background-color: #ffffff;
+
+      box-shadow:
+        0 8px 22px
+        rgba(0, 0, 0, 0.07);
+    }
+
+    .category-button {
+      padding: 10px 13px;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      border: 1px solid #eadfd6;
+      border-radius: 999px;
+
+      background-color: #ffffff;
+      color: #5f574e;
+
+      font-size: 13px;
+      font-weight: 850;
+
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .category-button:hover,
+    .category-button.active {
+      border-color: #b40000;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      transform: translateY(-1px);
+    }
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+    .main-layout {
+      height: calc(100vh - 146px);
+
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      padding: 20px;
+
+      overflow-y: auto;
+
+      border-right: 1px solid #eadfd6;
+
+      background-color: #fffaf5;
+    }
+
+    .sidebar-card {
+      margin-bottom: 18px;
+      padding: 18px;
+
+      border: 1px solid rgba(72, 54, 38, 0.08);
+      border-radius: 18px;
+
+      background-color: #ffffff;
+
+      box-shadow:
+        0 12px 28px
+        rgba(38, 27, 18, 0.08);
+    }
+
+    .sidebar-card h2 {
+      margin-bottom: 10px;
+
+      color: #b40000;
+
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .sidebar-card p {
+      margin-bottom: 12px;
+
+      color: #746f68;
+
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group label {
+      color: #3b3028;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .form-group input,
+    .form-group select {
+      min-height: 42px;
+      padding: 10px 11px;
+
+      border: 1px solid #ded7cf;
+      border-radius: 10px;
+
+      background-color: #ffffff;
+      color: #2b2118;
+
+      font-size: 13px;
+
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #b40000;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(180, 0, 0, 0.10);
+    }
+
+    .primary-button {
+      width: 100%;
+      min-height: 44px;
+      padding: 11px 14px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      border: none;
+      border-radius: 999px;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      font-size: 13px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 22px
+        rgba(180, 0, 0, 0.22);
+
+      transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .primary-button:hover {
+      background-color: #8f0000;
+
+      transform: translateY(-1px);
+    }
+
+    .primary-button:disabled {
+      opacity: 0.65;
+
+      cursor: wait;
+      transform: none;
+    }
+
+    .secondary-button {
+      width: 100%;
+      min-height: 40px;
+      padding: 10px 13px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      border: 1px solid #b40000;
+      border-radius: 999px;
+
+      background-color: #ffffff;
+      color: #b40000;
+
+      font-size: 13px;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .secondary-button:hover {
+      background-color: #b40000;
+      color: #ffffff;
+    }
+
+    .regions-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .region-button {
+      padding: 11px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
+      border: 1px solid #eadfd6;
+      border-radius: 12px;
+
+      background-color: #ffffff;
+      color: #4f473f;
+
+      font-size: 13px;
+      font-weight: 850;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .region-button:hover,
+    .region-button.active {
+      border-color: #b40000;
+
+      background-color: #b40000;
+      color: #ffffff;
+    }
+
+    .restaurant-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .restaurant-list-item {
+      padding: 13px;
+
+      border: 1px solid #eadfd6;
+      border-radius: 14px;
+
+      background-color: #ffffff;
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .restaurant-list-item:hover {
+      border-color: #b40000;
+
+      transform: translateY(-1px);
+
+      box-shadow:
+        0 10px 24px
+        rgba(38, 27, 18, 0.10);
+    }
+
+    .restaurant-list-item h3 {
+      margin-bottom: 5px;
+
+      color: #2b2118;
+
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .restaurant-list-item p {
+      margin: 3px 0;
+
+      color: #746f68;
+
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .list-rating {
+      margin-top: 8px;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      color: #b40000;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .list-rating i {
+      color: #f0a400;
+    }
+
+    .map-wrapper {
+      position: relative;
+
+      min-width: 0;
+      min-height: 0;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-message {
+      max-width: 340px;
+      padding: 12px 14px;
+
+      display: none;
+
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 700;
+
+      border-radius: 13px;
+
+      background-color: #ffffff;
+      color: #3b3028;
+
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.4;
+
+      box-shadow:
+        0 12px 30px
+        rgba(0, 0, 0, 0.16);
+    }
+
+    .map-message.show {
+      display: block;
+    }
+
+    .map-message.error {
+      border-left: 4px solid #b40000;
+    }
+
+    .map-message.success {
+      border-left: 4px solid #2c7a3f;
+    }
+
+    /* =====================================================
+       POPUP MAPPA
+       ===================================================== */
+
+    .restaurant-popup {
+      min-width: 220px;
+    }
+
+    .restaurant-popup h3 {
+      margin: 0 0 8px;
+
+      color: #2b2118;
+
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .popup-rating {
+      margin: 0 0 8px;
+
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      color: #b40000;
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .popup-rating i {
+      color: #f0a400;
+    }
+
+    .popup-rating span {
+      color: #746f68;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .popup-rating.no-rating {
+      color: #8a8178;
+    }
+
+    .popup-rating.no-rating i {
+      color: #b8b0a8;
+    }
+
+    .popup-address,
+    .popup-cuisine,
+    .popup-distance,
+    .popup-description {
+      margin: 6px 0;
+
+      color: #5f574e;
+
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .popup-address i,
+    .popup-cuisine i,
+    .popup-distance i {
+      width: 15px;
+
+      color: #b40000;
+    }
+
+    .popup-description {
+      color: #746f68;
+    }
+
+    .popup-actions {
+      margin-top: 10px;
+
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .popup-details-link,
+    .popup-review-link {
+      padding: 9px 12px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+
+      border-radius: 999px;
+
+      font-size: 12px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .popup-details-link {
+      background-color: #b40000;
+      color: #ffffff !important;
+    }
+
+    .popup-details-link:hover {
+      background-color: #8f0000;
+    }
+
+    .popup-review-link {
+      border: 1px solid #b40000;
+
+      background-color: #ffffff;
+      color: #b40000 !important;
+    }
+
+    .popup-review-link:hover {
+      background-color: #b40000;
+      color: #ffffff !important;
+    }
+
+    .leaflet-popup-content {
+      margin: 14px;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 16px;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 950px) {
+      .main-layout {
+        height: auto;
+
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        max-height: none;
+
+        border-right: none;
+        border-bottom: 1px solid #eadfd6;
+      }
+
+      .map-wrapper {
+        height: 70vh;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        padding: 11px 14px;
+      }
+
+      .brand-title {
+        font-size: 20px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .navbar-link span {
+        display: none;
+      }
+
+      .categories-bar {
+        padding: 12px 14px;
+      }
+
+      .sidebar {
+        padding: 14px;
+      }
+
+      .map-wrapper {
+        height: 68vh;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- =====================================================
-       NAVBAR PRINCIPALE
-       ===================================================== -->
-  <header class="topbar">
-    <!-- Logo cliccabile che riporta alla home -->
-    <a href="/" class="logo" aria-label="Torna alla home">
-      <img src="logo-kira.jpeg" alt="KiRating" />
+  <header class="navbar">
+    <a
+      class="brand"
+      href="/"
+    >
+      <img
+        class="brand-logo"
+        src="/logo-kira.jpeg"
+        alt="Logo KiRating"
+      />
+
+      <span class="brand-text">
+        <span class="brand-title">
+          KiRating
+        </span>
+
+        <span class="brand-subtitle">
+          Trova e recensisci ristoranti
+        </span>
+      </span>
     </a>
 
-    <!-- Parte destra della navbar -->
-    <div class="topbar-right">
-      <!-- Collegamento alla pagina di login -->
-      <a href="/login.html" class="login-link">
-        Login
+    <div class="navbar-actions">
+      <a
+        class="navbar-link"
+        href="/recensioni.html"
+      >
+        <i class="fa-solid fa-pen"></i>
+        <span>Scrivi recensione</span>
       </a>
 
-      <!-- Menu a tendina -->
-      <div class="dropdown">
+      <a
+        class="navbar-link"
+        href="/login.html"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>Login</span>
+      </a>
+
+      <div class="menu-wrapper">
         <button
           id="menuButton"
           class="menu-button"
           type="button"
-          aria-label="Apri il menu"
-          aria-expanded="false"
+          aria-label="Apri menu"
         >
-          <span class="burger-top"></span>
-          <span class="burger-filling burger-lettuce"></span>
-          <span class="burger-filling burger-meat"></span>
-          <span class="burger-bottom"></span>
+          <i class="fa-solid fa-bars"></i>
         </button>
 
         <nav
-          id="dropdownMenu"
-          class="dropdown-menu hidden"
-          aria-label="Menu principale"
+          id="menuPanel"
+          class="menu-panel"
         >
-          <a href="/">Home</a>
-          <a href="#italyMap">Mappa</a>
-          <a href="/recensioni.html">Recensioni</a>
-          <a href="#">Preferiti</a>
-          <a href="#">Chi siamo</a>
+          <a href="/">
+            <i class="fa-solid fa-house"></i>
+            Home
+          </a>
+
+          <a href="#map">
+            <i class="fa-solid fa-map-location-dot"></i>
+            Mappa
+          </a>
+
+          <a href="/recensioni.html">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Recensioni
+          </a>
+
+          <a href="#">
+            <i class="fa-solid fa-heart"></i>
+            Preferiti
+          </a>
+
+          <a href="#">
+            <i class="fa-solid fa-circle-info"></i>
+            Chi siamo
+          </a>
         </nav>
       </div>
     </div>
   </header>
 
-  <!-- =====================================================
-       BARRA DELLE CATEGORIE
-       ===================================================== -->
-  <nav
-    class="category-bar"
-    aria-label="Categorie dei ristoranti"
+  <section
+    class="categories-bar"
+    aria-label="Categorie ristoranti"
   >
-    <div
-      id="categoryList"
-      class="category-list"
+    <button
+      class="category-button active"
+      type="button"
+      data-category="tutti"
     >
-      <button
-        class="category-item active"
-        type="button"
-        data-filter="all"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-utensils"></i>
-        </span>
+      <i class="fa-solid fa-border-all"></i>
+      Tutti
+    </button>
 
-        <span class="category-label">
-          Tutti
-        </span>
-      </button>
+    <button
+      class="category-button"
+      type="button"
+      data-category="italiano"
+    >
+      <i class="fa-solid fa-utensils"></i>
+      Italiano
+    </button>
 
-      <button
-        class="category-item"
-        type="button"
-        data-filter="italiano"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-plate-wheat"></i>
-        </span>
+    <button
+      class="category-button"
+      type="button"
+      data-category="pizza"
+    >
+      <i class="fa-solid fa-pizza-slice"></i>
+      Pizza
+    </button>
 
-        <span class="category-label">
-          Italiano
-        </span>
-      </button>
+    <button
+      class="category-button"
+      type="button"
+      data-category="sushi"
+    >
+      <i class="fa-solid fa-fish"></i>
+      Sushi
+    </button>
 
-      <button
-        class="category-item"
-        type="button"
-        data-filter="pizza"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-pizza-slice"></i>
-        </span>
+    <button
+      class="category-button"
+      type="button"
+      data-category="pesce"
+    >
+      <i class="fa-solid fa-shrimp"></i>
+      Pesce
+    </button>
 
-        <span class="category-label">
-          Pizza
-        </span>
-      </button>
+    <button
+      class="category-button"
+      type="button"
+      data-category="carne"
+    >
+      <i class="fa-solid fa-drumstick-bite"></i>
+      Carne
+    </button>
 
-      <button
-        class="category-item"
-        type="button"
-        data-filter="sushi"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-fish"></i>
-        </span>
+    <button
+      class="category-button"
+      type="button"
+      data-category="gourmet"
+    >
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      Gourmet
+    </button>
 
-        <span class="category-label">
-          Sushi
-        </span>
-      </button>
+    <button
+      class="category-button"
+      type="button"
+      data-category="fast food"
+    >
+      <i class="fa-solid fa-burger"></i>
+      Fast food
+    </button>
 
-      <button
-        class="category-item"
-        type="button"
-        data-filter="pesce"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-fish-fins"></i>
-        </span>
+    <button
+      class="category-button"
+      type="button"
+      data-category="poke"
+    >
+      <i class="fa-solid fa-bowl-food"></i>
+      Poke
+    </button>
 
-        <span class="category-label">
-          Pesce
-        </span>
-      </button>
+    <button
+      class="category-button"
+      type="button"
+      data-category="vegetariano"
+    >
+      <i class="fa-solid fa-leaf"></i>
+      Vegetariano
+    </button>
 
-      <button
-        class="category-item"
-        type="button"
-        data-filter="carne"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-drumstick-bite"></i>
-        </span>
+    <button
+      class="category-button"
+      type="button"
+      data-category="dolci"
+    >
+      <i class="fa-solid fa-ice-cream"></i>
+      Dolci
+    </button>
+  </section>
 
-        <span class="category-label">
-          Carne
-        </span>
-      </button>
+  <main class="main-layout">
+    <aside class="sidebar">
+      <section class="sidebar-card">
+        <h2>
+          Cerca nei dintorni
+        </h2>
 
-      <button
-        class="category-item"
-        type="button"
-        data-filter="gourmet"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-star"></i>
-        </span>
-
-        <span class="category-label">
-          Gourmet
-        </span>
-      </button>
-
-      <button
-        class="category-item"
-        type="button"
-        data-filter="fast-food"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-burger"></i>
-        </span>
-
-        <span class="category-label">
-          Fast food
-        </span>
-      </button>
-
-      <button
-        class="category-item"
-        type="button"
-        data-filter="poke"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-bowl-food"></i>
-        </span>
-
-        <span class="category-label">
-          Poke
-        </span>
-      </button>
-
-      <button
-        class="category-item"
-        type="button"
-        data-filter="vegetariano"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-leaf"></i>
-        </span>
-
-        <span class="category-label">
-          Vegetariano
-        </span>
-      </button>
-
-      <button
-        class="category-item"
-        type="button"
-        data-filter="dolci"
-      >
-        <span class="category-icon">
-          <i class="fa-solid fa-ice-cream"></i>
-        </span>
-
-        <span class="category-label">
-          Dolci
-        </span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- =====================================================
-       CONTENUTO PRINCIPALE
-       ===================================================== -->
-  <main class="home">
-    <section class="map-section">
-
-      <!-- =================================================
-           PANNELLO DI RICERCA
-           ================================================= -->
-      <aside class="search-panel">
-        <p class="section-label">
-          Esplora l’Italia
+        <p>
+          Inserisci una città o un indirizzo e scegli il raggio di ricerca.
         </p>
 
-        <h1 id="mapTitle">
-          Trova il tuo ristorante
-        </h1>
+        <div class="form-group">
+          <label for="nearbySearchInput">
+            Posizione
+          </label>
 
-        <p id="mapDescription">
-          Cerca una posizione oppure seleziona una regione.
-        </p>
-
-        <!-- ===============================================
-             RICERCA NEI DINTORNI
-             =============================================== -->
-        <section class="nearby-search-section">
-          <h2>Cerca nei dintorni</h2>
-
-          <form
-            id="nearbySearchForm"
-            class="nearby-search-form"
-          >
-            <label for="locationInput">
-              Posizione
-            </label>
-
-            <input
-              id="locationInput"
-              name="location"
-              type="text"
-              placeholder="Es. Piazza Navona, Roma"
-              autocomplete="off"
-              required
-            />
-
-            <label for="radiusSelect">
-              Distanza massima
-            </label>
-
-            <select
-              id="radiusSelect"
-              name="radius"
-            >
-              <option value="5">
-                5 km
-              </option>
-
-              <option value="10" selected>
-                10 km
-              </option>
-
-              <option value="25">
-                25 km
-              </option>
-
-              <option value="50">
-                50 km
-              </option>
-            </select>
-
-            <button
-              id="nearbySearchButton"
-              class="search-button"
-              type="submit"
-            >
-              Cerca
-            </button>
-          </form>
-        </section>
-
-        <!-- Separatore grafico -->
-        <div class="panel-divider">
-          <span>oppure</span>
+          <input
+            id="nearbySearchInput"
+            type="text"
+            placeholder="Es. Taranto, Puglia"
+          />
         </div>
 
-        <!-- ===============================================
-             SELEZIONE DELLA REGIONE
-             =============================================== -->
-        <section class="regions-section">
-          <h2>Scegli una regione</h2>
+        <div class="form-group">
+          <label for="radiusSelect">
+            Raggio
+          </label>
 
-          <div
-            id="regionsList"
-            class="regions-list"
-            aria-label="Elenco delle regioni italiane"
-          ></div>
-        </section>
+          <select id="radiusSelect">
+            <option value="5">5 km</option>
+            <option value="10" selected>10 km</option>
+            <option value="25">25 km</option>
+            <option value="50">50 km</option>
+          </select>
+        </div>
 
-        <!-- Messaggi sui risultati -->
-        <div
-          id="restaurantsStatus"
-          class="restaurants-status hidden"
-          aria-live="polite"
-        ></div>
-
-        <!-- Torna alla vista iniziale -->
         <button
-          id="resetMapButton"
-          class="reset-button hidden"
+          id="nearbySearchButton"
+          class="primary-button"
           type="button"
         >
-          Torna all’Italia completa
+          <i class="fa-solid fa-location-crosshairs"></i>
+          Cerca ristoranti vicini
         </button>
-      </aside>
 
-      <!-- =================================================
-           MAPPA
-           ================================================= -->
-      <div class="map-panel">
-        <div
-          id="italyMap"
-          aria-label="Mappa interattiva dei ristoranti italiani"
-        ></div>
+        <button
+          id="resetSearchButton"
+          class="secondary-button"
+          type="button"
+          style="margin-top: 10px;"
+        >
+          <i class="fa-solid fa-rotate-left"></i>
+          Mostra tutti
+        </button>
+      </section>
+
+      <section class="sidebar-card">
+        <h2>
+          Regioni
+        </h2>
+
+        <p>
+          Clicca su una regione per centrare la mappa e filtrare i ristoranti.
+        </p>
 
         <div
-          id="mapError"
-          class="map-error hidden"
+          id="regionsList"
+          class="regions-list"
         ></div>
-      </div>
+      </section>
+
+      <section class="sidebar-card">
+        <h2>
+          Ristoranti visualizzati
+        </h2>
+
+        <p id="restaurantCountText">
+          Caricamento ristoranti...
+        </p>
+
+        <div
+          id="restaurantList"
+          class="restaurant-list"
+        ></div>
+      </section>
+    </aside>
+
+    <section class="map-wrapper">
+      <div
+        id="mapMessage"
+        class="map-message"
+      ></div>
+
+      <div id="map"></div>
     </section>
   </main>
 
-  <!-- Libreria JavaScript Leaflet -->
+  <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    /* =====================================================
-       MENU A TENDINA
-       ===================================================== */
+    // =====================================================
+    // ELEMENTI DELLA PAGINA
+    // =====================================================
 
     const menuButton =
       document.getElementById("menuButton");
 
-    const dropdownMenu =
-      document.getElementById("dropdownMenu");
+    const menuPanel =
+      document.getElementById("menuPanel");
 
-    menuButton.addEventListener("click", function (event) {
-      event.stopPropagation();
+    const categoryButtons =
+      document.querySelectorAll(".category-button");
 
-      const menuIsClosed =
-        dropdownMenu.classList.contains("hidden");
-
-      dropdownMenu.classList.toggle("hidden");
-
-      menuButton.setAttribute(
-        "aria-expanded",
-        String(menuIsClosed)
-      );
-    });
-
-    document.addEventListener("click", function (event) {
-      const clickInsideMenu =
-        dropdownMenu.contains(event.target);
-
-      const clickOnButton =
-        menuButton.contains(event.target);
-
-      if (!clickInsideMenu && !clickOnButton) {
-        closeDropdownMenu();
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeDropdownMenu();
-      }
-    });
-
-    function closeDropdownMenu() {
-      dropdownMenu.classList.add("hidden");
-
-      menuButton.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-    }
-
-
-    /* =====================================================
-       ELEMENTI DELLA PAGINA
-       ===================================================== */
-
-    const mapTitle =
-      document.getElementById("mapTitle");
-
-    const mapDescription =
-      document.getElementById("mapDescription");
-
-    const nearbySearchForm =
-      document.getElementById("nearbySearchForm");
-
-    const locationInput =
-      document.getElementById("locationInput");
+    const nearbySearchInput =
+      document.getElementById("nearbySearchInput");
 
     const radiusSelect =
       document.getElementById("radiusSelect");
@@ -451,455 +1082,437 @@
     const nearbySearchButton =
       document.getElementById("nearbySearchButton");
 
+    const resetSearchButton =
+      document.getElementById("resetSearchButton");
+
     const regionsList =
       document.getElementById("regionsList");
 
-    const restaurantsStatus =
-      document.getElementById("restaurantsStatus");
+    const restaurantList =
+      document.getElementById("restaurantList");
 
-    const resetMapButton =
-      document.getElementById("resetMapButton");
+    const restaurantCountText =
+      document.getElementById("restaurantCountText");
 
-    const categoryButtons =
-      document.querySelectorAll(".category-item");
+    const mapMessage =
+      document.getElementById("mapMessage");
 
+    // =====================================================
+    // STATO APPLICAZIONE
+    // =====================================================
 
-    /* =====================================================
-       STATO DELL'APPLICAZIONE
-       ===================================================== */
+    let allRestaurants = [];
+    let visibleRestaurants = [];
+    let restaurantMarkers = [];
+    let selectedCategory = "tutti";
+    let selectedRegion = "";
 
-    let currentRestaurants = [];
-    let currentSearchDescription = "";
-    let activeRestaurantFilter = "all";
+    // =====================================================
+    // MAPPA
+    // =====================================================
 
-
-    /* =====================================================
-       DATI DELLE REGIONI
-       ===================================================== */
-
-    const italianRegions = [
-      {
-        name: "Abruzzo",
-        bounds: [[41.68, 13.00], [42.90, 14.80]]
-      },
-      {
-        name: "Basilicata",
-        bounds: [[39.88, 15.32], [41.15, 16.87]]
-      },
-      {
-        name: "Calabria",
-        bounds: [[37.90, 15.62], [40.15, 17.22]]
-      },
-      {
-        name: "Campania",
-        bounds: [[39.95, 13.75], [41.52, 15.82]]
-      },
-      {
-        name: "Emilia Romagna",
-        bounds: [[43.70, 9.15], [45.20, 12.80]]
-      },
-      {
-        name: "Friuli Venezia Giulia",
-        bounds: [[45.55, 12.30], [46.70, 13.95]]
-      },
-      {
-        name: "Lazio",
-        bounds: [[40.75, 11.45], [42.85, 14.05]]
-      },
-      {
-        name: "Liguria",
-        bounds: [[43.70, 7.45], [44.70, 10.10]]
-      },
-      {
-        name: "Lombardia",
-        bounds: [[44.65, 8.45], [46.65, 11.45]]
-      },
-      {
-        name: "Marche",
-        bounds: [[42.68, 12.15], [44.00, 13.92]]
-      },
-      {
-        name: "Molise",
-        bounds: [[41.35, 13.95], [42.10, 15.20]]
-      },
-      {
-        name: "Piemonte",
-        bounds: [[44.00, 6.60], [46.50, 9.25]]
-      },
-      {
-        name: "Puglia",
-        bounds: [[39.75, 14.90], [42.20, 18.55]]
-      },
-      {
-        name: "Sardegna",
-        bounds: [[38.75, 8.05], [41.35, 9.90]]
-      },
-      {
-        name: "Sicilia",
-        bounds: [[36.55, 11.90], [38.85, 15.75]]
-      },
-      {
-        name: "Toscana",
-        bounds: [[42.20, 9.65], [44.50, 12.40]]
-      },
-      {
-        name: "Trentino-Alto Adige",
-        bounds: [[45.60, 10.35], [47.15, 12.55]]
-      },
-      {
-        name: "Umbria",
-        bounds: [[42.35, 11.85], [43.65, 13.30]]
-      },
-      {
-        name: "Valle d'Aosta",
-        bounds: [[45.45, 6.75], [46.05, 7.95]]
-      },
-      {
-        name: "Veneto",
-        bounds: [[44.80, 10.60], [46.75, 13.10]]
-      }
-    ];
-
-
-    /* =====================================================
-       CREAZIONE DELLA MAPPA
-       ===================================================== */
-
-    const initialCenter = [42.5, 12.5];
-    const initialZoom = 6;
-
-    const map = L.map("italyMap", {
-      zoomControl: true,
-      attributionControl: true
-    });
-
-    map.setView(initialCenter, initialZoom);
+    const map = L.map("map", {
+      zoomControl: true
+    }).setView(
+      [41.8719, 12.5674],
+      6
+    );
 
     L.tileLayer(
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
         maxZoom: 19,
-        attribution: "&copy; OpenStreetMap contributors"
+
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }
     ).addTo(map);
 
-    const restaurantsMarkersLayer =
-      L.layerGroup().addTo(map);
+    const defaultIcon =
+      L.icon({
+        iconUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
 
-    const searchedLocationLayer =
-      L.layerGroup().addTo(map);
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 
-    const searchRadiusLayer =
-      L.layerGroup().addTo(map);
-
-
-    /* =====================================================
-       CREAZIONE DEI PULSANTI DELLE REGIONI
-       ===================================================== */
-
-    function createRegionButtons() {
-      italianRegions.forEach(function (region) {
-        const button =
-          document.createElement("button");
-
-        button.type = "button";
-        button.className = "region-button";
-        button.textContent = region.name;
-        button.dataset.region = region.name;
-
-        button.addEventListener("click", function () {
-          selectRegion(region);
-        });
-
-        regionsList.appendChild(button);
-      });
-    }
-
-
-    /* =====================================================
-       SELEZIONE DI UNA REGIONE
-       ===================================================== */
-
-    function selectRegion(region) {
-      clearMapResults();
-
-      updateActiveRegionButton(region.name);
-
-      map.fitBounds(region.bounds, {
-        padding: [30, 30],
-        animate: true,
-        duration: 0.8
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
       });
 
-      mapTitle.textContent = region.name;
+    // =====================================================
+    // REGIONI
+    // =====================================================
 
-      mapDescription.textContent =
-        "Stai visualizzando i ristoranti presenti in " +
-        region.name +
-        ".";
-
-      resetMapButton.classList.remove("hidden");
-
-      loadRestaurantsByRegion(region.name);
-    }
-
-
-    function updateActiveRegionButton(regionName) {
-      const buttons =
-        document.querySelectorAll(".region-button");
-
-      buttons.forEach(function (button) {
-        button.classList.toggle(
-          "active",
-          button.dataset.region === regionName
-        );
-      });
-    }
-
-
-    /* =====================================================
-       FILTRI DELLE CATEGORIE
-       ===================================================== */
-
-    categoryButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        activeRestaurantFilter =
-          button.dataset.filter;
-
-        categoryButtons.forEach(function (otherButton) {
-          otherButton.classList.toggle(
-            "active",
-            otherButton === button
-          );
-        });
-
-        renderFilteredRestaurants();
-      });
-    });
-
-
-    function restaurantMatchesFilter(
-      restaurant,
-      filterName
-    ) {
-      if (filterName === "all") {
-        return true;
+    const regions = [
+      {
+        name: "Abruzzo",
+        center: [42.3500, 13.3995],
+        zoom: 8
+      },
+      {
+        name: "Basilicata",
+        center: [40.6395, 15.8051],
+        zoom: 8
+      },
+      {
+        name: "Calabria",
+        center: [39.3088, 16.3464],
+        zoom: 8
+      },
+      {
+        name: "Campania",
+        center: [40.8518, 14.2681],
+        zoom: 8
+      },
+      {
+        name: "Emilia-Romagna",
+        center: [44.4949, 11.3426],
+        zoom: 8
+      },
+      {
+        name: "Friuli-Venezia Giulia",
+        center: [45.6495, 13.7768],
+        zoom: 8
+      },
+      {
+        name: "Lazio",
+        center: [41.9028, 12.4964],
+        zoom: 8
+      },
+      {
+        name: "Liguria",
+        center: [44.4056, 8.9463],
+        zoom: 8
+      },
+      {
+        name: "Lombardia",
+        center: [45.4642, 9.1900],
+        zoom: 8
+      },
+      {
+        name: "Marche",
+        center: [43.6168, 13.5189],
+        zoom: 8
+      },
+      {
+        name: "Molise",
+        center: [41.5603, 14.6686],
+        zoom: 8
+      },
+      {
+        name: "Piemonte",
+        center: [45.0703, 7.6869],
+        zoom: 8
+      },
+      {
+        name: "Puglia",
+        center: [40.7928, 17.1012],
+        zoom: 8
+      },
+      {
+        name: "Sardegna",
+        center: [40.1209, 9.0129],
+        zoom: 7
+      },
+      {
+        name: "Sicilia",
+        center: [37.5990, 14.0154],
+        zoom: 7
+      },
+      {
+        name: "Toscana",
+        center: [43.7711, 11.2486],
+        zoom: 8
+      },
+      {
+        name: "Trentino-Alto Adige",
+        center: [46.4983, 11.3548],
+        zoom: 8
+      },
+      {
+        name: "Umbria",
+        center: [43.1107, 12.3908],
+        zoom: 8
+      },
+      {
+        name: "Valle d'Aosta",
+        center: [45.7370, 7.3201],
+        zoom: 9
+      },
+      {
+        name: "Veneto",
+        center: [45.4408, 12.3155],
+        zoom: 8
       }
+    ];
 
-      const searchableText = [
-        restaurant.name,
-        restaurant.cuisine,
-        restaurant.description
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
+    // =====================================================
+    // MENU
+    // =====================================================
 
-      const filterKeywords = {
-        italiano: [
-          "italiana",
-          "italiano",
-          "romana",
-          "toscana",
-          "siciliana",
-          "pugliese",
-          "napoletana",
-          "tradizionale",
-          "trattoria",
-          "osteria"
-        ],
-
-        pizza: [
-          "pizza",
-          "pizzeria",
-          "napoletana"
-        ],
-
-        sushi: [
-          "sushi",
-          "giapponese",
-          "japanese",
-          "sashimi",
-          "uramaki",
-          "nigiri"
-        ],
-
-        pesce: [
-          "pesce",
-          "mare",
-          "seafood",
-          "ittico"
-        ],
-
-        carne: [
-          "carne",
-          "steakhouse",
-          "griglieria",
-          "braceria",
-          "barbecue"
-        ],
-
-        gourmet: [
-          "gourmet",
-          "fine dining",
-          "stellato",
-          "alta cucina"
-        ],
-
-        "fast-food": [
-          "fast food",
-          "hamburger",
-          "burger",
-          "panino",
-          "street food",
-          "kebab"
-        ],
-
-        poke: [
-          "poke",
-          "pokè",
-          "hawaiian"
-        ],
-
-        vegetariano: [
-          "vegetariano",
-          "vegetarian",
-          "vegano",
-          "vegan",
-          "plant based"
-        ],
-
-        dolci: [
-          "dolci",
-          "dessert",
-          "pasticceria",
-          "gelateria",
-          "gelato",
-          "bakery"
-        ]
-      };
-
-      const keywords =
-        filterKeywords[filterName] || [];
-
-      return keywords.some(function (keyword) {
-        return searchableText.includes(keyword);
-      });
-    }
-
-
-    function renderFilteredRestaurants() {
-      restaurantsMarkersLayer.clearLayers();
-
-      if (currentRestaurants.length === 0) {
-        return;
+    menuButton.addEventListener(
+      "click",
+      function () {
+        menuPanel.classList.toggle("open");
       }
+    );
 
-      const filteredRestaurants =
-        currentRestaurants.filter(function (restaurant) {
-          return restaurantMatchesFilter(
-            restaurant,
-            activeRestaurantFilter
-          );
-        });
+    document.addEventListener(
+      "click",
+      function (event) {
+        const clickedInsideMenu =
+          menuPanel.contains(event.target) ||
+          menuButton.contains(event.target);
 
-      filteredRestaurants.forEach(function (restaurant) {
-        addRestaurantMarker(restaurant);
-      });
-
-      updateRestaurantsStatus(
-        filteredRestaurants.length
-      );
-    }
-
-
-    function getActiveFilterLabel() {
-      const activeButton =
-        document.querySelector(".category-item.active");
-
-      if (!activeButton) {
-        return "Tutti";
+        if (!clickedInsideMenu) {
+          menuPanel.classList.remove("open");
+        }
       }
+    );
 
-      return activeButton
-        .querySelector(".category-label")
-        .textContent
-        .trim();
-    }
+    // =====================================================
+    // MESSAGGI MAPPA
+    // =====================================================
 
+    function showMapMessage(message, type) {
+      mapMessage.textContent = message;
 
-    function updateRestaurantsStatus(resultCount) {
-      const filterLabel =
-        getActiveFilterLabel();
-
-      if (resultCount === 0) {
-        restaurantsStatus.textContent =
-          activeRestaurantFilter === "all"
-            ? "Nessun ristorante trovato " +
-              currentSearchDescription +
-              "."
-            : "Nessun ristorante della categoria " +
-              filterLabel +
-              " trovato " +
-              currentSearchDescription +
-              ".";
-
-        restaurantsStatus.classList.remove(
-          "hidden",
-          "error"
-        );
-
-        return;
-      }
-
-      const restaurantWord =
-        resultCount === 1
-          ? "ristorante trovato"
-          : "ristoranti trovati";
-
-      const categoryText =
-        activeRestaurantFilter === "all"
-          ? ""
-          : " della categoria " + filterLabel;
-
-      restaurantsStatus.textContent =
-        resultCount +
-        " " +
-        restaurantWord +
-        categoryText +
-        " " +
-        currentSearchDescription +
-        ".";
-
-      restaurantsStatus.classList.remove(
-        "hidden",
+      mapMessage.classList.remove(
+        "show",
+        "success",
         "error"
       );
+
+      mapMessage.classList.add(
+        "show",
+        type
+      );
+
+      setTimeout(function () {
+        mapMessage.classList.remove("show");
+      }, 4200);
     }
 
+    // =====================================================
+    // VALUTAZIONI
+    // =====================================================
 
-    /* =====================================================
-       PROTEZIONE DEI TESTI HTML
-       ===================================================== */
+    function formatReviewsCount(count) {
+      const reviewsCount =
+        Number(count || 0);
 
-    function escapeHtml(value) {
-      const temporaryElement =
-        document.createElement("div");
+      if (reviewsCount === 1) {
+        return "1 recensione";
+      }
 
-      temporaryElement.textContent =
-        value === null || value === undefined
-          ? ""
-          : String(value);
-
-      return temporaryElement.innerHTML;
+      return reviewsCount + " recensioni";
     }
 
+    function buildRatingHtml(restaurant) {
+      const reviewsCount =
+        Number(restaurant.reviews_count || 0);
 
-    /* =====================================================
-       CREAZIONE DEI MARKER DEI RISTORANTI
-       ===================================================== */
+      const averageOverallRating =
+        restaurant.average_overall_rating === null ||
+        restaurant.average_overall_rating === undefined
+          ? null
+          : Number(restaurant.average_overall_rating);
 
-    function addRestaurantMarker(restaurant) {
+      if (
+        reviewsCount === 0 ||
+        averageOverallRating === null ||
+        Number.isNaN(averageOverallRating)
+      ) {
+        return `
+          <p class="popup-rating no-rating">
+            <i class="fa-regular fa-star"></i>
+            Nessuna recensione
+          </p>
+        `;
+      }
+
+      return `
+        <p class="popup-rating">
+          <i class="fa-solid fa-star"></i>
+          ${averageOverallRating.toFixed(1)}/5
+          <span>
+            (${formatReviewsCount(reviewsCount)})
+          </span>
+        </p>
+      `;
+    }
+
+    function buildListRatingHtml(restaurant) {
+      const reviewsCount =
+        Number(restaurant.reviews_count || 0);
+
+      const averageOverallRating =
+        restaurant.average_overall_rating === null ||
+        restaurant.average_overall_rating === undefined
+          ? null
+          : Number(restaurant.average_overall_rating);
+
+      if (
+        reviewsCount === 0 ||
+        averageOverallRating === null ||
+        Number.isNaN(averageOverallRating)
+      ) {
+        return `
+          <span class="list-rating">
+            <i class="fa-regular fa-star"></i>
+            Nessuna recensione
+          </span>
+        `;
+      }
+
+      return `
+        <span class="list-rating">
+          <i class="fa-solid fa-star"></i>
+          ${averageOverallRating.toFixed(1)}/5
+          (${reviewsCount})
+        </span>
+      `;
+    }
+
+    // =====================================================
+    // POPUP RISTORANTE
+    // =====================================================
+
+    function buildRestaurantPopup(restaurant) {
+      const ratingHtml =
+        buildRatingHtml(restaurant);
+
+      const distanceHtml =
+        restaurant.distance_km !== undefined &&
+        restaurant.distance_km !== null
+          ? `
+            <p class="popup-distance">
+              <i class="fa-solid fa-location-arrow"></i>
+              A ${Number(restaurant.distance_km).toFixed(2)} km da te
+            </p>
+          `
+          : "";
+
+      const cuisineHtml =
+        restaurant.cuisine
+          ? `
+            <p class="popup-cuisine">
+              <i class="fa-solid fa-utensils"></i>
+              ${restaurant.cuisine}
+            </p>
+          `
+          : "";
+
+      const descriptionHtml =
+        restaurant.description
+          ? `
+            <p class="popup-description">
+              ${restaurant.description}
+            </p>
+          `
+          : "";
+
+      return `
+        <div class="restaurant-popup">
+          <h3>
+            ${restaurant.name}
+          </h3>
+
+          ${ratingHtml}
+
+          <p class="popup-address">
+            <i class="fa-solid fa-location-dot"></i>
+            ${restaurant.address}, ${restaurant.city}, ${restaurant.region}
+          </p>
+
+          ${cuisineHtml}
+
+          ${distanceHtml}
+
+          ${descriptionHtml}
+
+          <div class="popup-actions">
+            <a
+              class="popup-details-link"
+              href="/ristorante.html?id=${encodeURIComponent(restaurant.id)}"
+            >
+              <i class="fa-solid fa-eye"></i>
+              Vedi ristorante
+            </a>
+
+            <a
+              class="popup-review-link"
+              href="/recensioni.html?restaurantId=${encodeURIComponent(restaurant.id)}"
+            >
+              <i class="fa-solid fa-pen"></i>
+              Recensisci
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // =====================================================
+    // RENDER MARKER
+    // =====================================================
+
+    function clearMarkers() {
+      restaurantMarkers.forEach(function (marker) {
+        map.removeLayer(marker);
+      });
+
+      restaurantMarkers = [];
+    }
+
+    function renderMarkers(restaurants) {
+      clearMarkers();
+
+      restaurants.forEach(function (restaurant) {
+        const latitude =
+          Number(restaurant.latitude);
+
+        const longitude =
+          Number(restaurant.longitude);
+
+        if (
+          !Number.isFinite(latitude) ||
+          !Number.isFinite(longitude)
+        ) {
+          return;
+        }
+
+        const marker =
+          L.marker(
+            [latitude, longitude],
+            {
+              icon: defaultIcon
+            }
+          ).addTo(map);
+
+        marker.bindPopup(
+          buildRestaurantPopup(restaurant)
+        );
+
+        marker.restaurantId =
+          restaurant.id;
+
+        restaurantMarkers.push(marker);
+      });
+    }
+
+    function focusRestaurant(restaurantId) {
+      const restaurant =
+        visibleRestaurants.find(function (item) {
+          return Number(item.id) === Number(restaurantId);
+        });
+
+      if (!restaurant) {
+        return;
+      }
+
       const latitude =
         Number(restaurant.latitude);
 
@@ -910,104 +1523,274 @@
         !Number.isFinite(latitude) ||
         !Number.isFinite(longitude)
       ) {
-        console.warn(
-          "Coordinate non valide:",
-          restaurant
-        );
+        return;
+      }
+
+      map.setView(
+        [latitude, longitude],
+        17
+      );
+
+      const marker =
+        restaurantMarkers.find(function (item) {
+          return Number(item.restaurantId) === Number(restaurantId);
+        });
+
+      if (marker) {
+        marker.openPopup();
+      }
+    }
+
+    // =====================================================
+    // LISTA RISTORANTI
+    // =====================================================
+
+    function renderRestaurantList(restaurants) {
+      restaurantList.innerHTML = "";
+
+      if (restaurants.length === 0) {
+        restaurantCountText.textContent =
+          "Nessun ristorante trovato.";
+
+        restaurantList.innerHTML = `
+          <p style="color:#746f68; font-size:13px; line-height:1.45;">
+            Non ci sono ristoranti da mostrare con questi filtri.
+          </p>
+        `;
 
         return;
       }
 
-      const marker =
-        L.marker([latitude, longitude]);
+      restaurantCountText.textContent =
+        restaurants.length === 1
+          ? "1 ristorante visualizzato."
+          : restaurants.length + " ristoranti visualizzati.";
 
-      /*
-        Link alla pagina completa del ristorante.
+      restaurants.forEach(function (restaurant) {
+        const listItem =
+          document.createElement("article");
 
-        Esempio:
-        /ristorante.html?id=3
-      */
-      const restaurantPageUrl =
-        "/ristorante.html?id=" +
-        encodeURIComponent(restaurant.id);
+        listItem.className =
+          "restaurant-list-item";
 
-      marker.bindPopup(`
-        <div class="restaurant-popup">
-          <strong class="restaurant-popup-name">
-            ${escapeHtml(restaurant.name)}
-          </strong>
+        const distanceHtml =
+          restaurant.distance_km !== undefined &&
+          restaurant.distance_km !== null
+            ? `
+              <p>
+                <i class="fa-solid fa-location-arrow"></i>
+                ${Number(restaurant.distance_km).toFixed(2)} km
+              </p>
+            `
+            : "";
 
-          <span>
-            <i class="fa-solid fa-location-dot"></i>
+        listItem.innerHTML = `
+          <h3>
+            ${restaurant.name}
+          </h3>
 
-            ${escapeHtml(restaurant.city)},
-            ${escapeHtml(restaurant.region)}
-          </span>
+          <p>
+            ${restaurant.city}, ${restaurant.region}
+          </p>
 
-          <span>
-            ${escapeHtml(restaurant.address)}
-          </span>
-
-          <span class="restaurant-cuisine-popup">
-            ${escapeHtml(
-              restaurant.cuisine ||
-              "Tipo di cucina non indicato"
-            )}
-          </span>
+          <p>
+            ${restaurant.address}
+          </p>
 
           ${
-            Number.isFinite(
-              Number(restaurant.distance_km)
-            )
-              ? `
-                <span class="restaurant-distance">
-                  Distanza:
-                  ${escapeHtml(restaurant.distance_km)}
-                  km
-                </span>
-              `
+            restaurant.cuisine
+              ? `<p>${restaurant.cuisine}</p>`
               : ""
           }
 
-          ${
-            restaurant.description
-              ? `
-                <p>
-                  ${escapeHtml(restaurant.description)}
-                </p>
-              `
-              : ""
+          ${distanceHtml}
+
+          ${buildListRatingHtml(restaurant)}
+        `;
+
+        listItem.addEventListener(
+          "click",
+          function () {
+            focusRestaurant(restaurant.id);
           }
+        );
 
-          <a
-            href="${restaurantPageUrl}"
-            class="restaurant-popup-link"
-          >
-            Vedi ristorante
-
-            <i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </div>
-      `);
-
-      marker.addTo(restaurantsMarkersLayer);
+        restaurantList.appendChild(listItem);
+      });
     }
 
+    // =====================================================
+    // FILTRI
+    // =====================================================
 
-    /* =====================================================
-       RICERCA PER REGIONE
-       ===================================================== */
+    function restaurantMatchesCategory(restaurant) {
+      if (selectedCategory === "tutti") {
+        return true;
+      }
 
-    async function loadRestaurantsByRegion(regionName) {
-      showLoadingStatus(
-        "Caricamento dei ristoranti..."
+      const searchableText =
+        [
+          restaurant.name,
+          restaurant.cuisine,
+          restaurant.description
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+      return searchableText.includes(
+        selectedCategory.toLowerCase()
       );
+    }
 
-      try {
-        const response = await fetch(
-          "/restaurants?region=" +
-          encodeURIComponent(regionName)
+    function applyFilters() {
+      visibleRestaurants =
+        allRestaurants.filter(function (restaurant) {
+          const matchesRegion =
+            !selectedRegion ||
+            restaurant.region.toLowerCase() === selectedRegion.toLowerCase();
+
+          const matchesCategory =
+            restaurantMatchesCategory(restaurant);
+
+          return matchesRegion && matchesCategory;
+        });
+
+      renderMarkers(visibleRestaurants);
+      renderRestaurantList(visibleRestaurants);
+    }
+
+    // =====================================================
+    // REGIONI
+    // =====================================================
+
+    function renderRegions() {
+      regionsList.innerHTML = "";
+
+      const allButton =
+        document.createElement("button");
+
+      allButton.className =
+        "region-button active";
+
+      allButton.type =
+        "button";
+
+      allButton.dataset.region =
+        "";
+
+      allButton.innerHTML = `
+        <span>Tutte le regioni</span>
+        <i class="fa-solid fa-earth-europe"></i>
+      `;
+
+      regionsList.appendChild(allButton);
+
+      regions.forEach(function (region) {
+        const button =
+          document.createElement("button");
+
+        button.className =
+          "region-button";
+
+        button.type =
+          "button";
+
+        button.dataset.region =
+          region.name;
+
+        button.innerHTML = `
+          <span>${region.name}</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        `;
+
+        regionsList.appendChild(button);
+      });
+    }
+
+    function setActiveRegionButton(regionName) {
+      const buttons =
+        document.querySelectorAll(".region-button");
+
+      buttons.forEach(function (button) {
+        const isActive =
+          button.dataset.region === regionName;
+
+        button.classList.toggle(
+          "active",
+          isActive
         );
+      });
+    }
+
+    regionsList.addEventListener(
+      "click",
+      function (event) {
+        const button =
+          event.target.closest(".region-button");
+
+        if (!button) {
+          return;
+        }
+
+        selectedRegion =
+          button.dataset.region || "";
+
+        setActiveRegionButton(selectedRegion);
+
+        if (selectedRegion) {
+          const region =
+            regions.find(function (item) {
+              return item.name === selectedRegion;
+            });
+
+          if (region) {
+            map.setView(
+              region.center,
+              region.zoom
+            );
+          }
+        } else {
+          map.setView(
+            [41.8719, 12.5674],
+            6
+          );
+        }
+
+        applyFilters();
+      }
+    );
+
+    // =====================================================
+    // CATEGORIE
+    // =====================================================
+
+    categoryButtons.forEach(function (button) {
+      button.addEventListener(
+        "click",
+        function () {
+          categoryButtons.forEach(function (item) {
+            item.classList.remove("active");
+          });
+
+          button.classList.add("active");
+
+          selectedCategory =
+            button.dataset.category || "tutti";
+
+          applyFilters();
+        }
+      );
+    });
+
+    // =====================================================
+    // CARICAMENTO RISTORANTI
+    // =====================================================
+
+    async function loadRestaurants() {
+      try {
+        const response =
+          await fetch("/restaurants");
 
         if (!response.ok) {
           throw new Error(
@@ -1018,301 +1801,204 @@
         const restaurants =
           await response.json();
 
-        if (!Array.isArray(restaurants)) {
-          throw new Error(
-            "La risposta non è un elenco."
-          );
-        }
+        allRestaurants =
+          Array.isArray(restaurants)
+            ? restaurants
+            : [];
 
-        currentRestaurants = restaurants;
-        currentSearchDescription = "in " + regionName;
-
-        renderFilteredRestaurants();
+        applyFilters();
       } catch (error) {
-        currentRestaurants = [];
-
-        showErrorStatus(
-          "Non è stato possibile caricare i ristoranti."
+        console.error(
+          "Errore durante il caricamento dei ristoranti:",
+          error
         );
 
-        console.error(error);
+        showMapMessage(
+          "Non è stato possibile caricare i ristoranti.",
+          "error"
+        );
+
+        restaurantCountText.textContent =
+          "Errore durante il caricamento.";
       }
     }
 
+    // =====================================================
+    // RICERCA NEI DINTORNI
+    // =====================================================
 
-    /* =====================================================
-       RICERCA NEI DINTORNI
-       ===================================================== */
+    async function searchNearbyRestaurants() {
+      const query =
+        nearbySearchInput.value.trim();
 
-    nearbySearchForm.addEventListener(
-      "submit",
-      async function (event) {
-        event.preventDefault();
+      const radius =
+        radiusSelect.value;
 
-        const searchText =
-          locationInput.value.trim();
+      if (query.length < 3) {
+        showMapMessage(
+          "Inserisci una posizione di almeno 3 caratteri.",
+          "error"
+        );
 
-        const radius =
-          Number(radiusSelect.value);
+        return;
+      }
 
-        if (searchText.length < 3) {
-          showErrorStatus(
-            "Inserisci una posizione di almeno 3 caratteri."
+      nearbySearchButton.disabled = true;
+
+      nearbySearchButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Ricerca...';
+
+      try {
+        const geocodeResponse =
+          await fetch(
+            "/geocode?q=" +
+              encodeURIComponent(query)
           );
 
-          locationInput.focus();
+        const geocodeData =
+          await geocodeResponse.json();
+
+        if (
+          !geocodeResponse.ok ||
+          !geocodeData.success ||
+          !geocodeData.location
+        ) {
+          showMapMessage(
+            geocodeData.message ||
+              "Posizione non trovata.",
+            "error"
+          );
+
           return;
         }
 
-        setSearchButtonLoading(true);
+        const latitude =
+          Number(geocodeData.location.latitude);
 
-        showLoadingStatus(
-          "Ricerca della posizione..."
+        const longitude =
+          Number(geocodeData.location.longitude);
+
+        const restaurantsResponse =
+          await fetch(
+            "/restaurants/nearby?lat=" +
+              encodeURIComponent(latitude) +
+              "&lng=" +
+              encodeURIComponent(longitude) +
+              "&radius=" +
+              encodeURIComponent(radius)
+          );
+
+        const restaurants =
+          await restaurantsResponse.json();
+
+        if (!restaurantsResponse.ok) {
+          showMapMessage(
+            restaurants.message ||
+              "Non è stato possibile cercare i ristoranti vicini.",
+            "error"
+          );
+
+          return;
+        }
+
+        allRestaurants =
+          Array.isArray(restaurants)
+            ? restaurants
+            : [];
+
+        selectedRegion = "";
+
+        setActiveRegionButton("");
+
+        applyFilters();
+
+        map.setView(
+          [latitude, longitude],
+          14
         );
 
-        try {
-          const geocodeResponse = await fetch(
-            "/geocode?q=" +
-            encodeURIComponent(searchText)
-          );
-
-          const geocodeData =
-            await geocodeResponse.json();
-
-          if (!geocodeResponse.ok) {
-            throw new Error(
-              geocodeData.message ||
-              "Posizione non trovata."
-            );
+        L.circle(
+          [latitude, longitude],
+          {
+            radius: Number(radius) * 1000,
+            color: "#b40000",
+            fillColor: "#b40000",
+            fillOpacity: 0.06,
+            weight: 1
           }
+        ).addTo(map);
 
-          const location =
-            geocodeData.location;
+        showMapMessage(
+          "Ricerca completata.",
+          "success"
+        );
+      } catch (error) {
+        console.error(
+          "Errore durante la ricerca nei dintorni:",
+          error
+        );
 
-          const latitude =
-            Number(location.latitude);
+        showMapMessage(
+          "Errore durante la ricerca nei dintorni.",
+          "error"
+        );
+      } finally {
+        nearbySearchButton.disabled = false;
 
-          const longitude =
-            Number(location.longitude);
+        nearbySearchButton.innerHTML =
+          '<i class="fa-solid fa-location-crosshairs"></i> Cerca ristoranti vicini';
+      }
+    }
 
-          if (
-            !Number.isFinite(latitude) ||
-            !Number.isFinite(longitude)
-          ) {
-            throw new Error(
-              "Coordinate della posizione non valide."
-            );
-          }
+    nearbySearchButton.addEventListener(
+      "click",
+      searchNearbyRestaurants
+    );
 
-          clearMapResults();
-          updateActiveRegionButton(null);
-
-          showSearchedLocation(
-            latitude,
-            longitude,
-            location.displayName,
-            radius
-          );
-
-          mapTitle.textContent =
-            "Ristoranti nei dintorni";
-
-          mapDescription.textContent =
-            location.displayName;
-
-          resetMapButton.classList.remove("hidden");
-
-          showLoadingStatus(
-            "Ricerca dei ristoranti vicini..."
-          );
-
-          const nearbyResponse = await fetch(
-            "/restaurants/nearby" +
-            "?lat=" +
-            encodeURIComponent(latitude) +
-            "&lng=" +
-            encodeURIComponent(longitude) +
-            "&radius=" +
-            encodeURIComponent(radius)
-          );
-
-          const nearbyRestaurants =
-            await nearbyResponse.json();
-
-          if (!nearbyResponse.ok) {
-            throw new Error(
-              nearbyRestaurants.message ||
-              "Errore durante la ricerca."
-            );
-          }
-
-          if (!Array.isArray(nearbyRestaurants)) {
-            throw new Error(
-              "La risposta non è un elenco."
-            );
-          }
-
-          currentRestaurants =
-            nearbyRestaurants;
-
-          currentSearchDescription =
-            "entro " + radius + " km";
-
-          renderFilteredRestaurants();
-        } catch (error) {
-          currentRestaurants = [];
-
-          showErrorStatus(error.message);
-
-          console.error(
-            "Errore ricerca nei dintorni:",
-            error
-          );
-        } finally {
-          setSearchButtonLoading(false);
+    nearbySearchInput.addEventListener(
+      "keydown",
+      function (event) {
+        if (event.key === "Enter") {
+          searchNearbyRestaurants();
         }
       }
     );
 
-
-    /* =====================================================
-       POSIZIONE CERCATA E RAGGIO
-       ===================================================== */
-
-    function showSearchedLocation(
-      latitude,
-      longitude,
-      displayName,
-      radius
-    ) {
-      const locationMarker = L.circleMarker(
-        [latitude, longitude],
-        {
-          radius: 10,
-          color: "#ffffff",
-          weight: 3,
-          fillColor: "#b40000",
-          fillOpacity: 1
-        }
-      );
-
-      locationMarker.bindPopup(`
-        <div class="searched-location-popup">
-          <strong>Posizione cercata</strong>
-
-          <span>
-            ${escapeHtml(displayName)}
-          </span>
-        </div>
-      `);
-
-      locationMarker.addTo(searchedLocationLayer);
-
-      const radiusCircle = L.circle(
-        [latitude, longitude],
-        {
-          radius: radius * 1000,
-          color: "#b40000",
-          weight: 2,
-          opacity: 0.75,
-          fillColor: "#b40000",
-          fillOpacity: 0.08
-        }
-      );
-
-      radiusCircle.addTo(searchRadiusLayer);
-
-      map.fitBounds(radiusCircle.getBounds(), {
-        padding: [35, 35],
-        animate: true
-      });
-
-      locationMarker.openPopup();
-    }
-
-
-    /* =====================================================
-       MESSAGGI DI STATO
-       ===================================================== */
-
-    function showLoadingStatus(message) {
-      restaurantsStatus.textContent = message;
-
-      restaurantsStatus.classList.remove(
-        "hidden",
-        "error"
-      );
-    }
-
-
-    function showErrorStatus(message) {
-      restaurantsStatus.textContent = message;
-
-      restaurantsStatus.classList.remove("hidden");
-      restaurantsStatus.classList.add("error");
-    }
-
-
-    /* =====================================================
-       STATO DEL PULSANTE CERCA
-       ===================================================== */
-
-    function setSearchButtonLoading(isLoading) {
-      nearbySearchButton.disabled = isLoading;
-
-      nearbySearchButton.textContent =
-        isLoading
-          ? "Ricerca..."
-          : "Cerca";
-    }
-
-
-    /* =====================================================
-       PULIZIA E RESET DELLA MAPPA
-       ===================================================== */
-
-    function clearMapResults() {
-      restaurantsMarkersLayer.clearLayers();
-      searchedLocationLayer.clearLayers();
-      searchRadiusLayer.clearLayers();
-
-      currentRestaurants = [];
-      currentSearchDescription = "";
-
-      restaurantsStatus.classList.add("hidden");
-      restaurantsStatus.classList.remove("error");
-    }
-
-
-    function resetMap() {
-      clearMapResults();
-
-      updateActiveRegionButton(null);
-
-      map.setView(initialCenter, initialZoom, {
-        animate: true
-      });
-
-      mapTitle.textContent =
-        "Trova il tuo ristorante";
-
-      mapDescription.textContent =
-        "Cerca una posizione oppure seleziona una regione.";
-
-      resetMapButton.classList.add("hidden");
-    }
-
-
-    /* =====================================================
-       AVVIO
-       ===================================================== */
-
-    createRegionButtons();
-
-    resetMapButton.addEventListener(
+    resetSearchButton.addEventListener(
       "click",
-      resetMap
+      async function () {
+        selectedRegion = "";
+        selectedCategory = "tutti";
+
+        categoryButtons.forEach(function (button) {
+          button.classList.toggle(
+            "active",
+            button.dataset.category === "tutti"
+          );
+        });
+
+        setActiveRegionButton("");
+
+        map.setView(
+          [41.8719, 12.5674],
+          6
+        );
+
+        await loadRestaurants();
+      }
     );
+
+    // =====================================================
+    // AVVIO
+    // =====================================================
+
+    renderRegions();
+
+    loadRestaurants();
+
+    setTimeout(function () {
+      map.invalidateSize();
+    }, 250);
   </script>
 </body>
 </html>

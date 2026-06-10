@@ -26,17 +26,6 @@ const PORT = process.env.PORT || 3000;
 // CARTELLA DELLE FOTOGRAFIE
 // =========================================================
 
-/*
-  In locale:
-  progetto/uploads
-
-  Su Railway:
-  /app/uploads
-
-  Su Railway /app/uploads deve essere collegato
-  a un Volume, così le fotografie non spariscono
-  dopo un redeploy.
-*/
 const uploadsDirectory =
   process.env.UPLOADS_PATH ||
   path.join(__dirname, "uploads");
@@ -56,24 +45,12 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-/*
-  Rende pubblici i file della cartella public.
-*/
 app.use(
   express.static(
     path.join(__dirname, "public")
   )
 );
 
-/*
-  Rende visibili dal browser le immagini caricate.
-
-  Se un file viene salvato fisicamente in:
-  /app/uploads/foto.jpg
-
-  sarà raggiungibile dal browser come:
-  /uploads/foto.jpg
-*/
 app.use(
   "/uploads",
   express.static(uploadsDirectory)
@@ -84,10 +61,6 @@ app.use(
 // SESSIONE UTENTE
 // =========================================================
 
-/*
-  La sessione permette al server di ricordare
-  che un utente ha fatto login.
-*/
 app.use(
   session({
     name: "kirating.sid",
@@ -102,18 +75,8 @@ app.use(
 
     cookie: {
       httpOnly: true,
-
-      /*
-        In locale usiamo http://localhost,
-        quindi secure deve restare false.
-
-        Se un giorno userai HTTPS con dominio definitivo,
-        potremo configurarlo meglio.
-      */
       secure: false,
-
       sameSite: "lax",
-
       maxAge: 7 * 24 * 60 * 60 * 1000
     }
   })
@@ -249,10 +212,6 @@ function cleanText(value) {
 }
 
 
-/*
-  Middleware che blocca le operazioni
-  riservate agli utenti non loggati.
-*/
 function requireLogin(req, res, next) {
   if (!req.session.user) {
     return res.status(401).json({
@@ -266,35 +225,11 @@ function requireLogin(req, res, next) {
 }
 
 
-/*
-  Normalizza una ricerca geografica.
-
-  Serve perché Nominatim può fallire quando
-  trova civici con lettere, CAP o sigle provincia.
-*/
 function normalizeGeocodeText(text) {
   return cleanText(text)
-    /*
-      83/A diventa 83
-      12/B diventa 12
-    */
     .replace(/\b([0-9]+)\/[A-Za-z]\b/g, "$1")
-
-    /*
-      Rimuove CAP italiani.
-      Esempio: 74122
-    */
     .replace(/\b\d{5}\b/g, "")
-
-    /*
-      Rimuove alcune sigle provincia.
-      Per ora inseriamo quelle più comuni.
-    */
     .replace(/\b(TA|RM|MI|NA|BA|FI|BO|TO|PA|CT|LE|BR)\b/gi, "")
-
-    /*
-      Sistema spazi multipli e virgole strane.
-    */
     .replace(/\s+/g, " ")
     .replace(/\s+,/g, ",")
     .replace(/,\s*,/g, ",")
@@ -302,12 +237,6 @@ function normalizeGeocodeText(text) {
 }
 
 
-/*
-  Crea più tentativi di ricerca per Nominatim.
-
-  Il primo tentativo usa il testo completo.
-  Gli altri usano versioni più semplici.
-*/
 function buildGeocodeAttempts(searchText) {
   const cleanedSearchText =
     cleanText(searchText);
@@ -328,12 +257,6 @@ function buildGeocodeAttempts(searchText) {
       })
       .filter(Boolean);
 
-  /*
-    Se l'indirizzo è tipo:
-    Via Domenico Savino, 83/A, 74122 Taranto TA, Puglia, Italia
-
-    proviamo anche versioni più semplici.
-  */
   const cityMatch =
     normalizedSearchText.match(
       /\b(Taranto|Roma|Milano|Napoli|Bari|Firenze|Bologna|Torino|Palermo|Catania|Lecce|Brindisi|Genova|Venezia|Verona|Padova|Parma|Perugia|Pescara|Ancona|Cagliari|Sassari|Matera|Potenza|Catanzaro|Reggio Calabria|Campobasso|Aosta|Trento|Bolzano)\b/i
@@ -369,10 +292,6 @@ function buildGeocodeAttempts(searchText) {
     );
   }
 
-  /*
-    Caso tipico:
-    Via Domenico Savino 83, Taranto, Puglia, Italia
-  */
   if (city) {
     attempts.push(
       normalizedSearchText
@@ -383,9 +302,6 @@ function buildGeocodeAttempts(searchText) {
     );
   }
 
-  /*
-    Rimuove duplicati e tentativi troppo corti.
-  */
   return [...new Set(attempts)]
     .map(function (attempt) {
       return attempt.trim();
@@ -613,11 +529,6 @@ app.post("/login", async (req, res) => {
 
     const user = users[0];
 
-    /*
-      Compatibilità con vecchi utenti:
-      - se la password inizia con $2, è bcrypt;
-      - altrimenti è una vecchia password in chiaro.
-    */
     const passwordIsHashed =
       typeof user.password === "string" &&
       user.password.startsWith("$2");
@@ -642,10 +553,6 @@ app.post("/login", async (req, res) => {
       });
     }
 
-    /*
-      Se era una vecchia password in chiaro,
-      la convertiamo automaticamente.
-    */
     if (!passwordIsHashed) {
       const newHashedPassword =
         await bcrypt.hash(password, 12);
@@ -740,7 +647,7 @@ app.post("/logout", (req, res) => {
 
 
 // =========================================================
-// RECUPERO DEI RISTORANTI
+// RECUPERO DEI RISTORANTI PER LA MAPPA
 // =========================================================
 
 app.get("/restaurants", async (req, res) => {
@@ -754,46 +661,147 @@ app.get("/restaurants", async (req, res) => {
     if (region) {
       query = `
         SELECT
-          id,
-          name,
-          region,
-          city,
-          address,
-          latitude,
-          longitude,
-          cuisine,
-          description,
-          created_by,
-          created_at
-        FROM restaurants
-        WHERE LOWER(region) = LOWER(?)
-        ORDER BY name ASC
+          r.id,
+          r.name,
+          r.region,
+          r.city,
+          r.address,
+          r.latitude,
+          r.longitude,
+          r.cuisine,
+          r.description,
+          r.created_by,
+          r.created_at,
+
+          COUNT(rv.id) AS reviews_count,
+
+          ROUND(AVG(rv.food_rating), 1)
+            AS average_food_rating,
+
+          ROUND(AVG(rv.service_rating), 1)
+            AS average_service_rating,
+
+          ROUND(AVG(rv.atmosphere_rating), 1)
+            AS average_atmosphere_rating,
+
+          ROUND(AVG(rv.overall_rating), 1)
+            AS average_overall_rating
+
+        FROM restaurants r
+
+        LEFT JOIN reviews rv
+          ON rv.restaurant_id = r.id
+
+        WHERE LOWER(r.region) = LOWER(?)
+
+        GROUP BY
+          r.id,
+          r.name,
+          r.region,
+          r.city,
+          r.address,
+          r.latitude,
+          r.longitude,
+          r.cuisine,
+          r.description,
+          r.created_by,
+          r.created_at
+
+        ORDER BY r.name ASC
       `;
 
       values = [region];
     } else {
       query = `
         SELECT
-          id,
-          name,
-          region,
-          city,
-          address,
-          latitude,
-          longitude,
-          cuisine,
-          description,
-          created_by,
-          created_at
-        FROM restaurants
-        ORDER BY region ASC, name ASC
+          r.id,
+          r.name,
+          r.region,
+          r.city,
+          r.address,
+          r.latitude,
+          r.longitude,
+          r.cuisine,
+          r.description,
+          r.created_by,
+          r.created_at,
+
+          COUNT(rv.id) AS reviews_count,
+
+          ROUND(AVG(rv.food_rating), 1)
+            AS average_food_rating,
+
+          ROUND(AVG(rv.service_rating), 1)
+            AS average_service_rating,
+
+          ROUND(AVG(rv.atmosphere_rating), 1)
+            AS average_atmosphere_rating,
+
+          ROUND(AVG(rv.overall_rating), 1)
+            AS average_overall_rating
+
+        FROM restaurants r
+
+        LEFT JOIN reviews rv
+          ON rv.restaurant_id = r.id
+
+        GROUP BY
+          r.id,
+          r.name,
+          r.region,
+          r.city,
+          r.address,
+          r.latitude,
+          r.longitude,
+          r.cuisine,
+          r.description,
+          r.created_by,
+          r.created_at
+
+        ORDER BY r.region ASC, r.name ASC
       `;
     }
 
     const [restaurants] =
       await db.query(query, values);
 
-    res.json(restaurants);
+    const formattedRestaurants =
+      restaurants.map(function (restaurant) {
+        return {
+          ...restaurant,
+
+          latitude:
+            Number(restaurant.latitude),
+
+          longitude:
+            Number(restaurant.longitude),
+
+          reviews_count:
+            Number(restaurant.reviews_count),
+
+          average_food_rating:
+            restaurant.average_food_rating === null
+              ? null
+              : Number(restaurant.average_food_rating),
+
+          average_service_rating:
+            restaurant.average_service_rating === null
+              ? null
+              : Number(restaurant.average_service_rating),
+
+          average_atmosphere_rating:
+            restaurant.average_atmosphere_rating === null
+              ? null
+              : Number(restaurant.average_atmosphere_rating),
+
+          average_overall_rating:
+            restaurant.average_overall_rating === null
+              ? null
+              : Number(restaurant.average_overall_rating)
+        };
+      });
+
+    res.json(formattedRestaurants);
   } catch (error) {
     console.error(
       "Errore durante il recupero dei ristoranti:",
@@ -804,6 +812,179 @@ app.get("/restaurants", async (req, res) => {
       success: false,
       message:
         "Errore durante il recupero dei ristoranti."
+    });
+  }
+});
+
+
+// =========================================================
+// RISTORANTI VICINI
+// =========================================================
+
+app.get("/restaurants/nearby", async (req, res) => {
+  const latitude =
+    Number(req.query.lat);
+
+  const longitude =
+    Number(req.query.lng);
+
+  const radius =
+    Number(req.query.radius || 10);
+
+  if (
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Coordinate non valide."
+    });
+  }
+
+  if (
+    !Number.isFinite(radius) ||
+    radius < 1 ||
+    radius > 100
+  ) {
+    return res.status(400).json({
+      success: false,
+      message:
+        "Il raggio deve essere compreso tra 1 e 100 km."
+    });
+  }
+
+  try {
+    const [restaurants] = await db.query(
+      `
+        SELECT
+          r.id,
+          r.name,
+          r.region,
+          r.city,
+          r.address,
+          r.latitude,
+          r.longitude,
+          r.cuisine,
+          r.description,
+          r.created_by,
+          r.created_at,
+
+          COUNT(rv.id) AS reviews_count,
+
+          ROUND(AVG(rv.food_rating), 1)
+            AS average_food_rating,
+
+          ROUND(AVG(rv.service_rating), 1)
+            AS average_service_rating,
+
+          ROUND(AVG(rv.atmosphere_rating), 1)
+            AS average_atmosphere_rating,
+
+          ROUND(AVG(rv.overall_rating), 1)
+            AS average_overall_rating,
+
+          (
+            6371 * ACOS(
+              LEAST(
+                1,
+
+                COS(RADIANS(?))
+                * COS(RADIANS(r.latitude))
+                * COS(
+                    RADIANS(r.longitude)
+                    - RADIANS(?)
+                  )
+
+                + SIN(RADIANS(?))
+                * SIN(RADIANS(r.latitude))
+              )
+            )
+          ) AS distance_km
+
+        FROM restaurants r
+
+        LEFT JOIN reviews rv
+          ON rv.restaurant_id = r.id
+
+        GROUP BY
+          r.id,
+          r.name,
+          r.region,
+          r.city,
+          r.address,
+          r.latitude,
+          r.longitude,
+          r.cuisine,
+          r.description,
+          r.created_by,
+          r.created_at
+
+        HAVING distance_km <= ?
+
+        ORDER BY distance_km ASC
+      `,
+      [
+        latitude,
+        longitude,
+        latitude,
+        radius
+      ]
+    );
+
+    const formattedRestaurants =
+      restaurants.map(function (restaurant) {
+        return {
+          ...restaurant,
+
+          latitude:
+            Number(restaurant.latitude),
+
+          longitude:
+            Number(restaurant.longitude),
+
+          distance_km:
+            Number(
+              Number(
+                restaurant.distance_km
+              ).toFixed(2)
+            ),
+
+          reviews_count:
+            Number(restaurant.reviews_count),
+
+          average_food_rating:
+            restaurant.average_food_rating === null
+              ? null
+              : Number(restaurant.average_food_rating),
+
+          average_service_rating:
+            restaurant.average_service_rating === null
+              ? null
+              : Number(restaurant.average_service_rating),
+
+          average_atmosphere_rating:
+            restaurant.average_atmosphere_rating === null
+              ? null
+              : Number(restaurant.average_atmosphere_rating),
+
+          average_overall_rating:
+            restaurant.average_overall_rating === null
+              ? null
+              : Number(restaurant.average_overall_rating)
+        };
+      });
+
+    res.json(formattedRestaurants);
+  } catch (error) {
+    console.error(
+      "Errore durante la ricerca dei ristoranti vicini:",
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Non è stato possibile cercare i ristoranti vicini."
     });
   }
 });
@@ -1114,120 +1295,6 @@ app.get("/geocode", async (req, res) => {
       success: false,
       message:
         "Non è stato possibile cercare la posizione."
-    });
-  }
-});
-
-
-// =========================================================
-// RISTORANTI VICINI
-// =========================================================
-
-app.get("/restaurants/nearby", async (req, res) => {
-  const latitude =
-    Number(req.query.lat);
-
-  const longitude =
-    Number(req.query.lng);
-
-  const radius =
-    Number(req.query.radius || 10);
-
-  if (
-    !Number.isFinite(latitude) ||
-    !Number.isFinite(longitude)
-  ) {
-    return res.status(400).json({
-      success: false,
-      message: "Coordinate non valide."
-    });
-  }
-
-  if (
-    !Number.isFinite(radius) ||
-    radius < 1 ||
-    radius > 100
-  ) {
-    return res.status(400).json({
-      success: false,
-      message:
-        "Il raggio deve essere compreso tra 1 e 100 km."
-    });
-  }
-
-  try {
-    const [restaurants] = await db.query(
-      `
-        SELECT
-          id,
-          name,
-          region,
-          city,
-          address,
-          latitude,
-          longitude,
-          cuisine,
-          description,
-          created_by,
-          created_at,
-
-          (
-            6371 * ACOS(
-              LEAST(
-                1,
-
-                COS(RADIANS(?))
-                * COS(RADIANS(latitude))
-                * COS(
-                    RADIANS(longitude)
-                    - RADIANS(?)
-                  )
-
-                + SIN(RADIANS(?))
-                * SIN(RADIANS(latitude))
-              )
-            )
-          ) AS distance_km
-
-        FROM restaurants
-
-        HAVING distance_km <= ?
-
-        ORDER BY distance_km ASC
-      `,
-      [
-        latitude,
-        longitude,
-        latitude,
-        radius
-      ]
-    );
-
-    const formattedRestaurants =
-      restaurants.map(function (restaurant) {
-        return {
-          ...restaurant,
-
-          distance_km:
-            Number(
-              Number(
-                restaurant.distance_km
-              ).toFixed(2)
-            )
-        };
-      });
-
-    res.json(formattedRestaurants);
-  } catch (error) {
-    console.error(
-      "Errore durante la ricerca dei ristoranti vicini:",
-      error
-    );
-
-    res.status(500).json({
-      success: false,
-      message:
-        "Non è stato possibile cercare i ristoranti vicini."
     });
   }
 });

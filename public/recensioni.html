@@ -16,7 +16,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
   />
 
-  <!-- Leaflet per la mappa manuale -->
+  <!-- Leaflet per la mappa -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -31,7 +31,6 @@
 
     body {
       min-height: 100vh;
-
       background:
         radial-gradient(
           circle at top left,
@@ -39,13 +38,8 @@
           transparent 35%
         ),
         linear-gradient(135deg, #fff8f0, #f3eee7);
-
       color: #2b2118;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     a {
@@ -61,7 +55,6 @@
 
     .top-bar {
       margin-bottom: 24px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -77,14 +70,9 @@
     .brand-logo {
       width: 56px;
       height: 56px;
-
       border-radius: 50%;
-
       object-fit: cover;
-
-      box-shadow:
-        0 10px 25px
-        rgba(0, 0, 0, 0.18);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
     }
 
     .brand-text {
@@ -95,7 +83,6 @@
 
     .brand-title {
       color: #b40000;
-
       font-size: 24px;
       font-weight: 900;
       letter-spacing: 0.2px;
@@ -103,79 +90,62 @@
 
     .brand-subtitle {
       color: #746f68;
-
       font-size: 13px;
       font-weight: 700;
     }
 
     .back-home-link {
       padding: 11px 15px;
-
       display: inline-flex;
       align-items: center;
       gap: 8px;
-
       border: 1px solid rgba(180, 0, 0, 0.18);
       border-radius: 999px;
-
       background-color: #ffffff;
       color: #b40000;
-
       font-size: 13px;
       font-weight: 800;
-
-      box-shadow:
-        0 8px 22px
-        rgba(0, 0, 0, 0.08);
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .back-home-link:hover {
-      transform: translateY(-1px);
-
-      box-shadow:
-        0 12px 30px
-        rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
     }
 
     .hero-card {
       margin-bottom: 22px;
       padding: 28px;
-
       border-radius: 24px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #b40000,
-          #7f0000
-        );
-
+      background: linear-gradient(135deg, #b40000, #7f0000);
       color: #ffffff;
-
-      box-shadow:
-        0 18px 45px
-        rgba(180, 0, 0, 0.22);
+      box-shadow: 0 18px 45px rgba(180, 0, 0, 0.22);
     }
 
     .hero-card h1 {
       margin-bottom: 10px;
-
       font-size: clamp(30px, 5vw, 48px);
       line-height: 1;
       letter-spacing: -1px;
     }
 
     .hero-card p {
-      max-width: 720px;
-
+      max-width: 760px;
       color: rgba(255, 255, 255, 0.86);
-
       font-size: 16px;
       line-height: 1.55;
+    }
+
+    .prefilled-banner {
+      display: none;
+      margin-bottom: 18px;
+      padding: 14px 15px;
+      border-left: 4px solid #2c7a3f;
+      border-radius: 12px;
+      background-color: #eef8f0;
+      color: #205e30;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .prefilled-banner.show {
+      display: block;
     }
 
     .content-grid {
@@ -189,13 +159,8 @@
     .tips-card {
       border: 1px solid rgba(72, 54, 38, 0.08);
       border-radius: 24px;
-
       background-color: rgba(255, 255, 255, 0.92);
-
-      box-shadow:
-        0 18px 45px
-        rgba(38, 27, 18, 0.10);
-
+      box-shadow: 0 18px 45px rgba(38, 27, 18, 0.10);
       backdrop-filter: blur(12px);
     }
 
@@ -205,46 +170,36 @@
 
     .tips-card {
       padding: 22px;
-
       position: sticky;
       top: 20px;
     }
 
     .tips-card h2 {
       margin-bottom: 12px;
-
       color: #b40000;
-
       font-size: 19px;
     }
 
     .tips-card p {
       margin-bottom: 12px;
-
       color: #746f68;
-
       font-size: 14px;
       line-height: 1.55;
     }
 
     .tips-list {
       padding-left: 18px;
-
       color: #5f574e;
-
       font-size: 14px;
       line-height: 1.65;
     }
 
     .section-title {
       margin: 4px 0 18px;
-
       display: flex;
       align-items: center;
       gap: 10px;
-
       color: #2b2118;
-
       font-size: 22px;
       font-weight: 900;
     }
@@ -256,7 +211,6 @@
     .form-section {
       margin-bottom: 30px;
       padding-bottom: 26px;
-
       border-bottom: 1px solid #eee7df;
     }
 
@@ -282,7 +236,6 @@
 
     label {
       color: #3b3028;
-
       font-size: 13px;
       font-weight: 900;
     }
@@ -297,112 +250,77 @@
       width: 100%;
       min-height: 46px;
       padding: 12px 13px;
-
       border: 1px solid #ded7cf;
       border-radius: 11px;
-
       background-color: #ffffff;
       color: #2b2118;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
-
       outline: none;
-
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
       border-color: #b40000;
+      box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.10);
+    }
 
-      box-shadow:
-        0 0 0 4px
-        rgba(180, 0, 0, 0.10);
+    input[readonly] {
+      background-color: #f7f4f0;
+      color: #5f574e;
     }
 
     textarea {
       min-height: 150px;
-
       line-height: 1.5;
-
       resize: vertical;
     }
 
     .field-help {
       color: #98938d;
-
       font-size: 12px;
       line-height: 1.4;
     }
 
-    /* =====================================================
-       POSIZIONE DEL RISTORANTE
-       ===================================================== */
-
     .location-tools {
       margin-top: 4px;
-
       display: flex;
       align-items: center;
       gap: 13px;
-
       flex-wrap: wrap;
     }
 
     .secondary-button {
       min-height: 43px;
       padding: 10px 15px;
-
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-
       border: 1px solid #b40000;
       border-radius: 8px;
-
       background-color: #b40000;
       color: #ffffff;
-
       font-size: 13px;
       font-weight: 800;
-
       cursor: pointer;
-
-      transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease,
-        opacity 0.2s ease;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
     }
 
     .secondary-button:hover {
       background-color: #8f0000;
     }
 
-    .secondary-button:active {
-      transform: scale(0.985);
-    }
-
     .secondary-button:disabled {
       opacity: 0.65;
-
       cursor: wait;
     }
 
     .secondary-button.light {
       width: fit-content;
-
       margin-top: 3px;
-
       background-color: #ffffff;
       color: #b40000;
     }
@@ -414,13 +332,10 @@
 
     .position-status {
       padding: 10px 12px;
-
       border-left: 3px solid #d7d2cb;
       border-radius: 7px;
-
       background-color: #f7f4f0;
       color: #746f68;
-
       font-size: 12px;
       font-weight: 700;
       line-height: 1.4;
@@ -428,21 +343,18 @@
 
     .position-status.success {
       border-left-color: #2c7a3f;
-
       background-color: #eef8f0;
       color: #205e30;
     }
 
     .position-status.error {
       border-left-color: #b40000;
-
       background-color: #fff0f0;
       color: #9d0000;
     }
 
     .manual-coordinates-grid {
       margin-top: 12px;
-
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
@@ -452,34 +364,22 @@
       width: 100%;
       height: 360px;
       margin-top: 16px;
-
       overflow: hidden;
-
       border: 1px solid #dedad4;
       border-radius: 13px;
-
       background-color: #eeeeeb;
     }
 
     .restaurant-location-map .leaflet-control-zoom {
       border: none !important;
-
       border-radius: 8px !important;
-
-      box-shadow:
-        0 5px 15px
-        rgba(0, 0, 0, 0.16) !important;
-
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16) !important;
       overflow: hidden;
     }
 
     .restaurant-location-map .leaflet-control-zoom a {
       color: #b40000 !important;
     }
-
-    /* =====================================================
-       VALUTAZIONI
-       ===================================================== */
 
     .ratings-grid {
       display: grid;
@@ -489,30 +389,24 @@
 
     .rating-box {
       padding: 16px;
-
       border: 1px solid #eee1d7;
       border-radius: 16px;
-
       background-color: #fffaf5;
     }
 
     .rating-label {
       margin-bottom: 10px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-
       color: #3b3028;
-
       font-size: 13px;
       font-weight: 900;
     }
 
     .rating-value {
       color: #b40000;
-
       font-size: 12px;
       font-weight: 900;
     }
@@ -524,27 +418,16 @@
 
     .pizza-rating button {
       border: none;
-
       background: none;
-
       color: #d7d2cb;
-
       font-size: 25px;
-
       cursor: pointer;
-
-      transition:
-        color 0.2s ease,
-        transform 0.2s ease;
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
     .pizza-rating button:hover,
     .pizza-rating button.active {
       color: #f0a400;
-    }
-
-    .pizza-rating button:hover {
-      transform: translateY(-2px) scale(1.05);
     }
 
     .price-options {
@@ -564,76 +447,52 @@
     .price-option span {
       min-height: 46px;
       padding: 10px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       border: 1px solid #ded7cf;
       border-radius: 11px;
-
       background-color: #ffffff;
       color: #746f68;
-
       font-size: 14px;
       font-weight: 900;
-
-      transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
     }
 
     .price-option input:checked + span {
       border-color: #b40000;
-
       background-color: #b40000;
       color: #ffffff;
     }
 
-    /* =====================================================
-       FOTO
-       ===================================================== */
-
     .photo-input-box {
       padding: 20px;
-
       border: 2px dashed #d8cfc6;
       border-radius: 17px;
-
       background-color: #fffaf5;
-
       text-align: center;
     }
 
     .photo-input-box i {
       margin-bottom: 10px;
-
       color: #b40000;
-
       font-size: 28px;
     }
 
     .photo-input-box p {
       margin-bottom: 12px;
-
       color: #746f68;
-
       font-size: 14px;
       line-height: 1.45;
     }
 
     .photo-input-box input {
       padding: 10px;
-
       border: none;
-
       background-color: transparent;
     }
 
     .photo-preview-grid {
       margin-top: 16px;
-
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
@@ -641,48 +500,36 @@
 
     .photo-preview-item {
       position: relative;
-
       aspect-ratio: 1 / 1;
-
       overflow: hidden;
-
       border-radius: 12px;
-
       background-color: #eee7df;
     }
 
     .photo-preview-item img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
     }
 
     .remove-photo-button {
       width: 27px;
       height: 27px;
-
       position: absolute;
       top: 6px;
       right: 6px;
-
       border: none;
       border-radius: 50%;
-
       background-color: rgba(0, 0, 0, 0.70);
       color: #ffffff;
-
       cursor: pointer;
     }
 
     .message-box {
       display: none;
-
       margin-bottom: 18px;
       padding: 14px 15px;
-
       border-radius: 12px;
-
       font-size: 14px;
       font-weight: 800;
       line-height: 1.45;
@@ -690,77 +537,54 @@
 
     .message-box.success {
       display: block;
-
       background-color: #eef8f0;
       color: #205e30;
     }
 
     .message-box.error {
       display: block;
-
       background-color: #fff0f0;
       color: #9d0000;
     }
 
     .submit-row {
       margin-top: 26px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-
       flex-wrap: wrap;
     }
 
     .submit-button {
       min-height: 50px;
       padding: 13px 24px;
-
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 9px;
-
       border: none;
       border-radius: 999px;
-
       background-color: #b40000;
       color: #ffffff;
-
       font-size: 15px;
       font-weight: 900;
-
       cursor: pointer;
-
-      box-shadow:
-        0 12px 28px
-        rgba(180, 0, 0, 0.26);
-
-      transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        opacity 0.2s ease;
+      box-shadow: 0 12px 28px rgba(180, 0, 0, 0.26);
     }
 
     .submit-button:hover {
       background-color: #8f0000;
-
-      transform: translateY(-1px);
     }
 
     .submit-button:disabled {
       opacity: 0.65;
-
       cursor: wait;
-      transform: none;
     }
 
     .submit-note {
       max-width: 420px;
-
       color: #98938d;
-
       font-size: 12px;
       line-height: 1.45;
     }
@@ -797,10 +621,7 @@
       }
 
       .form-grid,
-      .ratings-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .ratings-grid,
       .manual-coordinates-grid {
         grid-template-columns: 1fr;
       }
@@ -868,20 +689,25 @@
     </header>
 
     <section class="hero-card">
-      <h1>
+      <h1 id="pageTitle">
         Scrivi una recensione
       </h1>
 
-      <p>
+      <p id="pageDescription">
         Racconta la tua esperienza, valuta cibo, servizio,
-        atmosfera e prezzo. Il ristorante verrà aggiunto alla
-        mappa usando la posizione automatica, la mappa manuale
-        oppure le coordinate inserite da te.
+        atmosfera e prezzo. Il ristorante verrà aggiunto alla mappa
+        usando la posizione automatica, la mappa manuale oppure
+        le coordinate inserite da te.
       </p>
     </section>
 
     <section class="content-grid">
       <article class="review-card">
+        <div
+          id="prefilledBanner"
+          class="prefilled-banner"
+        ></div>
+
         <div
           id="messageBox"
           class="message-box"
@@ -891,7 +717,7 @@
           id="reviewForm"
           enctype="multipart/form-data"
         >
-          <!-- Coordinate che verranno inviate al server -->
+          <!-- Coordinate inviate al server -->
           <input
             id="latitudeInput"
             name="latitude"
@@ -938,10 +764,7 @@
                   name="region"
                   required
                 >
-                  <option value="">
-                    Seleziona regione
-                  </option>
-
+                  <option value="">Seleziona regione</option>
                   <option value="Abruzzo">Abruzzo</option>
                   <option value="Basilicata">Basilicata</option>
                   <option value="Calabria">Calabria</option>
@@ -991,7 +814,7 @@
                   name="cuisine"
                   type="text"
                   maxlength="100"
-                  placeholder="Es. pizza, sushi, pesce, gourmet..."
+                  placeholder="Es. pizza, sushi, pesce..."
                 />
               </div>
 
@@ -1011,14 +834,11 @@
                 />
 
                 <span class="field-help">
-                  Puoi scrivere l’indirizzo completo. Se non viene trovato
-                  automaticamente, puoi usare la mappa o inserire le coordinate.
+                  Se stai recensendo un ristorante già esistente,
+                  questi dati vengono compilati automaticamente.
                 </span>
               </div>
 
-              <!-- =================================================
-                   POSIZIONE DEL RISTORANTE
-                   ================================================= -->
               <div class="form-group full-width">
                 <label>
                   Posizione del ristorante
@@ -1092,9 +912,7 @@
                 ></div>
 
                 <span class="field-help">
-                  Se il ristorante non viene trovato automaticamente,
-                  puoi cercare la zona sulla mappa e cliccare nel punto corretto.
-                  Il marker è anche trascinabile.
+                  Il marker può essere trascinato per correggere il punto.
                 </span>
               </div>
             </div>
@@ -1112,14 +930,8 @@
                 data-rating-name="food_rating"
               >
                 <div class="rating-label">
-                  <span>
-                    Cibo
-                    <span class="required">*</span>
-                  </span>
-
-                  <span class="rating-value">
-                    Non valutato
-                  </span>
+                  <span>Cibo <span class="required">*</span></span>
+                  <span class="rating-value">Non valutato</span>
                 </div>
 
                 <div class="pizza-rating"></div>
@@ -1136,14 +948,8 @@
                 data-rating-name="service_rating"
               >
                 <div class="rating-label">
-                  <span>
-                    Servizio
-                    <span class="required">*</span>
-                  </span>
-
-                  <span class="rating-value">
-                    Non valutato
-                  </span>
+                  <span>Servizio <span class="required">*</span></span>
+                  <span class="rating-value">Non valutato</span>
                 </div>
 
                 <div class="pizza-rating"></div>
@@ -1160,14 +966,8 @@
                 data-rating-name="atmosphere_rating"
               >
                 <div class="rating-label">
-                  <span>
-                    Atmosfera
-                    <span class="required">*</span>
-                  </span>
-
-                  <span class="rating-value">
-                    Non valutato
-                  </span>
+                  <span>Atmosfera <span class="required">*</span></span>
+                  <span class="rating-value">Non valutato</span>
                 </div>
 
                 <div class="pizza-rating"></div>
@@ -1184,14 +984,8 @@
                 data-rating-name="overall_rating"
               >
                 <div class="rating-label">
-                  <span>
-                    Voto complessivo
-                    <span class="required">*</span>
-                  </span>
-
-                  <span class="rating-value">
-                    Non valutato
-                  </span>
+                  <span>Voto complessivo <span class="required">*</span></span>
+                  <span class="rating-value">Non valutato</span>
                 </div>
 
                 <div class="pizza-rating"></div>
@@ -1226,7 +1020,6 @@
                       value="1"
                       required
                     />
-
                     <span>€</span>
                   </label>
 
@@ -1236,7 +1029,6 @@
                       name="price_range"
                       value="2"
                     />
-
                     <span>€€</span>
                   </label>
 
@@ -1246,7 +1038,6 @@
                       name="price_range"
                       value="3"
                     />
-
                     <span>€€€</span>
                   </label>
 
@@ -1256,7 +1047,6 @@
                       name="price_range"
                       value="4"
                     />
-
                     <span>€€€€</span>
                   </label>
                 </div>
@@ -1272,7 +1062,7 @@
                   id="experienceInput"
                   name="experience"
                   maxlength="3000"
-                  placeholder="Com'è stato il cibo? Il servizio? L'atmosfera? Lo consiglieresti?"
+                  placeholder="Com'è stato il cibo? Il servizio? L'atmosfera?"
                   required
                 ></textarea>
               </div>
@@ -1319,9 +1109,8 @@
             </button>
 
             <p class="submit-note">
-              Prima della pubblicazione controlleremo che sia presente una
-              posizione valida. Puoi ottenerla automaticamente, cliccando
-              sulla mappa o inserendo le coordinate.
+              Se stai aggiungendo una recensione a un ristorante già presente,
+              nome, indirizzo e coordinate vengono recuperati automaticamente.
             </p>
           </div>
         </form>
@@ -1333,25 +1122,21 @@
         </h2>
 
         <p>
-          Per evitare problemi con la posizione, scrivi prima città e regione.
-          Poi prova la ricerca automatica.
+          Se arrivi dalla pagina di un ristorante, non devi reinserire
+          manualmente nome, indirizzo e posizione.
         </p>
 
         <ul class="tips-list">
           <li>
-            Se il civico contiene lettere, puoi lasciarlo comunque nel campo indirizzo.
+            Puoi comunque correggere la posizione dalla mappa.
           </li>
 
           <li>
-            Se la posizione automatica fallisce, clicca sulla mappa.
+            Se hai le coordinate da Google Maps, puoi inserirle manualmente.
           </li>
 
           <li>
-            Se hai le coordinate da Google Maps, inseriscile manualmente.
-          </li>
-
-          <li>
-            Il marker può essere trascinato per correggere il punto.
+            Dopo la pubblicazione tornerai alla pagina del ristorante.
           </li>
         </ul>
       </aside>
@@ -1363,7 +1148,7 @@
 
   <script>
     // =====================================================
-    // ELEMENTI PRINCIPALI DELLA PAGINA
+    // ELEMENTI PRINCIPALI
     // =====================================================
 
     const reviewForm =
@@ -1371,6 +1156,15 @@
 
     const messageBox =
       document.getElementById("messageBox");
+
+    const prefilledBanner =
+      document.getElementById("prefilledBanner");
+
+    const pageTitle =
+      document.getElementById("pageTitle");
+
+    const pageDescription =
+      document.getElementById("pageDescription");
 
     const submitButton =
       document.getElementById("submitButton");
@@ -1390,18 +1184,11 @@
     const cuisineInput =
       document.getElementById("cuisineInput");
 
-    const experienceInput =
-      document.getElementById("experienceInput");
-
     const photosInput =
       document.getElementById("photosInput");
 
     const photoPreviewGrid =
       document.getElementById("photoPreviewGrid");
-
-    // =====================================================
-    // ELEMENTI PER LA POSIZIONE DEL RISTORANTE
-    // =====================================================
 
     const latitudeInput =
       document.getElementById("latitudeInput");
@@ -1427,14 +1214,25 @@
     const useManualCoordinatesButton =
       document.getElementById("useManualCoordinatesButton");
 
-    // =====================================================
-    // VARIABILI PER LE FOTO
-    // =====================================================
+    const queryParameters =
+      new URLSearchParams(window.location.search);
+
+    const existingRestaurantId =
+      queryParameters.get("restaurantId");
 
     let selectedPhotos = [];
+    let restaurantLocationMap = null;
+    let restaurantLocationMarker = null;
+
+    const defaultMapCenter = [
+      40.4644,
+      17.2470
+    ];
+
+    const defaultMapZoom = 13;
 
     // =====================================================
-    // FUNZIONI MESSAGGI
+    // MESSAGGI
     // =====================================================
 
     function showMessage(message, type) {
@@ -1462,6 +1260,22 @@
       );
     }
 
+    function updatePositionStatus(
+      message,
+      statusType = ""
+    ) {
+      positionStatus.textContent = message;
+
+      positionStatus.classList.remove(
+        "success",
+        "error"
+      );
+
+      if (statusType) {
+        positionStatus.classList.add(statusType);
+      }
+    }
+
     // =====================================================
     // CONTROLLO LOGIN
     // =====================================================
@@ -1478,10 +1292,13 @@
           !data.success ||
           !data.authenticated
         ) {
-          window.location.href =
-            "/login.html?redirect=/recensioni.html";
+          const currentPath =
+            window.location.pathname +
+            window.location.search;
 
-          return;
+          window.location.href =
+            "/login.html?redirect=" +
+            encodeURIComponent(currentPath);
         }
       } catch (error) {
         console.error(
@@ -1489,44 +1306,19 @@
           error
         );
 
+        const currentPath =
+          window.location.pathname +
+          window.location.search;
+
         window.location.href =
-          "/login.html?redirect=/recensioni.html";
+          "/login.html?redirect=" +
+          encodeURIComponent(currentPath);
       }
     }
 
     // =====================================================
-    // MAPPA MANUALE PER LA POSIZIONE DEL RISTORANTE
+    // MAPPA E COORDINATE
     // =====================================================
-
-    let restaurantLocationMap = null;
-    let restaurantLocationMarker = null;
-
-    /*
-      Coordinate iniziali.
-      Usiamo Taranto perché il progetto lo stai testando lì.
-    */
-    const defaultMapCenter = [
-      40.4644,
-      17.2470
-    ];
-
-    const defaultMapZoom = 13;
-
-    function updatePositionStatus(
-      message,
-      statusType = ""
-    ) {
-      positionStatus.textContent = message;
-
-      positionStatus.classList.remove(
-        "success",
-        "error"
-      );
-
-      if (statusType) {
-        positionStatus.classList.add(statusType);
-      }
-    }
 
     function areCoordinatesValid(
       latitude,
@@ -1659,10 +1451,6 @@
         }
       ).addTo(restaurantLocationMap);
 
-      /*
-        Click sulla mappa:
-        salva il punto scelto.
-      */
       restaurantLocationMap.on(
         "click",
         function (event) {
@@ -1788,7 +1576,103 @@
     }
 
     // =====================================================
-    // VALUTAZIONI CON SPICCHI DI PIZZA
+    // PRECOMPILAMENTO DA RISTORANTE ESISTENTE
+    // =====================================================
+
+    function fillRestaurantFields(restaurant) {
+      restaurantNameInput.value =
+        restaurant.name || "";
+
+      regionInput.value =
+        restaurant.region || "";
+
+      cityInput.value =
+        restaurant.city || "";
+
+      addressInput.value =
+        restaurant.address || "";
+
+      cuisineInput.value =
+        restaurant.cuisine || "";
+
+      const latitude =
+        Number(restaurant.latitude);
+
+      const longitude =
+        Number(restaurant.longitude);
+
+      if (
+        areCoordinatesValid(
+          latitude,
+          longitude
+        )
+      ) {
+        setRestaurantCoordinates(
+          latitude,
+          longitude,
+          "Posizione recuperata dal ristorante già esistente."
+        );
+      }
+
+      pageTitle.textContent =
+        "Aggiungi una recensione";
+
+      pageDescription.textContent =
+        "Stai aggiungendo una nuova recensione a un ristorante già presente. Nome, indirizzo e posizione sono stati compilati automaticamente.";
+
+      prefilledBanner.textContent =
+        "Stai recensendo: " +
+        restaurant.name +
+        ". I dati del ristorante sono stati recuperati automaticamente.";
+
+      prefilledBanner.classList.add("show");
+    }
+
+    async function loadExistingRestaurantIfNeeded() {
+      if (!existingRestaurantId) {
+        return;
+      }
+
+      try {
+        const response =
+          await fetch(
+            "/restaurants/" +
+              encodeURIComponent(existingRestaurantId)
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.success ||
+          !data.restaurant
+        ) {
+          showMessage(
+            data.message ||
+              "Non è stato possibile recuperare il ristorante selezionato.",
+            "error"
+          );
+
+          return;
+        }
+
+        fillRestaurantFields(data.restaurant);
+      } catch (error) {
+        console.error(
+          "Errore durante il caricamento del ristorante:",
+          error
+        );
+
+        showMessage(
+          "Errore durante il caricamento del ristorante selezionato.",
+          "error"
+        );
+      }
+    }
+
+    // =====================================================
+    // VALUTAZIONI
     // =====================================================
 
     function initializePizzaRatings() {
@@ -1839,11 +1723,10 @@
                 currentButton,
                 index
               ) {
-                if (index < value) {
-                  currentButton.classList.add("active");
-                } else {
-                  currentButton.classList.remove("active");
-                }
+                currentButton.classList.toggle(
+                  "active",
+                  index < value
+                );
               });
             }
           );
@@ -1854,13 +1737,12 @@
     }
 
     function allRatingsAreSelected() {
-      const requiredRatingInputs =
-        [
-          "food_rating",
-          "service_rating",
-          "atmosphere_rating",
-          "overall_rating"
-        ];
+      const requiredRatingInputs = [
+        "food_rating",
+        "service_rating",
+        "atmosphere_rating",
+        "overall_rating"
+      ];
 
       return requiredRatingInputs.every(
         function (inputName) {
@@ -1875,7 +1757,7 @@
     }
 
     // =====================================================
-    // FOTO E ANTEPRIME
+    // FOTO
     // =====================================================
 
     function renderPhotoPreviews() {
@@ -1900,10 +1782,9 @@
         image.alt =
           "Anteprima foto " + (index + 1);
 
-        image.onload =
-          function () {
-            URL.revokeObjectURL(image.src);
-          };
+        image.onload = function () {
+          URL.revokeObjectURL(image.src);
+        };
 
         const removeButton =
           document.createElement("button");
@@ -1974,23 +1855,13 @@
       selectedPhotos =
         selectedPhotos.concat(newFiles).slice(0, 5);
 
-      if (
-        selectedPhotos.length === 5 &&
-        newFiles.length > 0
-      ) {
-        showMessage(
-          "Sono state mantenute al massimo 5 fotografie.",
-          "success"
-        );
-      }
-
       photosInput.value = "";
 
       renderPhotoPreviews();
     }
 
     // =====================================================
-    // INVIO DELLA RECENSIONE
+    // INVIO RECENSIONE
     // =====================================================
 
     async function handleReviewSubmit(event) {
@@ -2007,10 +1878,6 @@
         return;
       }
 
-      /*
-        Se l'utente ha scritto anche solo una coordinata manuale,
-        proviamo a usare le coordinate manuali.
-      */
       const manualLatitudeWritten =
         manualLatitudeInput.value.trim() !== "";
 
@@ -2034,10 +1901,6 @@
         }
       }
 
-      /*
-        Se non ci sono ancora coordinate,
-        proviamo con la ricerca automatica.
-      */
       if (
         !latitudeInput.value ||
         !longitudeInput.value
@@ -2064,10 +1927,6 @@
         const formData =
           new FormData(reviewForm);
 
-        /*
-          Rimuoviamo l'input file originale e aggiungiamo solo
-          le foto effettivamente selezionate e non rimosse.
-        */
         formData.delete("photos");
 
         selectedPhotos.forEach(function (file) {
@@ -2084,8 +1943,13 @@
           await response.json();
 
         if (response.status === 401) {
+          const currentPath =
+            window.location.pathname +
+            window.location.search;
+
           window.location.href =
-            "/login.html?redirect=/recensioni.html";
+            "/login.html?redirect=" +
+            encodeURIComponent(currentPath);
 
           return;
         }
@@ -2108,10 +1972,6 @@
           "success"
         );
 
-        /*
-          Se il server restituisce l'id del ristorante,
-          mandiamo l'utente alla pagina dettaglio.
-        */
         if (
           data.review &&
           data.review.restaurantId
@@ -2123,27 +1983,6 @@
                 data.review.restaurantId
               );
           }, 900);
-        } else {
-          reviewForm.reset();
-
-          selectedPhotos = [];
-
-          renderPhotoPreviews();
-
-          latitudeInput.value = "";
-          longitudeInput.value = "";
-
-          updatePositionStatus(
-            "Nessuna posizione selezionata."
-          );
-
-          if (restaurantLocationMarker) {
-            restaurantLocationMap.removeLayer(
-              restaurantLocationMarker
-            );
-
-            restaurantLocationMarker = null;
-          }
         }
       } catch (error) {
         console.error(
@@ -2172,6 +2011,8 @@
     initializeRestaurantLocationMap();
 
     checkUserAuthentication();
+
+    loadExistingRestaurantIfNeeded();
 
     findPositionButton.addEventListener(
       "click",
