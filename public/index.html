@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!--
-    Permette alla pagina di adattarsi correttamente
-    a smartphone e tablet.
-  -->
+  <!-- Adatta correttamente il sito a computer, tablet e smartphone -->
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -14,48 +11,41 @@
 
   <title>KiRating</title>
 
-  <!--
-    Foglio di stile della libreria Leaflet,
-    utilizzata per la mappa interattiva.
-  -->
+  <!-- CSS della libreria Leaflet per la mappa -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
 
-  <!-- Foglio di stile principale del sito -->
+  <!-- Libreria Font Awesome per le icone -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <!-- CSS principale del sito -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <!-- =====================================================
-       BARRA SUPERIORE
-       Logo a sinistra, Login e menu a destra.
+       NAVBAR PRINCIPALE
        ===================================================== -->
   <header class="topbar">
-
     <!-- Logo cliccabile che riporta alla home -->
     <a href="/" class="logo" aria-label="Torna alla home">
       <img src="logo-kira.jpeg" alt="KiRating" />
     </a>
 
-    <!-- Parte destra della barra -->
+    <!-- Parte destra della navbar -->
     <div class="topbar-right">
-
-      <!-- Scritta cliccabile per accedere -->
+      <!-- Collegamento alla pagina di login -->
       <a href="/login.html" class="login-link">
         Login
       </a>
 
-      <!-- Contenitore del menu a tendina -->
+      <!-- Menu a tendina -->
       <div class="dropdown">
-
-        <!--
-          Icona del menu rappresentata come hamburger stilizzato.
-
-          Quando aria-expanded passa da false a true,
-          il CSS trasforma l'hamburger in una X.
-        -->
         <button
           id="menuButton"
           class="menu-button"
@@ -63,28 +53,20 @@
           aria-label="Apri il menu"
           aria-expanded="false"
         >
-          <!-- Pane superiore -->
           <span class="burger-top"></span>
-
-          <!-- Ripieno superiore -->
           <span class="burger-filling burger-lettuce"></span>
-
-          <!-- Ripieno centrale -->
           <span class="burger-filling burger-meat"></span>
-
-          <!-- Pane inferiore -->
           <span class="burger-bottom"></span>
         </button>
 
-        <!-- Menu inizialmente nascosto -->
         <nav
           id="dropdownMenu"
           class="dropdown-menu hidden"
           aria-label="Menu principale"
         >
           <a href="/">Home</a>
-          <a href="#italyMap">Regioni</a>
-          <a href="#">Ristoranti</a>
+          <a href="#italyMap">Mappa</a>
+          <a href="/recensioni.html">Recensioni</a>
           <a href="#">Preferiti</a>
           <a href="#">Chi siamo</a>
         </nav>
@@ -93,70 +75,296 @@
   </header>
 
   <!-- =====================================================
+       BARRA DELLE CATEGORIE
+       ===================================================== -->
+  <nav
+    class="category-bar"
+    aria-label="Categorie dei ristoranti"
+  >
+    <div
+      id="categoryList"
+      class="category-list"
+    >
+      <button
+        class="category-item active"
+        type="button"
+        data-filter="all"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-utensils"></i>
+        </span>
+
+        <span class="category-label">
+          Tutti
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="italiano"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-plate-wheat"></i>
+        </span>
+
+        <span class="category-label">
+          Italiano
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="pizza"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-pizza-slice"></i>
+        </span>
+
+        <span class="category-label">
+          Pizza
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="sushi"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-fish"></i>
+        </span>
+
+        <span class="category-label">
+          Sushi
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="pesce"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-fish-fins"></i>
+        </span>
+
+        <span class="category-label">
+          Pesce
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="carne"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-drumstick-bite"></i>
+        </span>
+
+        <span class="category-label">
+          Carne
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="gourmet"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-star"></i>
+        </span>
+
+        <span class="category-label">
+          Gourmet
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="fast-food"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-burger"></i>
+        </span>
+
+        <span class="category-label">
+          Fast food
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="poke"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-bowl-food"></i>
+        </span>
+
+        <span class="category-label">
+          Poke
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="vegetariano"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-leaf"></i>
+        </span>
+
+        <span class="category-label">
+          Vegetariano
+        </span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-filter="dolci"
+      >
+        <span class="category-icon">
+          <i class="fa-solid fa-ice-cream"></i>
+        </span>
+
+        <span class="category-label">
+          Dolci
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- =====================================================
        CONTENUTO PRINCIPALE
        ===================================================== -->
   <main class="home">
     <section class="map-section">
 
-      <!-- Colonna sinistra -->
-      <div class="map-information">
+      <!-- =================================================
+           PANNELLO DI RICERCA
+           ================================================= -->
+      <aside class="search-panel">
         <p class="section-label">
           Esplora l’Italia
         </p>
 
         <h1 id="mapTitle">
-          Scegli una regione
+          Trova il tuo ristorante
         </h1>
 
         <p id="mapDescription">
-          Clicca su una regione per visualizzarla più da vicino
-          e scoprire i ristoranti aggiunti dagli utenti.
+          Cerca una posizione oppure seleziona una regione.
         </p>
 
-        <!--
-          Compare soltanto dopo la selezione
-          di una regione.
-        -->
+        <!-- ===============================================
+             RICERCA NEI DINTORNI
+             =============================================== -->
+        <section class="nearby-search-section">
+          <h2>Cerca nei dintorni</h2>
+
+          <form
+            id="nearbySearchForm"
+            class="nearby-search-form"
+          >
+            <label for="locationInput">
+              Posizione
+            </label>
+
+            <input
+              id="locationInput"
+              name="location"
+              type="text"
+              placeholder="Es. Piazza Navona, Roma"
+              autocomplete="off"
+              required
+            />
+
+            <label for="radiusSelect">
+              Distanza massima
+            </label>
+
+            <select
+              id="radiusSelect"
+              name="radius"
+            >
+              <option value="5">
+                5 km
+              </option>
+
+              <option value="10" selected>
+                10 km
+              </option>
+
+              <option value="25">
+                25 km
+              </option>
+
+              <option value="50">
+                50 km
+              </option>
+            </select>
+
+            <button
+              id="nearbySearchButton"
+              class="search-button"
+              type="submit"
+            >
+              Cerca
+            </button>
+          </form>
+        </section>
+
+        <!-- Separatore grafico -->
+        <div class="panel-divider">
+          <span>oppure</span>
+        </div>
+
+        <!-- ===============================================
+             SELEZIONE DELLA REGIONE
+             =============================================== -->
+        <section class="regions-section">
+          <h2>Scegli una regione</h2>
+
+          <div
+            id="regionsList"
+            class="regions-list"
+            aria-label="Elenco delle regioni italiane"
+          ></div>
+        </section>
+
+        <!-- Messaggi sui risultati -->
+        <div
+          id="restaurantsStatus"
+          class="restaurants-status hidden"
+          aria-live="polite"
+        ></div>
+
+        <!-- Torna alla vista iniziale -->
         <button
           id="resetMapButton"
           class="reset-button hidden"
           type="button"
         >
-          Torna alla mappa completa
+          Torna all’Italia completa
         </button>
+      </aside>
 
-        <!--
-          Contiene l'elenco dei ristoranti
-          della regione selezionata.
-        -->
-        <section
-          id="restaurantsSection"
-          class="restaurants-section hidden"
-          aria-live="polite"
-        >
-          <h2 id="restaurantsTitle">
-            Ristoranti
-          </h2>
-
-          <!--
-            JavaScript inserirà qui
-            le schede dei ristoranti.
-          -->
-          <div
-            id="restaurantsList"
-            class="restaurants-list"
-          ></div>
-        </section>
-      </div>
-
-      <!-- Colonna destra con la mappa -->
+      <!-- =================================================
+           MAPPA
+           ================================================= -->
       <div class="map-panel">
         <div
           id="italyMap"
-          aria-label="Mappa interattiva delle regioni italiane"
+          aria-label="Mappa interattiva dei ristoranti italiani"
         ></div>
 
-        <!-- Messaggio mostrato in caso di errore -->
         <div
           id="mapError"
           class="map-error hidden"
@@ -173,48 +381,26 @@
        MENU A TENDINA
        ===================================================== */
 
-    // Recupera il pulsante del menu.
     const menuButton =
       document.getElementById("menuButton");
 
-    // Recupera il menu a tendina.
     const dropdownMenu =
       document.getElementById("dropdownMenu");
 
-    /*
-      Apre o chiude il menu quando l'utente
-      preme l'icona hamburger.
-    */
     menuButton.addEventListener("click", function (event) {
-      /*
-        Impedisce che il clic venga rilevato
-        anche dal document nello stesso momento.
-      */
       event.stopPropagation();
 
-      // Controlla se il menu è attualmente chiuso.
       const menuIsClosed =
         dropdownMenu.classList.contains("hidden");
 
-      // Apre oppure chiude il menu.
       dropdownMenu.classList.toggle("hidden");
 
-      /*
-        Aggiorna aria-expanded.
-
-        Il CSS usa questo attributo anche per
-        trasformare l'hamburger in una X.
-      */
       menuButton.setAttribute(
         "aria-expanded",
         String(menuIsClosed)
       );
     });
 
-    /*
-      Chiude il menu cliccando in un punto
-      esterno al menu stesso.
-    */
     document.addEventListener("click", function (event) {
       const clickInsideMenu =
         dropdownMenu.contains(event.target);
@@ -223,28 +409,24 @@
         menuButton.contains(event.target);
 
       if (!clickInsideMenu && !clickOnButton) {
-        dropdownMenu.classList.add("hidden");
-
-        menuButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
+        closeDropdownMenu();
       }
     });
 
-    /*
-      Chiude il menu premendo il tasto Escape.
-    */
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
-        dropdownMenu.classList.add("hidden");
-
-        menuButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
+        closeDropdownMenu();
       }
     });
+
+    function closeDropdownMenu() {
+      dropdownMenu.classList.add("hidden");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+    }
 
 
     /* =====================================================
@@ -257,171 +439,449 @@
     const mapDescription =
       document.getElementById("mapDescription");
 
+    const nearbySearchForm =
+      document.getElementById("nearbySearchForm");
+
+    const locationInput =
+      document.getElementById("locationInput");
+
+    const radiusSelect =
+      document.getElementById("radiusSelect");
+
+    const nearbySearchButton =
+      document.getElementById("nearbySearchButton");
+
+    const regionsList =
+      document.getElementById("regionsList");
+
+    const restaurantsStatus =
+      document.getElementById("restaurantsStatus");
+
     const resetMapButton =
       document.getElementById("resetMapButton");
 
-    const mapError =
-      document.getElementById("mapError");
+    const categoryButtons =
+      document.querySelectorAll(".category-item");
 
-    const restaurantsSection =
-      document.getElementById("restaurantsSection");
 
-    const restaurantsTitle =
-      document.getElementById("restaurantsTitle");
+    /* =====================================================
+       STATO DELL'APPLICAZIONE
+       ===================================================== */
 
-    const restaurantsList =
-      document.getElementById("restaurantsList");
+    let currentRestaurants = [];
+    let currentSearchDescription = "";
+    let activeRestaurantFilter = "all";
+
+
+    /* =====================================================
+       DATI DELLE REGIONI
+       ===================================================== */
+
+    const italianRegions = [
+      {
+        name: "Abruzzo",
+        bounds: [[41.68, 13.00], [42.90, 14.80]]
+      },
+      {
+        name: "Basilicata",
+        bounds: [[39.88, 15.32], [41.15, 16.87]]
+      },
+      {
+        name: "Calabria",
+        bounds: [[37.90, 15.62], [40.15, 17.22]]
+      },
+      {
+        name: "Campania",
+        bounds: [[39.95, 13.75], [41.52, 15.82]]
+      },
+      {
+        name: "Emilia Romagna",
+        bounds: [[43.70, 9.15], [45.20, 12.80]]
+      },
+      {
+        name: "Friuli Venezia Giulia",
+        bounds: [[45.55, 12.30], [46.70, 13.95]]
+      },
+      {
+        name: "Lazio",
+        bounds: [[40.75, 11.45], [42.85, 14.05]]
+      },
+      {
+        name: "Liguria",
+        bounds: [[43.70, 7.45], [44.70, 10.10]]
+      },
+      {
+        name: "Lombardia",
+        bounds: [[44.65, 8.45], [46.65, 11.45]]
+      },
+      {
+        name: "Marche",
+        bounds: [[42.68, 12.15], [44.00, 13.92]]
+      },
+      {
+        name: "Molise",
+        bounds: [[41.35, 13.95], [42.10, 15.20]]
+      },
+      {
+        name: "Piemonte",
+        bounds: [[44.00, 6.60], [46.50, 9.25]]
+      },
+      {
+        name: "Puglia",
+        bounds: [[39.75, 14.90], [42.20, 18.55]]
+      },
+      {
+        name: "Sardegna",
+        bounds: [[38.75, 8.05], [41.35, 9.90]]
+      },
+      {
+        name: "Sicilia",
+        bounds: [[36.55, 11.90], [38.85, 15.75]]
+      },
+      {
+        name: "Toscana",
+        bounds: [[42.20, 9.65], [44.50, 12.40]]
+      },
+      {
+        name: "Trentino-Alto Adige",
+        bounds: [[45.60, 10.35], [47.15, 12.55]]
+      },
+      {
+        name: "Umbria",
+        bounds: [[42.35, 11.85], [43.65, 13.30]]
+      },
+      {
+        name: "Valle d'Aosta",
+        bounds: [[45.45, 6.75], [46.05, 7.95]]
+      },
+      {
+        name: "Veneto",
+        bounds: [[44.80, 10.60], [46.75, 13.10]]
+      }
+    ];
 
 
     /* =====================================================
        CREAZIONE DELLA MAPPA
        ===================================================== */
 
-    /*
-      Crea la mappa Leaflet.
+    const initialCenter = [42.5, 12.5];
+    const initialZoom = 6;
 
-      La mappa non può essere:
-      - trascinata;
-      - spostata con la tastiera;
-      - ingrandita con la rotella;
-      - ingrandita manualmente.
-    */
     const map = L.map("italyMap", {
-      zoomControl: false,
-      attributionControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      touchZoom: false,
-      boxZoom: false,
-      keyboard: false,
-      tap: false
+      zoomControl: true,
+      attributionControl: true
     });
 
-    // Livello che contiene tutte le regioni italiane.
-    let regionsLayer = null;
+    map.setView(initialCenter, initialZoom);
 
-    // Regione attualmente selezionata.
-    let selectedRegionLayer = null;
+    L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors"
+      }
+    ).addTo(map);
 
-    // Confini completi dell'Italia.
-    let completeMapBounds = null;
-
-    /*
-      Livello separato dedicato ai marker
-      dei ristoranti.
-    */
     const restaurantsMarkersLayer =
+      L.layerGroup().addTo(map);
+
+    const searchedLocationLayer =
+      L.layerGroup().addTo(map);
+
+    const searchRadiusLayer =
       L.layerGroup().addTo(map);
 
 
     /* =====================================================
-       STILE DELLE REGIONI
+       CREAZIONE DEI PULSANTI DELLE REGIONI
        ===================================================== */
 
-    // Stile normale delle regioni.
-    function getDefaultStyle() {
-      return {
-        color: "#ffffff",
-        weight: 1.5,
-        fillColor: "#c61f2b",
-        fillOpacity: 0.88
-      };
-    }
+    function createRegionButtons() {
+      italianRegions.forEach(function (region) {
+        const button =
+          document.createElement("button");
 
-    // Stile della regione selezionata.
-    function getSelectedStyle() {
-      return {
-        color: "#ffffff",
-        weight: 3,
-        fillColor: "#820000",
-        fillOpacity: 1
-      };
-    }
+        button.type = "button";
+        button.className = "region-button";
+        button.textContent = region.name;
+        button.dataset.region = region.name;
 
-
-    /* =====================================================
-       NOMI DELLE REGIONI
-       ===================================================== */
-
-    /*
-      Uniforma alcuni nomi regionali
-      presenti nel GeoJSON.
-    */
-    function normalizeRegionName(regionName) {
-      if (!regionName) {
-        return "";
-      }
-
-      const cleanedName = String(regionName)
-        .trim()
-        .replace(/\s+/g, " ");
-
-      const regionNamesMap = {
-        "Valle d'Aosta/Vallée d'Aoste": "Valle d'Aosta",
-        "Trentino-Alto Adige/Südtirol": "Trentino-Alto Adige",
-        "Friuli-Venezia Giulia": "Friuli Venezia Giulia",
-        "Emilia-Romagna": "Emilia Romagna"
-      };
-
-      return regionNamesMap[cleanedName] || cleanedName;
-    }
-
-    /*
-      Cerca il nome della regione nelle proprietà
-      presenti nel file GeoJSON.
-    */
-    function getRegionName(properties) {
-      const possibleNames = [
-        properties?.reg_name,
-        properties?.REG_NAME,
-        properties?.DEN_REG,
-        properties?.den_reg,
-        properties?.name,
-        properties?.NAME_1,
-        properties?.nome,
-        properties?.Nome
-      ];
-
-      const rawRegionName =
-        possibleNames.find(function (value) {
-          return (
-            typeof value === "string" &&
-            value.trim() !== ""
-          );
+        button.addEventListener("click", function () {
+          selectRegion(region);
         });
 
-      return normalizeRegionName(
-        rawRegionName || "Regione"
-      );
-    }
-
-
-    /* =====================================================
-       CENTRATURA DELLA MAPPA
-       ===================================================== */
-
-    // Centra l'intera Italia nel riquadro.
-    function centerCompleteMap() {
-      if (!completeMapBounds) {
-        return;
-      }
-
-      map.fitBounds(completeMapBounds, {
-        padding: [35, 35],
-        animate: true
+        regionsList.appendChild(button);
       });
     }
 
 
     /* =====================================================
-       SICUREZZA DEI TESTI
+       SELEZIONE DI UNA REGIONE
        ===================================================== */
 
-    /*
-      Evita che eventuali caratteri HTML
-      nei dati vengano interpretati come codice.
-    */
+    function selectRegion(region) {
+      clearMapResults();
+
+      updateActiveRegionButton(region.name);
+
+      map.fitBounds(region.bounds, {
+        padding: [30, 30],
+        animate: true,
+        duration: 0.8
+      });
+
+      mapTitle.textContent = region.name;
+
+      mapDescription.textContent =
+        "Stai visualizzando i ristoranti presenti in " +
+        region.name +
+        ".";
+
+      resetMapButton.classList.remove("hidden");
+
+      loadRestaurantsByRegion(region.name);
+    }
+
+
+    function updateActiveRegionButton(regionName) {
+      const buttons =
+        document.querySelectorAll(".region-button");
+
+      buttons.forEach(function (button) {
+        button.classList.toggle(
+          "active",
+          button.dataset.region === regionName
+        );
+      });
+    }
+
+
+    /* =====================================================
+       FILTRI DELLE CATEGORIE
+       ===================================================== */
+
+    categoryButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        activeRestaurantFilter =
+          button.dataset.filter;
+
+        categoryButtons.forEach(function (otherButton) {
+          otherButton.classList.toggle(
+            "active",
+            otherButton === button
+          );
+        });
+
+        renderFilteredRestaurants();
+      });
+    });
+
+
+    function restaurantMatchesFilter(
+      restaurant,
+      filterName
+    ) {
+      if (filterName === "all") {
+        return true;
+      }
+
+      const searchableText = [
+        restaurant.name,
+        restaurant.cuisine,
+        restaurant.description
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      const filterKeywords = {
+        italiano: [
+          "italiana",
+          "italiano",
+          "romana",
+          "toscana",
+          "siciliana",
+          "pugliese",
+          "napoletana",
+          "tradizionale",
+          "trattoria",
+          "osteria"
+        ],
+
+        pizza: [
+          "pizza",
+          "pizzeria",
+          "napoletana"
+        ],
+
+        sushi: [
+          "sushi",
+          "giapponese",
+          "japanese",
+          "sashimi",
+          "uramaki",
+          "nigiri"
+        ],
+
+        pesce: [
+          "pesce",
+          "mare",
+          "seafood",
+          "ittico"
+        ],
+
+        carne: [
+          "carne",
+          "steakhouse",
+          "griglieria",
+          "braceria",
+          "barbecue"
+        ],
+
+        gourmet: [
+          "gourmet",
+          "fine dining",
+          "stellato",
+          "alta cucina"
+        ],
+
+        "fast-food": [
+          "fast food",
+          "hamburger",
+          "burger",
+          "panino",
+          "street food",
+          "kebab"
+        ],
+
+        poke: [
+          "poke",
+          "pokè",
+          "hawaiian"
+        ],
+
+        vegetariano: [
+          "vegetariano",
+          "vegetarian",
+          "vegano",
+          "vegan",
+          "plant based"
+        ],
+
+        dolci: [
+          "dolci",
+          "dessert",
+          "pasticceria",
+          "gelateria",
+          "gelato",
+          "bakery"
+        ]
+      };
+
+      const keywords =
+        filterKeywords[filterName] || [];
+
+      return keywords.some(function (keyword) {
+        return searchableText.includes(keyword);
+      });
+    }
+
+
+    function renderFilteredRestaurants() {
+      restaurantsMarkersLayer.clearLayers();
+
+      if (currentRestaurants.length === 0) {
+        return;
+      }
+
+      const filteredRestaurants =
+        currentRestaurants.filter(function (restaurant) {
+          return restaurantMatchesFilter(
+            restaurant,
+            activeRestaurantFilter
+          );
+        });
+
+      filteredRestaurants.forEach(function (restaurant) {
+        addRestaurantMarker(restaurant);
+      });
+
+      updateRestaurantsStatus(
+        filteredRestaurants.length
+      );
+    }
+
+
+    function getActiveFilterLabel() {
+      const activeButton =
+        document.querySelector(".category-item.active");
+
+      if (!activeButton) {
+        return "Tutti";
+      }
+
+      return activeButton
+        .querySelector(".category-label")
+        .textContent
+        .trim();
+    }
+
+
+    function updateRestaurantsStatus(resultCount) {
+      const filterLabel =
+        getActiveFilterLabel();
+
+      if (resultCount === 0) {
+        restaurantsStatus.textContent =
+          activeRestaurantFilter === "all"
+            ? "Nessun ristorante trovato " +
+              currentSearchDescription +
+              "."
+            : "Nessun ristorante della categoria " +
+              filterLabel +
+              " trovato " +
+              currentSearchDescription +
+              ".";
+
+        restaurantsStatus.classList.remove(
+          "hidden",
+          "error"
+        );
+
+        return;
+      }
+
+      const restaurantWord =
+        resultCount === 1
+          ? "ristorante trovato"
+          : "ristoranti trovati";
+
+      const categoryText =
+        activeRestaurantFilter === "all"
+          ? ""
+          : " della categoria " + filterLabel;
+
+      restaurantsStatus.textContent =
+        resultCount +
+        " " +
+        restaurantWord +
+        categoryText +
+        " " +
+        currentSearchDescription +
+        ".";
+
+      restaurantsStatus.classList.remove(
+        "hidden",
+        "error"
+      );
+    }
+
+
+    /* =====================================================
+       PROTEZIONE DEI TESTI HTML
+       ===================================================== */
+
     function escapeHtml(value) {
       const temporaryElement =
         document.createElement("div");
@@ -436,18 +896,16 @@
 
 
     /* =====================================================
-       MARKER DEI RISTORANTI
+       CREAZIONE DEI MARKER DEI RISTORANTI
        ===================================================== */
 
     function addRestaurantMarker(restaurant) {
-      /*
-        Converte le coordinate ricevute da MySQL
-        in valori numerici.
-      */
-      const latitude = Number(restaurant.latitude);
-      const longitude = Number(restaurant.longitude);
+      const latitude =
+        Number(restaurant.latitude);
 
-      // Controlla che le coordinate siano valide.
+      const longitude =
+        Number(restaurant.longitude);
+
       if (
         !Number.isFinite(latitude) ||
         !Number.isFinite(longitude)
@@ -460,26 +918,28 @@
         return;
       }
 
-      // Crea un punto sulla mappa.
-      const marker = L.circleMarker(
-        [latitude, longitude],
-        {
-          radius: 9,
-          color: "#ffffff",
-          weight: 3,
-          fillColor: "#171717",
-          fillOpacity: 1
-        }
-      );
+      const marker =
+        L.marker([latitude, longitude]);
 
-      // Crea il contenuto del popup.
+      /*
+        Link alla pagina completa del ristorante.
+
+        Esempio:
+        /ristorante.html?id=3
+      */
+      const restaurantPageUrl =
+        "/ristorante.html?id=" +
+        encodeURIComponent(restaurant.id);
+
       marker.bindPopup(`
         <div class="restaurant-popup">
-          <strong>
+          <strong class="restaurant-popup-name">
             ${escapeHtml(restaurant.name)}
           </strong>
 
           <span>
+            <i class="fa-solid fa-location-dot"></i>
+
             ${escapeHtml(restaurant.city)},
             ${escapeHtml(restaurant.region)}
           </span>
@@ -488,374 +948,66 @@
             ${escapeHtml(restaurant.address)}
           </span>
 
-          <span>
+          <span class="restaurant-cuisine-popup">
             ${escapeHtml(
               restaurant.cuisine ||
               "Tipo di cucina non indicato"
             )}
           </span>
+
+          ${
+            Number.isFinite(
+              Number(restaurant.distance_km)
+            )
+              ? `
+                <span class="restaurant-distance">
+                  Distanza:
+                  ${escapeHtml(restaurant.distance_km)}
+                  km
+                </span>
+              `
+              : ""
+          }
+
+          ${
+            restaurant.description
+              ? `
+                <p>
+                  ${escapeHtml(restaurant.description)}
+                </p>
+              `
+              : ""
+          }
+
+          <a
+            href="${restaurantPageUrl}"
+            class="restaurant-popup-link"
+          >
+            Vedi ristorante
+
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
         </div>
       `);
 
-      /*
-        Salva l'id del ristorante
-        dentro il marker.
-      */
-      marker.restaurantId = restaurant.id;
-
-      // Aggiunge il marker al livello.
       marker.addTo(restaurantsMarkersLayer);
     }
 
 
     /* =====================================================
-       SCHEDE DEI RISTORANTI
+       RICERCA PER REGIONE
        ===================================================== */
 
-    function createRestaurantCard(restaurant) {
-      // Crea il contenitore della scheda.
-      const card =
-        document.createElement("article");
-
-      card.className = "restaurant-card";
-
-      // Nome del ristorante.
-      const name =
-        document.createElement("h3");
-
-      name.textContent = restaurant.name;
-
-      // Città e regione.
-      const location =
-        document.createElement("p");
-
-      location.className =
-        "restaurant-location";
-
-      location.textContent =
-        restaurant.city +
-        ", " +
-        restaurant.region;
-
-      // Indirizzo.
-      const address =
-        document.createElement("p");
-
-      address.className =
-        "restaurant-address";
-
-      address.textContent =
-        restaurant.address;
-
-      // Tipo di cucina.
-      const cuisine =
-        document.createElement("span");
-
-      cuisine.className =
-        "restaurant-cuisine";
-
-      cuisine.textContent =
-        restaurant.cuisine ||
-        "Tipo di cucina non indicato";
-
-      // Inserisce gli elementi principali.
-      card.append(
-        name,
-        location,
-        address,
-        cuisine
+    async function loadRestaurantsByRegion(regionName) {
+      showLoadingStatus(
+        "Caricamento dei ristoranti..."
       );
 
-      // Aggiunge la descrizione, se disponibile.
-      if (restaurant.description) {
-        const description =
-          document.createElement("p");
-
-        description.className =
-          "restaurant-description";
-
-        description.textContent =
-          restaurant.description;
-
-        card.appendChild(description);
-      }
-
-      /*
-        Cliccando sulla scheda viene aperto
-        il popup del marker corrispondente.
-      */
-      card.addEventListener("click", function () {
-        restaurantsMarkersLayer.eachLayer(
-          function (marker) {
-            if (
-              marker.restaurantId ===
-              restaurant.id
-            ) {
-              marker.openPopup();
-            }
-          }
-        );
-      });
-
-      return card;
-    }
-
-
-    /* =====================================================
-       CARICAMENTO DEI RISTORANTI
-       ===================================================== */
-
-    async function loadRestaurants(regionName) {
-      // Elimina i marker precedenti.
-      restaurantsMarkersLayer.clearLayers();
-
-      // Mostra la sezione dei ristoranti.
-      restaurantsSection.classList.remove("hidden");
-
-      // Aggiorna il titolo.
-      restaurantsTitle.textContent =
-        "Ristoranti in " + regionName;
-
-      // Mostra il messaggio di caricamento.
-      restaurantsList.innerHTML = `
-        <p class="restaurants-message">
-          Caricamento dei ristoranti...
-        </p>
-      `;
-
       try {
-        /*
-          Costruisce la richiesta al server.
-
-          Esempio:
-          /restaurants?region=Lazio
-        */
-        const requestUrl =
+        const response = await fetch(
           "/restaurants?region=" +
-          encodeURIComponent(regionName);
-
-        const response =
-          await fetch(requestUrl);
-
-        if (!response.ok) {
-          throw new Error(
-            "Il server ha restituito lo stato " +
-            response.status
-          );
-        }
-
-        const restaurants =
-          await response.json();
-
-        // Elimina il messaggio di caricamento.
-        restaurantsList.innerHTML = "";
-
-        // Controlla che la risposta sia un array.
-        if (!Array.isArray(restaurants)) {
-          throw new Error(
-            "La risposta del server non è un elenco."
-          );
-        }
-
-        // Nessun ristorante trovato.
-        if (restaurants.length === 0) {
-          restaurantsList.innerHTML = `
-            <p class="restaurants-message">
-              Non sono ancora presenti ristoranti
-              in questa regione.
-            </p>
-          `;
-
-          return;
-        }
-
-        /*
-          Crea marker e scheda
-          per ogni ristorante.
-        */
-        restaurants.forEach(function (restaurant) {
-          addRestaurantMarker(restaurant);
-
-          const restaurantCard =
-            createRestaurantCard(restaurant);
-
-          restaurantsList.appendChild(
-            restaurantCard
-          );
-        });
-      } catch (error) {
-        console.error(
-          "Errore caricamento ristoranti:",
-          error
+          encodeURIComponent(regionName)
         );
-
-        restaurantsList.innerHTML = `
-          <p class="restaurants-message restaurants-error">
-            Non è stato possibile caricare i ristoranti.
-          </p>
-        `;
-      }
-    }
-
-
-    /* =====================================================
-       SELEZIONE DELLA REGIONE
-       ===================================================== */
-
-    function selectRegion(feature, layer) {
-      // Ripristina la regione precedente.
-      if (
-        selectedRegionLayer &&
-        regionsLayer
-      ) {
-        regionsLayer.resetStyle(
-          selectedRegionLayer
-        );
-      }
-
-      // Salva la nuova regione selezionata.
-      selectedRegionLayer = layer;
-
-      // Evidenzia la regione.
-      selectedRegionLayer.setStyle(
-        getSelectedStyle()
-      );
-
-      selectedRegionLayer.bringToFront();
-
-      // Recupera il nome.
-      const regionName =
-        getRegionName(feature.properties);
-
-      // Esegue lo zoom automatico.
-      map.fitBounds(layer.getBounds(), {
-        padding: [55, 55],
-        maxZoom: 8,
-        animate: true
-      });
-
-      // Aggiorna titolo e descrizione.
-      mapTitle.textContent =
-        regionName;
-
-      mapDescription.textContent =
-        "Stai visualizzando la regione " +
-        regionName +
-        ".";
-
-      // Mostra il pulsante di ritorno.
-      resetMapButton.classList.remove(
-        "hidden"
-      );
-
-      // Carica i ristoranti.
-      loadRestaurants(regionName);
-    }
-
-
-    /* =====================================================
-       EVENTI DELLE REGIONI
-       ===================================================== */
-
-    function onEachRegion(feature, layer) {
-      const regionName =
-        getRegionName(feature.properties);
-
-      // Mostra il nome della regione al passaggio.
-      layer.bindTooltip(regionName, {
-        sticky: true,
-        direction: "top",
-        className: "region-tooltip"
-      });
-
-      layer.on({
-        // Evidenzia la regione.
-        mouseover: function (event) {
-          if (
-            event.target !==
-            selectedRegionLayer
-          ) {
-            event.target.setStyle({
-              fillColor: "#e44c55",
-              fillOpacity: 1
-            });
-          }
-        },
-
-        // Ripristina il colore.
-        mouseout: function (event) {
-          if (
-            event.target !==
-              selectedRegionLayer &&
-            regionsLayer
-          ) {
-            regionsLayer.resetStyle(
-              event.target
-            );
-          }
-        },
-
-        // Seleziona la regione.
-        click: function () {
-          selectRegion(feature, layer);
-        }
-      });
-    }
-
-
-    /* =====================================================
-       RIPRISTINO DELLA MAPPA
-       ===================================================== */
-
-    function resetMap() {
-      if (!regionsLayer) {
-        return;
-      }
-
-      // Ripristina la regione selezionata.
-      if (selectedRegionLayer) {
-        regionsLayer.resetStyle(
-          selectedRegionLayer
-        );
-
-        selectedRegionLayer = null;
-      }
-
-      // Elimina i marker.
-      restaurantsMarkersLayer.clearLayers();
-
-      // Nasconde la sezione dei ristoranti.
-      restaurantsSection.classList.add(
-        "hidden"
-      );
-
-      restaurantsList.innerHTML = "";
-
-      // Ricentra l'Italia.
-      centerCompleteMap();
-
-      // Ripristina i testi.
-      mapTitle.textContent =
-        "Scegli una regione";
-
-      mapDescription.textContent =
-        "Clicca su una regione per visualizzarla più da vicino " +
-        "e scoprire i ristoranti aggiunti dagli utenti.";
-
-      resetMapButton.classList.add(
-        "hidden"
-      );
-    }
-
-
-    /* =====================================================
-       CARICAMENTO DEL GEOJSON
-       ===================================================== */
-
-    async function loadRegions() {
-      try {
-        const response =
-          await fetch("italy-regions.geojson");
 
         if (!response.ok) {
           throw new Error(
@@ -863,62 +1015,291 @@
           );
         }
 
-        const geojson =
+        const restaurants =
           await response.json();
 
-        // Controlla che il file contenga le regioni.
-        if (
-          !geojson.features ||
-          !Array.isArray(geojson.features) ||
-          geojson.features.length < 20
-        ) {
+        if (!Array.isArray(restaurants)) {
           throw new Error(
-            "Il file GeoJSON non contiene " +
-            "le 20 regioni italiane."
+            "La risposta non è un elenco."
           );
         }
 
-        // Inserisce le regioni nella mappa.
-        regionsLayer = L.geoJSON(
-          geojson,
-          {
-            style: getDefaultStyle,
-            onEachFeature: onEachRegion
-          }
-        ).addTo(map);
+        currentRestaurants = restaurants;
+        currentSearchDescription = "in " + regionName;
 
-        // Salva i confini completi.
-        completeMapBounds =
-          regionsLayer.getBounds();
-
-        // Centra la mappa.
-        centerCompleteMap();
-
-        /*
-          Fa ricalcolare a Leaflet
-          le dimensioni del contenitore.
-        */
-        setTimeout(function () {
-          map.invalidateSize();
-          centerCompleteMap();
-        }, 100);
+        renderFilteredRestaurants();
       } catch (error) {
-        console.error(
-          "Errore caricamento mappa:",
-          error
+        currentRestaurants = [];
+
+        showErrorStatus(
+          "Non è stato possibile caricare i ristoranti."
         );
 
-        document
-          .getElementById("italyMap")
-          .classList.add("hidden");
-
-        mapError.textContent =
-          "Non è stato possibile caricare la mappa. " +
-          "Controlla che italy-regions.geojson " +
-          "sia dentro la cartella public.";
-
-        mapError.classList.remove("hidden");
+        console.error(error);
       }
+    }
+
+
+    /* =====================================================
+       RICERCA NEI DINTORNI
+       ===================================================== */
+
+    nearbySearchForm.addEventListener(
+      "submit",
+      async function (event) {
+        event.preventDefault();
+
+        const searchText =
+          locationInput.value.trim();
+
+        const radius =
+          Number(radiusSelect.value);
+
+        if (searchText.length < 3) {
+          showErrorStatus(
+            "Inserisci una posizione di almeno 3 caratteri."
+          );
+
+          locationInput.focus();
+          return;
+        }
+
+        setSearchButtonLoading(true);
+
+        showLoadingStatus(
+          "Ricerca della posizione..."
+        );
+
+        try {
+          const geocodeResponse = await fetch(
+            "/geocode?q=" +
+            encodeURIComponent(searchText)
+          );
+
+          const geocodeData =
+            await geocodeResponse.json();
+
+          if (!geocodeResponse.ok) {
+            throw new Error(
+              geocodeData.message ||
+              "Posizione non trovata."
+            );
+          }
+
+          const location =
+            geocodeData.location;
+
+          const latitude =
+            Number(location.latitude);
+
+          const longitude =
+            Number(location.longitude);
+
+          if (
+            !Number.isFinite(latitude) ||
+            !Number.isFinite(longitude)
+          ) {
+            throw new Error(
+              "Coordinate della posizione non valide."
+            );
+          }
+
+          clearMapResults();
+          updateActiveRegionButton(null);
+
+          showSearchedLocation(
+            latitude,
+            longitude,
+            location.displayName,
+            radius
+          );
+
+          mapTitle.textContent =
+            "Ristoranti nei dintorni";
+
+          mapDescription.textContent =
+            location.displayName;
+
+          resetMapButton.classList.remove("hidden");
+
+          showLoadingStatus(
+            "Ricerca dei ristoranti vicini..."
+          );
+
+          const nearbyResponse = await fetch(
+            "/restaurants/nearby" +
+            "?lat=" +
+            encodeURIComponent(latitude) +
+            "&lng=" +
+            encodeURIComponent(longitude) +
+            "&radius=" +
+            encodeURIComponent(radius)
+          );
+
+          const nearbyRestaurants =
+            await nearbyResponse.json();
+
+          if (!nearbyResponse.ok) {
+            throw new Error(
+              nearbyRestaurants.message ||
+              "Errore durante la ricerca."
+            );
+          }
+
+          if (!Array.isArray(nearbyRestaurants)) {
+            throw new Error(
+              "La risposta non è un elenco."
+            );
+          }
+
+          currentRestaurants =
+            nearbyRestaurants;
+
+          currentSearchDescription =
+            "entro " + radius + " km";
+
+          renderFilteredRestaurants();
+        } catch (error) {
+          currentRestaurants = [];
+
+          showErrorStatus(error.message);
+
+          console.error(
+            "Errore ricerca nei dintorni:",
+            error
+          );
+        } finally {
+          setSearchButtonLoading(false);
+        }
+      }
+    );
+
+
+    /* =====================================================
+       POSIZIONE CERCATA E RAGGIO
+       ===================================================== */
+
+    function showSearchedLocation(
+      latitude,
+      longitude,
+      displayName,
+      radius
+    ) {
+      const locationMarker = L.circleMarker(
+        [latitude, longitude],
+        {
+          radius: 10,
+          color: "#ffffff",
+          weight: 3,
+          fillColor: "#b40000",
+          fillOpacity: 1
+        }
+      );
+
+      locationMarker.bindPopup(`
+        <div class="searched-location-popup">
+          <strong>Posizione cercata</strong>
+
+          <span>
+            ${escapeHtml(displayName)}
+          </span>
+        </div>
+      `);
+
+      locationMarker.addTo(searchedLocationLayer);
+
+      const radiusCircle = L.circle(
+        [latitude, longitude],
+        {
+          radius: radius * 1000,
+          color: "#b40000",
+          weight: 2,
+          opacity: 0.75,
+          fillColor: "#b40000",
+          fillOpacity: 0.08
+        }
+      );
+
+      radiusCircle.addTo(searchRadiusLayer);
+
+      map.fitBounds(radiusCircle.getBounds(), {
+        padding: [35, 35],
+        animate: true
+      });
+
+      locationMarker.openPopup();
+    }
+
+
+    /* =====================================================
+       MESSAGGI DI STATO
+       ===================================================== */
+
+    function showLoadingStatus(message) {
+      restaurantsStatus.textContent = message;
+
+      restaurantsStatus.classList.remove(
+        "hidden",
+        "error"
+      );
+    }
+
+
+    function showErrorStatus(message) {
+      restaurantsStatus.textContent = message;
+
+      restaurantsStatus.classList.remove("hidden");
+      restaurantsStatus.classList.add("error");
+    }
+
+
+    /* =====================================================
+       STATO DEL PULSANTE CERCA
+       ===================================================== */
+
+    function setSearchButtonLoading(isLoading) {
+      nearbySearchButton.disabled = isLoading;
+
+      nearbySearchButton.textContent =
+        isLoading
+          ? "Ricerca..."
+          : "Cerca";
+    }
+
+
+    /* =====================================================
+       PULIZIA E RESET DELLA MAPPA
+       ===================================================== */
+
+    function clearMapResults() {
+      restaurantsMarkersLayer.clearLayers();
+      searchedLocationLayer.clearLayers();
+      searchRadiusLayer.clearLayers();
+
+      currentRestaurants = [];
+      currentSearchDescription = "";
+
+      restaurantsStatus.classList.add("hidden");
+      restaurantsStatus.classList.remove("error");
+    }
+
+
+    function resetMap() {
+      clearMapResults();
+
+      updateActiveRegionButton(null);
+
+      map.setView(initialCenter, initialZoom, {
+        animate: true
+      });
+
+      mapTitle.textContent =
+        "Trova il tuo ristorante";
+
+      mapDescription.textContent =
+        "Cerca una posizione oppure seleziona una regione.";
+
+      resetMapButton.classList.add("hidden");
     }
 
 
@@ -926,26 +1307,12 @@
        AVVIO
        ===================================================== */
 
-    // Collega il pulsante alla funzione di reset.
+    createRegionButtons();
+
     resetMapButton.addEventListener(
       "click",
       resetMap
     );
-
-    // Mantiene la mappa centrata al ridimensionamento.
-    window.addEventListener(
-      "resize",
-      function () {
-        map.invalidateSize();
-
-        if (!selectedRegionLayer) {
-          centerCompleteMap();
-        }
-      }
-    );
-
-    // Carica le regioni all'apertura della pagina.
-    loadRegions();
   </script>
 </body>
 </html>

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Login | KiRating</title>
+
+  <!-- Font Awesome per le icone -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <style>
+    /* =====================================================
+       RESET
+       ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(180, 0, 0, 0.13),
+          transparent 35%
+        ),
+        #f8f7f5;
+
+      color: #252422;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* =====================================================
+       NAVBAR
+       ===================================================== */
+
+    .topbar {
+      width: 100%;
+      height: 82px;
+      padding: 0 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background-color: #b40000;
+
+      box-shadow:
+        0 2px 10px
+        rgba(0, 0, 0, 0.13);
+    }
+
+    .logo {
+      color: #ffffff;
+
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+
+      text-decoration: none;
+    }
+
+    .logo span {
+      font-weight: 300;
+    }
+
+    .topbar-link {
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      text-decoration: none;
+    }
+
+    .topbar-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+    }
+
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+    .auth-page {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 58px 24px 70px;
+
+      display: grid;
+      grid-template-columns: 1fr 440px;
+
+      align-items: center;
+      gap: 50px;
+
+      flex: 1;
+    }
+
+    .auth-intro {
+      padding: 20px 0;
+    }
+
+    .auth-label {
+      margin-bottom: 14px;
+
+      color: #b40000;
+
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+    }
+
+    .auth-intro h1 {
+      margin-bottom: 18px;
+
+      color: #252422;
+
+      font-size: clamp(42px, 6vw, 66px);
+      line-height: 0.98;
+      letter-spacing: -2.4px;
+    }
+
+    .auth-intro p {
+      max-width: 560px;
+
+      color: #716d67;
+
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .auth-benefits {
+      margin-top: 30px;
+
+      display: grid;
+      gap: 14px;
+    }
+
+    .auth-benefit {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: #3d3935;
+
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .auth-benefit i {
+      width: 36px;
+      height: 36px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background-color: #f3e2e2;
+      color: #b40000;
+    }
+
+
+    /* =====================================================
+       CARD LOGIN / REGISTRAZIONE
+       ===================================================== */
+
+    .auth-card {
+      padding: 30px;
+
+      border: 1px solid #e7e2dc;
+      border-radius: 22px;
+
+      background-color: #ffffff;
+
+      box-shadow:
+        0 18px 48px
+        rgba(0, 0, 0, 0.08);
+    }
+
+    .auth-tabs {
+      padding: 5px;
+      margin-bottom: 25px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      border-radius: 12px;
+
+      background-color: #f4f1ed;
+    }
+
+    .auth-tab {
+      min-height: 43px;
+
+      border: none;
+      border-radius: 9px;
+
+      background-color: transparent;
+      color: #706b65;
+
+      font-size: 14px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .auth-tab.active {
+      background-color: #ffffff;
+      color: #b40000;
+
+      box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.06);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+    }
+
+    .form-title {
+      margin-bottom: 4px;
+    }
+
+    .form-title h2 {
+      margin-bottom: 6px;
+
+      font-size: 25px;
+      line-height: 1.2;
+    }
+
+    .form-title p {
+      color: #817c75;
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group label {
+      color: #393632;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+
+      transform: translateY(-50%);
+
+      color: #9b958d;
+
+      font-size: 14px;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 13px 11px 41px;
+
+      border: 1px solid #dcd8d1;
+      border-radius: 9px;
+
+      background-color: #ffffff;
+      color: #252422;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .input-wrapper input:focus {
+      border-color: #b40000;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(180, 0, 0, 0.09);
+    }
+
+    .auth-button {
+      min-height: 50px;
+      margin-top: 5px;
+      padding: 12px 18px;
+
+      border: 1px solid #b40000;
+      border-radius: 9px;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .auth-button:hover {
+      background-color: #8f0000;
+    }
+
+    .auth-button:active {
+      transform: scale(0.985);
+    }
+
+    .auth-button:disabled {
+      opacity: 0.65;
+
+      cursor: wait;
+    }
+
+
+    /* =====================================================
+       MESSAGGI
+       ===================================================== */
+
+    .auth-message {
+      padding: 13px 15px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .auth-message.error {
+      border-left: 4px solid #b40000;
+
+      background-color: #fff0f0;
+      color: #9d0000;
+    }
+
+    .auth-message.success {
+      border-left: 4px solid #2c7a3f;
+
+      background-color: #eef8f0;
+      color: #205e30;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 900px) {
+      .auth-page {
+        grid-template-columns: 1fr;
+
+        gap: 32px;
+      }
+
+      .auth-intro {
+        text-align: center;
+      }
+
+      .auth-intro p {
+        margin: 0 auto;
+      }
+
+      .auth-benefits {
+        width: min(520px, 100%);
+        margin-right: auto;
+        margin-left: auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        height: 72px;
+        padding: 0 16px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .auth-page {
+        padding: 34px 13px 50px;
+      }
+
+      .auth-card {
+        padding: 22px 17px;
+
+        border-radius: 17px;
+      }
+
+      .auth-intro h1 {
+        font-size: 39px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <header class="topbar">
+    <a href="/" class="logo">
+      KIRA <span>guide</span>
+    </a>
+
+    <a href="/" class="topbar-link">
+      Torna alla mappa
+    </a>
+  </header>
+
+  <!-- =====================================================
+       CONTENUTO
+       ===================================================== -->
+  <main class="auth-page">
+    <section class="auth-intro">
+      <p class="auth-label">
+        Area utenti
+      </p>
+
+      <h1>
+        Accedi per recensire
+      </h1>
+
+      <p>
+        Per pubblicare una recensione, aggiungere fotografie
+        e contribuire alla valutazione dei ristoranti devi
+        effettuare l’accesso o creare un account.
+      </p>
+
+      <div class="auth-benefits">
+        <div class="auth-benefit">
+          <i class="fa-solid fa-pizza-slice"></i>
+          <span>Lascia valutazioni con gli spicchi di pizza.</span>
+        </div>
+
+        <div class="auth-benefit">
+          <i class="fa-solid fa-camera"></i>
+          <span>Carica fotografie della tua esperienza.</span>
+        </div>
+
+        <div class="auth-benefit">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <span>Contribuisci alla mappa dei ristoranti.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-card">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button
+          id="loginTab"
+          class="auth-tab active"
+          type="button"
+        >
+          Login
+        </button>
+
+        <button
+          id="registerTab"
+          class="auth-tab"
+          type="button"
+        >
+          Registrati
+        </button>
+      </div>
+
+      <!-- Messaggio generale -->
+      <div
+        id="authMessage"
+        class="auth-message hidden"
+        aria-live="polite"
+      ></div>
+
+      <!-- =================================================
+           FORM LOGIN
+           ================================================= -->
+      <form
+        id="loginForm"
+        class="auth-form"
+      >
+        <div class="form-title">
+          <h2>Accedi</h2>
+
+          <p>
+            Inserisci email e password per continuare.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="loginEmail">
+            Email
+          </label>
+
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+
+            <input
+              id="loginEmail"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">
+            Password
+          </label>
+
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+              id="loginPassword"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+        </div>
+
+        <button
+          id="loginButton"
+          class="auth-button"
+          type="submit"
+        >
+          Accedi
+        </button>
+      </form>
+
+      <!-- =================================================
+           FORM REGISTRAZIONE
+           ================================================= -->
+      <form
+        id="registerForm"
+        class="auth-form hidden"
+      >
+        <div class="form-title">
+          <h2>Crea account</h2>
+
+          <p>
+            Registrati per poter pubblicare recensioni.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="registerName">
+            Nome
+          </label>
+
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+
+            <input
+              id="registerName"
+              name="name"
+              type="text"
+              maxlength="100"
+              autocomplete="name"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="registerEmail">
+            Email
+          </label>
+
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+
+            <input
+              id="registerEmail"
+              name="email"
+              type="email"
+              maxlength="150"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="registerPassword">
+            Password
+          </label>
+
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+              id="registerPassword"
+              name="password"
+              type="password"
+              minlength="6"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+        </div>
+
+        <button
+          id="registerButton"
+          class="auth-button"
+          type="submit"
+        >
+          Registrati
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    /* =====================================================
+       ELEMENTI
+       ===================================================== */
+
+    const loginTab =
+      document.getElementById("loginTab");
+
+    const registerTab =
+      document.getElementById("registerTab");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const registerForm =
+      document.getElementById("registerForm");
+
+    const authMessage =
+      document.getElementById("authMessage");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const registerButton =
+      document.getElementById("registerButton");
+
+
+    /*
+      redirect serve per tornare alla pagina che
+      l'utente voleva aprire prima del login.
+
+      Esempio:
+      /login.html?redirect=/recensioni.html
+    */
+    const queryParameters =
+      new URLSearchParams(window.location.search);
+
+    const redirectPath =
+      queryParameters.get("redirect") || "/";
+
+
+    /* =====================================================
+       CAMBIO FORM
+       ===================================================== */
+
+    loginTab.addEventListener("click", function () {
+      showLoginForm();
+    });
+
+    registerTab.addEventListener("click", function () {
+      showRegisterForm();
+    });
+
+    function showLoginForm() {
+      hideMessage();
+
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+
+      loginForm.classList.remove("hidden");
+      registerForm.classList.add("hidden");
+    }
+
+    function showRegisterForm() {
+      hideMessage();
+
+      registerTab.classList.add("active");
+      loginTab.classList.remove("active");
+
+      registerForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+    }
+
+
+    /* =====================================================
+       LOGIN
+       ===================================================== */
+
+    loginForm.addEventListener(
+      "submit",
+      async function (event) {
+        event.preventDefault();
+
+        hideMessage();
+        setButtonLoading(loginButton, true, "Accesso...");
+
+        const formData =
+          new FormData(loginForm);
+
+        const payload = {
+          email: formData.get("email"),
+          password: formData.get("password")
+        };
+
+        try {
+          const response =
+            await fetch("/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            });
+
+          const result =
+            await readResponse(response);
+
+          if (!response.ok) {
+            throw new Error(
+              result.message ||
+              result ||
+              "Login non riuscito."
+            );
+          }
+
+          showMessage(
+            "Accesso effettuato. Reindirizzamento...",
+            "success"
+          );
+
+          setTimeout(function () {
+            window.location.href = redirectPath;
+          }, 500);
+        } catch (error) {
+          showMessage(error.message, "error");
+        } finally {
+          setButtonLoading(loginButton, false, "Accedi");
+        }
+      }
+    );
+
+
+    /* =====================================================
+       REGISTRAZIONE
+       ===================================================== */
+
+    registerForm.addEventListener(
+      "submit",
+      async function (event) {
+        event.preventDefault();
+
+        hideMessage();
+        setButtonLoading(registerButton, true, "Registrazione...");
+
+        const formData =
+          new FormData(registerForm);
+
+        const payload = {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          password: formData.get("password")
+        };
+
+        try {
+          const response =
+            await fetch("/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            });
+
+          const result =
+            await readResponse(response);
+
+          if (!response.ok) {
+            throw new Error(
+              result.message ||
+              result ||
+              "Registrazione non riuscita."
+            );
+          }
+
+          showMessage(
+            "Registrazione completata. Ora puoi accedere.",
+            "success"
+          );
+
+          registerForm.reset();
+
+          setTimeout(function () {
+            showLoginForm();
+
+            document
+              .getElementById("loginEmail")
+              .focus();
+          }, 700);
+        } catch (error) {
+          showMessage(error.message, "error");
+        } finally {
+          setButtonLoading(
+            registerButton,
+            false,
+            "Registrati"
+          );
+        }
+      }
+    );
+
+
+    /* =====================================================
+       FUNZIONI DI SUPPORTO
+       ===================================================== */
+
+    async function readResponse(response) {
+      const contentType =
+        response.headers.get("content-type") || "";
+
+      if (contentType.includes("application/json")) {
+        return response.json();
+      }
+
+      return response.text();
+    }
+
+
+    function showMessage(message, type) {
+      authMessage.textContent = message;
+
+      authMessage.className =
+        "auth-message " + type;
+    }
+
+
+    function hideMessage() {
+      authMessage.textContent = "";
+
+      authMessage.className =
+        "auth-message hidden";
+    }
+
+
+    function setButtonLoading(
+      button,
+      isLoading,
+      loadingText
+    ) {
+      button.disabled = isLoading;
+
+      if (isLoading) {
+        button.dataset.originalText =
+          button.textContent;
+
+        button.textContent = loadingText;
+      } else {
+        button.textContent =
+          button.dataset.originalText ||
+          button.textContent;
+      }
+    }
+  </script>
+</body>
+</html>

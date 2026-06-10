@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Adatta la pagina a smartphone, tablet e computer -->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Scrivi una recensione | KiRating</title>
+
+  <!-- Libreria Font Awesome per le icone -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <style>
+    /* =====================================================
+       RESET GENERALE
+       ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      background-color: #f7f5f2;
+      color: #252422;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* =====================================================
+       NAVBAR
+       ===================================================== */
+
+    .topbar {
+      width: 100%;
+      height: 82px;
+      padding: 0 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background-color: #b40000;
+
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
+
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      color: #ffffff;
+
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+
+      text-decoration: none;
+    }
+
+    .logo span {
+      font-weight: 300;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .topbar-link {
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      text-decoration: none;
+    }
+
+    .topbar-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+    }
+
+
+    /* =====================================================
+       CONTENUTO PRINCIPALE
+       ===================================================== */
+
+    .page {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 52px 24px 75px;
+    }
+
+    .page-header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .page-label {
+      margin-bottom: 12px;
+
+      color: #b40000;
+
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+    }
+
+    .page-header h1 {
+      margin-bottom: 15px;
+
+      font-size: clamp(36px, 6vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+    }
+
+    .page-header p {
+      max-width: 680px;
+      margin: 0 auto;
+
+      color: #716e69;
+
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       CONTENITORE DEL FORM
+       ===================================================== */
+
+    .review-card {
+      padding: 38px;
+
+      border: 1px solid #e6e2dc;
+      border-radius: 20px;
+
+      background-color: #ffffff;
+
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.07);
+    }
+
+    .form-section {
+      padding-bottom: 34px;
+      margin-bottom: 34px;
+
+      border-bottom: 1px solid #ece9e4;
+    }
+
+    .form-section:last-of-type {
+      padding-bottom: 0;
+      margin-bottom: 0;
+
+      border-bottom: none;
+    }
+
+    .section-heading {
+      margin-bottom: 21px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 7px;
+
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .section-heading p {
+      color: #79756f;
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       CAMPI DEL FORM
+       ===================================================== */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      color: #383532;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .required {
+      color: #b40000;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+
+      border: 1px solid #dcd8d2;
+      border-radius: 9px;
+
+      background-color: #ffffff;
+      color: #252422;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .form-group input,
+    .form-group select {
+      min-height: 48px;
+      padding: 11px 13px;
+    }
+
+    .form-group textarea {
+      min-height: 160px;
+      padding: 13px;
+
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #b40000;
+
+      box-shadow: 0 0 0 3px rgba(180, 0, 0, 0.09);
+    }
+
+    .field-help {
+      color: #98938d;
+
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+
+    /* =====================================================
+       VALUTAZIONI CON SPICCHI DI PIZZA
+       ===================================================== */
+
+    .ratings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .rating-box {
+      padding: 20px;
+
+      border: 1px solid #e6e2dc;
+      border-radius: 13px;
+
+      background-color: #fcfbf9;
+    }
+
+    .rating-box h3 {
+      margin-bottom: 5px;
+
+      font-size: 16px;
+    }
+
+    .rating-description {
+      margin-bottom: 14px;
+
+      color: #837f79;
+
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .pizza-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pizza-slice {
+      padding: 0;
+
+      border: none;
+
+      background-color: transparent;
+      color: #d8d3cc;
+
+      font-size: 27px;
+
+      cursor: pointer;
+
+      transition:
+        color 0.18s ease,
+        transform 0.18s ease;
+    }
+
+    .pizza-slice:hover {
+      transform: translateY(-2px);
+    }
+
+    .pizza-slice.active {
+      color: #b40000;
+    }
+
+    .rating-value {
+      margin-left: 6px;
+
+      color: #69655f;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    /* =====================================================
+       RANGE DI PREZZO
+       ===================================================== */
+
+    .price-options {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .price-option input {
+      position: absolute;
+
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .price-option label {
+      min-height: 66px;
+      padding: 11px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+
+      border: 1px solid #dedad4;
+      border-radius: 10px;
+
+      background-color: #ffffff;
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .price-symbol {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .price-description {
+      color: #8d8983;
+
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .price-option input:checked + label {
+      border-color: #b40000;
+
+      background-color: #b40000;
+      color: #ffffff;
+    }
+
+    .price-option input:checked + label .price-description {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+
+    /* =====================================================
+       CARICAMENTO FOTOGRAFIE
+       ===================================================== */
+
+    .photo-upload {
+      padding: 28px;
+
+      border: 2px dashed #d8d3cc;
+      border-radius: 14px;
+
+      background-color: #fcfbf9;
+
+      text-align: center;
+
+      transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+    }
+
+    .photo-upload.dragging {
+      border-color: #b40000;
+      background-color: #f9eeee;
+    }
+
+    .photo-upload-icon {
+      margin-bottom: 12px;
+
+      color: #b40000;
+
+      font-size: 34px;
+    }
+
+    .photo-upload h3 {
+      margin-bottom: 7px;
+
+      font-size: 17px;
+    }
+
+    .photo-upload p {
+      margin-bottom: 16px;
+
+      color: #837f79;
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .photo-input {
+      display: none;
+    }
+
+    .photo-button {
+      padding: 10px 18px;
+
+      display: inline-block;
+
+      border: 1px solid #b40000;
+      border-radius: 8px;
+
+      background-color: #ffffff;
+      color: #b40000;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .photo-button:hover {
+      background-color: #b40000;
+      color: #ffffff;
+    }
+
+    .photo-preview-list {
+      margin-top: 20px;
+
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .photo-preview {
+      aspect-ratio: 1;
+
+      position: relative;
+      overflow: hidden;
+
+      border: 1px solid #dfdbd5;
+      border-radius: 10px;
+
+      background-color: #eeeeeb;
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .remove-photo-button {
+      width: 27px;
+      height: 27px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: 6px;
+      right: 6px;
+
+      border: none;
+      border-radius: 50%;
+
+      background-color: rgba(25, 25, 25, 0.78);
+      color: #ffffff;
+
+      cursor: pointer;
+    }
+
+
+    /* =====================================================
+       MESSAGGI E INVIO
+       ===================================================== */
+
+    .form-message {
+      margin-top: 24px;
+      padding: 14px 16px;
+
+      border-radius: 9px;
+
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .form-message.error {
+      border-left: 4px solid #b40000;
+
+      background-color: #fff0f0;
+      color: #a00000;
+    }
+
+    .form-message.success {
+      border-left: 4px solid #2c7a3f;
+
+      background-color: #eef8f0;
+      color: #205e30;
+    }
+
+    .submit-area {
+      margin-top: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 18px;
+    }
+
+    .submit-button {
+      min-width: 210px;
+      min-height: 50px;
+      padding: 12px 24px;
+
+      border: 1px solid #b40000;
+      border-radius: 9px;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .submit-button:hover {
+      background-color: #8e0000;
+    }
+
+    .submit-button:active {
+      transform: scale(0.985);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.65;
+
+      cursor: wait;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 760px) {
+      .topbar {
+        height: 72px;
+        padding: 0 16px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .page {
+        padding: 34px 13px 55px;
+      }
+
+      .review-card {
+        padding: 24px 17px;
+
+        border-radius: 15px;
+      }
+
+      .form-grid,
+      .ratings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .price-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .photo-preview-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .submit-area {
+        flex-direction: column;
+      }
+
+      .submit-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <header class="topbar">
+    <a href="/" class="logo">
+      KIRA <span>guide</span>
+    </a>
+
+    <div class="topbar-right">
+      <a href="/" class="topbar-link">
+        Home
+      </a>
+
+      <a href="/login.html" class="topbar-link">
+        Login
+      </a>
+    </div>
+  </header>
+
+  <!-- =====================================================
+       PAGINA
+       ===================================================== -->
+  <main class="page">
+    <header class="page-header">
+      <p class="page-label">
+        Condividi la tua esperienza
+      </p>
+
+      <h1>
+        Scrivi una recensione
+      </h1>
+
+      <p>
+        Inserisci il ristorante, assegna le tue valutazioni
+        e racconta agli altri utenti la tua esperienza.
+      </p>
+    </header>
+
+    <!--
+      enctype multipart/form-data è necessario
+      per inviare anche le fotografie.
+    -->
+    <form
+      id="reviewForm"
+      class="review-card"
+      enctype="multipart/form-data"
+    >
+      <!-- Coordinate ricavate automaticamente dall'indirizzo -->
+      <input
+        id="latitudeInput"
+        name="latitude"
+        type="hidden"
+      />
+
+      <input
+        id="longitudeInput"
+        name="longitude"
+        type="hidden"
+      />
+
+      <!-- =================================================
+           DATI DEL RISTORANTE
+           ================================================= -->
+      <section class="form-section">
+        <div class="section-heading">
+          <h2>Il ristorante</h2>
+
+          <p>
+            Inserisci i dati necessari per identificare
+            e localizzare il locale.
+          </p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="restaurantName">
+              Nome del ristorante
+              <span class="required">*</span>
+            </label>
+
+            <input
+              id="restaurantName"
+              name="restaurant_name"
+              type="text"
+              maxlength="150"
+              placeholder="Es. Osteria del Centro"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="regionSelect">
+              Regione
+              <span class="required">*</span>
+            </label>
+
+            <select
+              id="regionSelect"
+              name="region"
+              required
+            >
+              <option value="">
+                Seleziona una regione
+              </option>
+
+              <option>Abruzzo</option>
+              <option>Basilicata</option>
+              <option>Calabria</option>
+              <option>Campania</option>
+              <option>Emilia Romagna</option>
+              <option>Friuli Venezia Giulia</option>
+              <option>Lazio</option>
+              <option>Liguria</option>
+              <option>Lombardia</option>
+              <option>Marche</option>
+              <option>Molise</option>
+              <option>Piemonte</option>
+              <option>Puglia</option>
+              <option>Sardegna</option>
+              <option>Sicilia</option>
+              <option>Toscana</option>
+              <option>Trentino-Alto Adige</option>
+              <option>Umbria</option>
+              <option>Valle d'Aosta</option>
+              <option>Veneto</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cityInput">
+              Città
+              <span class="required">*</span>
+            </label>
+
+            <input
+              id="cityInput"
+              name="city"
+              type="text"
+              maxlength="100"
+              placeholder="Es. Roma"
+              required
+            />
+          </div>
+
+          <div class="form-group full-width">
+            <label for="addressInput">
+              Indirizzo
+              <span class="required">*</span>
+            </label>
+
+            <input
+              id="addressInput"
+              name="address"
+              type="text"
+              maxlength="255"
+              placeholder="Es. Via del Corso 25"
+              required
+            />
+
+            <span class="field-help">
+              Inserisci un indirizzo completo: verrà usato per
+              posizionare il ristorante sulla mappa.
+            </span>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="cuisineSelect">
+              Tipo di cucina
+            </label>
+
+            <select
+              id="cuisineSelect"
+              name="cuisine"
+            >
+              <option value="">
+                Seleziona una categoria
+              </option>
+
+              <option value="Cucina italiana">
+                Cucina italiana
+              </option>
+
+              <option value="Pizzeria">
+                Pizzeria
+              </option>
+
+              <option value="Sushi">
+                Sushi
+              </option>
+
+              <option value="Ristorante di pesce">
+                Pesce
+              </option>
+
+              <option value="Steakhouse">
+                Carne
+              </option>
+
+              <option value="Cucina gourmet">
+                Gourmet
+              </option>
+
+              <option value="Fast food">
+                Fast food
+              </option>
+
+              <option value="Poke">
+                Poke
+              </option>
+
+              <option value="Vegetariano">
+                Vegetariano
+              </option>
+
+              <option value="Pasticceria e dolci">
+                Dolci
+              </option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+           VALUTAZIONI
+           ================================================= -->
+      <section class="form-section">
+        <div class="section-heading">
+          <h2>Le tue valutazioni</h2>
+
+          <p>
+            Seleziona da uno a cinque spicchi di pizza
+            per ogni aspetto.
+          </p>
+        </div>
+
+        <div class="ratings-grid">
+          <div class="rating-box">
+            <h3>Cibo</h3>
+
+            <p class="rating-description">
+              Qualità, gusto e presentazione.
+            </p>
+
+            <div
+              class="pizza-rating"
+              data-rating-name="food_rating"
+            ></div>
+          </div>
+
+          <div class="rating-box">
+            <h3>Servizio</h3>
+
+            <p class="rating-description">
+              Cortesia, disponibilità e tempi.
+            </p>
+
+            <div
+              class="pizza-rating"
+              data-rating-name="service_rating"
+            ></div>
+          </div>
+
+          <div class="rating-box">
+            <h3>Ambiente</h3>
+
+            <p class="rating-description">
+              Atmosfera, comfort e pulizia.
+            </p>
+
+            <div
+              class="pizza-rating"
+              data-rating-name="atmosphere_rating"
+            ></div>
+          </div>
+
+          <div class="rating-box">
+            <h3>Valutazione complessiva</h3>
+
+            <p class="rating-description">
+              Il giudizio generale sull’esperienza.
+            </p>
+
+            <div
+              class="pizza-rating"
+              data-rating-name="overall_rating"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+           PREZZO
+           ================================================= -->
+      <section class="form-section">
+        <div class="section-heading">
+          <h2>Fascia di prezzo</h2>
+
+          <p>
+            Indica quanto hai speso mediamente per persona.
+          </p>
+        </div>
+
+        <div class="price-options">
+          <div class="price-option">
+            <input
+              id="price1"
+              name="price_range"
+              type="radio"
+              value="1"
+              required
+            />
+
+            <label for="price1">
+              <span class="price-symbol">€</span>
+              <span class="price-description">Economico</span>
+            </label>
+          </div>
+
+          <div class="price-option">
+            <input
+              id="price2"
+              name="price_range"
+              type="radio"
+              value="2"
+            />
+
+            <label for="price2">
+              <span class="price-symbol">€€</span>
+              <span class="price-description">Medio</span>
+            </label>
+          </div>
+
+          <div class="price-option">
+            <input
+              id="price3"
+              name="price_range"
+              type="radio"
+              value="3"
+            />
+
+            <label for="price3">
+              <span class="price-symbol">€€€</span>
+              <span class="price-description">Costoso</span>
+            </label>
+          </div>
+
+          <div class="price-option">
+            <input
+              id="price4"
+              name="price_range"
+              type="radio"
+              value="4"
+            />
+
+            <label for="price4">
+              <span class="price-symbol">€€€€</span>
+              <span class="price-description">Esclusivo</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+           ESPERIENZA
+           ================================================= -->
+      <section class="form-section">
+        <div class="section-heading">
+          <h2>Racconta la tua esperienza</h2>
+
+          <p>
+            Descrivi cosa hai mangiato, come sei stato accolto
+            e cosa consiglieresti agli altri utenti.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="experienceInput">
+            La tua recensione
+            <span class="required">*</span>
+          </label>
+
+          <textarea
+            id="experienceInput"
+            name="experience"
+            minlength="20"
+            maxlength="3000"
+            placeholder="Racconta la tua esperienza..."
+            required
+          ></textarea>
+
+          <span class="field-help">
+            Minimo 20 caratteri, massimo 3000.
+          </span>
+        </div>
+      </section>
+
+      <!-- =================================================
+           FOTOGRAFIE
+           ================================================= -->
+      <section class="form-section">
+        <div class="section-heading">
+          <h2>Aggiungi fotografie</h2>
+
+          <p>
+            Puoi caricare fino a 5 immagini in formato
+            JPG, PNG o WebP.
+          </p>
+        </div>
+
+        <div id="photoUploadArea" class="photo-upload">
+          <div class="photo-upload-icon">
+            <i class="fa-regular fa-images"></i>
+          </div>
+
+          <h3>Trascina qui le fotografie</h3>
+
+          <p>
+            Oppure selezionale dal tuo dispositivo.
+            Ogni file può pesare al massimo 5 MB.
+          </p>
+
+          <label for="photosInput" class="photo-button">
+            Scegli fotografie
+          </label>
+
+          <input
+            id="photosInput"
+            class="photo-input"
+            name="photos"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+          />
+        </div>
+
+        <!-- Anteprima delle fotografie -->
+        <div
+          id="photoPreviewList"
+          class="photo-preview-list"
+        ></div>
+      </section>
+
+      <!-- Messaggio di errore o successo -->
+      <div
+        id="formMessage"
+        class="form-message hidden"
+        aria-live="polite"
+      ></div>
+
+      <!-- Invio -->
+      <div class="submit-area">
+        <button
+          id="submitButton"
+          class="submit-button"
+          type="submit"
+        >
+          Pubblica recensione
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    /* =====================================================
+       ELEMENTI DELLA PAGINA
+       ===================================================== */
+
+    const reviewForm =
+      document.getElementById("reviewForm");
+
+    const submitButton =
+      document.getElementById("submitButton");
+
+    const formMessage =
+      document.getElementById("formMessage");
+
+    const photosInput =
+      document.getElementById("photosInput");
+
+    const photoUploadArea =
+      document.getElementById("photoUploadArea");
+
+    const photoPreviewList =
+      document.getElementById("photoPreviewList");
+
+    const latitudeInput =
+      document.getElementById("latitudeInput");
+
+    const longitudeInput =
+      document.getElementById("longitudeInput");
+
+    /*
+      Conserva le fotografie selezionate.
+
+      Usiamo un array separato per poter rimuovere
+      singole immagini prima dell'invio.
+    */
+    let selectedPhotos = [];
+
+
+    /* =====================================================
+       CREAZIONE DEGLI SPICCHI DI PIZZA
+       ===================================================== */
+
+    document
+      .querySelectorAll(".pizza-rating")
+      .forEach(function (ratingContainer) {
+        const ratingName =
+          ratingContainer.dataset.ratingName;
+
+        /*
+          Campo nascosto inviato al server.
+        */
+        const hiddenInput =
+          document.createElement("input");
+
+        hiddenInput.type = "hidden";
+        hiddenInput.name = ratingName;
+        hiddenInput.value = "";
+
+        ratingContainer.appendChild(hiddenInput);
+
+        /*
+          Crea cinque spicchi cliccabili.
+        */
+        for (let value = 1; value <= 5; value += 1) {
+          const button =
+            document.createElement("button");
+
+          button.type = "button";
+          button.className = "pizza-slice";
+          button.dataset.value = String(value);
+
+          button.setAttribute(
+            "aria-label",
+            value + " su 5"
+          );
+
+          button.innerHTML =
+            '<i class="fa-solid fa-pizza-slice"></i>';
+
+          button.addEventListener(
+            "click",
+            function () {
+              hiddenInput.value = String(value);
+
+              updatePizzaRating(
+                ratingContainer,
+                value
+              );
+            }
+          );
+
+          ratingContainer.appendChild(button);
+        }
+
+        /*
+          Testo che mostra il valore scelto.
+        */
+        const valueLabel =
+          document.createElement("span");
+
+        valueLabel.className = "rating-value";
+        valueLabel.textContent = "Non valutato";
+
+        ratingContainer.appendChild(valueLabel);
+      });
+
+
+    /*
+      Colora gli spicchi fino al valore selezionato.
+    */
+    function updatePizzaRating(
+      ratingContainer,
+      selectedValue
+    ) {
+      const buttons =
+        ratingContainer.querySelectorAll(
+          ".pizza-slice"
+        );
+
+      buttons.forEach(function (button) {
+        const buttonValue =
+          Number(button.dataset.value);
+
+        button.classList.toggle(
+          "active",
+          buttonValue <= selectedValue
+        );
+      });
+
+      const valueLabel =
+        ratingContainer.querySelector(
+          ".rating-value"
+        );
+
+      valueLabel.textContent =
+        selectedValue + "/5";
+    }
+
+
+    /* =====================================================
+       GESTIONE DELLE FOTOGRAFIE
+       ===================================================== */
+
+    photosInput.addEventListener(
+      "change",
+      function () {
+        addPhotos(
+          Array.from(photosInput.files)
+        );
+      }
+    );
+
+
+    /*
+      Permette di trascinare fotografie
+      nell'area di caricamento.
+    */
+    photoUploadArea.addEventListener(
+      "dragover",
+      function (event) {
+        event.preventDefault();
+
+        photoUploadArea.classList.add(
+          "dragging"
+        );
+      }
+    );
+
+
+    photoUploadArea.addEventListener(
+      "dragleave",
+      function () {
+        photoUploadArea.classList.remove(
+          "dragging"
+        );
+      }
+    );
+
+
+    photoUploadArea.addEventListener(
+      "drop",
+      function (event) {
+        event.preventDefault();
+
+        photoUploadArea.classList.remove(
+          "dragging"
+        );
+
+        addPhotos(
+          Array.from(event.dataTransfer.files)
+        );
+      }
+    );
+
+
+    /*
+      Controlla e aggiunge le fotografie selezionate.
+    */
+    function addPhotos(files) {
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      for (const file of files) {
+        if (selectedPhotos.length >= 5) {
+          showMessage(
+            "Puoi caricare al massimo 5 fotografie.",
+            "error"
+          );
+
+          break;
+        }
+
+        if (!allowedTypes.includes(file.type)) {
+          showMessage(
+            "Sono consentite soltanto immagini JPG, PNG o WebP.",
+            "error"
+          );
+
+          continue;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          showMessage(
+            "Ogni fotografia deve pesare al massimo 5 MB.",
+            "error"
+          );
+
+          continue;
+        }
+
+        selectedPhotos.push(file);
+      }
+
+      renderPhotoPreviews();
+    }
+
+
+    /*
+      Crea le anteprime delle fotografie.
+    */
+    function renderPhotoPreviews() {
+      photoPreviewList.innerHTML = "";
+
+      selectedPhotos.forEach(function (
+        file,
+        index
+      ) {
+        const preview =
+          document.createElement("div");
+
+        preview.className = "photo-preview";
+
+        const image =
+          document.createElement("img");
+
+        image.src =
+          URL.createObjectURL(file);
+
+        image.alt =
+          "Anteprima fotografia " + (index + 1);
+
+        const removeButton =
+          document.createElement("button");
+
+        removeButton.type = "button";
+        removeButton.className =
+          "remove-photo-button";
+
+        removeButton.setAttribute(
+          "aria-label",
+          "Rimuovi fotografia"
+        );
+
+        removeButton.innerHTML =
+          '<i class="fa-solid fa-xmark"></i>';
+
+        removeButton.addEventListener(
+          "click",
+          function () {
+            selectedPhotos.splice(index, 1);
+
+            renderPhotoPreviews();
+          }
+        );
+
+        preview.append(
+          image,
+          removeButton
+        );
+
+        photoPreviewList.appendChild(
+          preview
+        );
+      });
+    }
+
+
+    /* =====================================================
+       INVIO DELLA RECENSIONE
+       ===================================================== */
+
+    reviewForm.addEventListener(
+      "submit",
+      async function (event) {
+        event.preventDefault();
+
+        hideMessage();
+
+        /*
+          Controlla che tutte le valutazioni
+          siano state selezionate.
+        */
+        const ratingInputs = [
+          "food_rating",
+          "service_rating",
+          "atmosphere_rating",
+          "overall_rating"
+        ];
+
+        const missingRating =
+          ratingInputs.some(function (name) {
+            const input =
+              reviewForm.querySelector(
+                `input[name="${name}"]`
+              );
+
+            return !input.value;
+          });
+
+        if (missingRating) {
+          showMessage(
+            "Assegna una valutazione a tutti gli aspetti.",
+            "error"
+          );
+
+          return;
+        }
+
+        setSubmitting(true);
+
+        try {
+          /*
+            Costruisce un indirizzo completo
+            per ottenere latitudine e longitudine.
+          */
+          const address =
+            document
+              .getElementById("addressInput")
+              .value
+              .trim();
+
+          const city =
+            document
+              .getElementById("cityInput")
+              .value
+              .trim();
+
+          const region =
+            document
+              .getElementById("regionSelect")
+              .value
+              .trim();
+
+          const completeAddress =
+            address +
+            ", " +
+            city +
+            ", " +
+            region +
+            ", Italia";
+
+          /*
+            Cerca le coordinate tramite la rotta
+            /geocode già presente nel server.
+          */
+          const geocodeResponse =
+            await fetch(
+              "/geocode?q=" +
+              encodeURIComponent(completeAddress)
+            );
+
+          const geocodeData =
+            await geocodeResponse.json();
+
+          if (!geocodeResponse.ok) {
+            throw new Error(
+              geocodeData.message ||
+              "Non è stato possibile trovare l'indirizzo."
+            );
+          }
+
+          latitudeInput.value =
+            geocodeData.location.latitude;
+
+          longitudeInput.value =
+            geocodeData.location.longitude;
+
+          /*
+            Crea la richiesta multipart/form-data.
+          */
+          const formData =
+            new FormData(reviewForm);
+
+          /*
+            Il file input originale potrebbe contenere
+            file rimossi dalle anteprime.
+
+            Eliminiamo il campo e aggiungiamo soltanto
+            le fotografie ancora selezionate.
+          */
+          formData.delete("photos");
+
+          selectedPhotos.forEach(function (file) {
+            formData.append(
+              "photos",
+              file
+            );
+          });
+
+          /*
+            Invia tutti i dati alla rotta POST /reviews.
+          */
+          const response =
+            await fetch("/reviews", {
+              method: "POST",
+              body: formData
+            });
+
+          const result =
+            await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              result.message ||
+              "Non è stato possibile pubblicare la recensione."
+            );
+          }
+
+          showMessage(
+            result.message,
+            "success"
+          );
+
+          /*
+            Ripristina il form dopo il salvataggio.
+          */
+          reviewForm.reset();
+
+          selectedPhotos = [];
+          renderPhotoPreviews();
+
+          latitudeInput.value = "";
+          longitudeInput.value = "";
+
+          document
+            .querySelectorAll(".pizza-rating")
+            .forEach(function (ratingContainer) {
+              const hiddenInput =
+                ratingContainer.querySelector(
+                  'input[type="hidden"]'
+                );
+
+              hiddenInput.value = "";
+
+              ratingContainer
+                .querySelectorAll(".pizza-slice")
+                .forEach(function (button) {
+                  button.classList.remove(
+                    "active"
+                  );
+                });
+
+              ratingContainer
+                .querySelector(".rating-value")
+                .textContent =
+                "Non valutato";
+            });
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        } catch (error) {
+          console.error(
+            "Errore invio recensione:",
+            error
+          );
+
+          showMessage(
+            error.message,
+            "error"
+          );
+        } finally {
+          setSubmitting(false);
+        }
+      }
+    );
+
+
+    /* =====================================================
+       MESSAGGI E STATO DEL PULSANTE
+       ===================================================== */
+
+    function showMessage(message, type) {
+      formMessage.textContent = message;
+
+      formMessage.className =
+        "form-message " + type;
+    }
+
+
+    function hideMessage() {
+      formMessage.textContent = "";
+
+      formMessage.className =
+        "form-message hidden";
+    }
+
+
+    function setSubmitting(isSubmitting) {
+      submitButton.disabled =
+        isSubmitting;
+
+      submitButton.textContent =
+        isSubmitting
+          ? "Pubblicazione..."
+          : "Pubblica recensione";
+    }
+  </script>
+</body>
+</html>

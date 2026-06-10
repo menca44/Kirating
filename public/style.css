@@ -19,14 +19,18 @@ body {
    ========================================================= */
 
 body {
-  background-color: #ffffff;
-  color: #171717;
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8f7f5;
+  color: #202020;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 
 /* =========================================================
-   BARRA SUPERIORE
+   NAVBAR ROSSA
    ========================================================= */
 
 .topbar {
@@ -40,15 +44,18 @@ body {
 
   background-color: #b40000;
 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
+  box-shadow:
+    0 2px 10px
+    rgba(0, 0, 0, 0.13);
 
   position: sticky;
   top: 0;
-  z-index: 1000;
+
+  z-index: 1200;
 }
 
 
-/* Parte destra della barra */
+/* Raggruppa login e menu */
 .topbar-right {
   display: flex;
   align-items: center;
@@ -65,12 +72,16 @@ body {
   height: 54px;
 
   display: block;
+
   position: relative;
+
   overflow: hidden;
 
   flex-shrink: 0;
+
   text-decoration: none;
 }
+
 
 .logo img {
   width: 235px;
@@ -82,21 +93,22 @@ body {
   top: 50%;
   left: 50%;
 
-  transform: translate(-50%, -50%);
+  transform:
+    translate(-50%, -50%);
 
   display: block;
 }
 
 
 /* =========================================================
-   LINK LOGIN
+   LOGIN
    ========================================================= */
 
 .login-link {
   color: #ffffff;
 
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
 
   text-decoration: none;
 
@@ -104,6 +116,7 @@ body {
     opacity 0.2s ease,
     text-decoration-color 0.2s ease;
 }
+
 
 .login-link:hover {
   opacity: 0.78;
@@ -114,7 +127,7 @@ body {
 
 
 /* =========================================================
-   CONTENITORE DEL MENU
+   MENU HAMBURGER
    ========================================================= */
 
 .dropdown {
@@ -122,16 +135,6 @@ body {
 }
 
 
-/* =========================================================
-   ICONA HAMBURGER STILIZZATA
-   ========================================================= */
-
-/*
-  Contenitore cliccabile dell'icona.
-
-  Non ha bordo esterno, così resta leggero
-  e integrato nella barra rossa.
-*/
 .menu-button {
   width: 48px;
   height: 48px;
@@ -157,19 +160,17 @@ body {
 }
 
 
-/* Effetto al passaggio del mouse */
 .menu-button:hover {
-  background-color: rgba(255, 255, 255, 0.14);
+  background-color:
+    rgba(255, 255, 255, 0.13);
 }
 
 
-/* Effetto quando viene premuto */
 .menu-button:active {
   transform: scale(0.94);
 }
 
 
-/* Contorno quando si usa la tastiera */
 .menu-button:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 3px;
@@ -185,7 +186,8 @@ body {
 
   background-color: #ffffff;
 
-  border-radius: 14px 14px 5px 5px;
+  border-radius:
+    14px 14px 5px 5px;
 
   transition:
     transform 0.25s ease,
@@ -194,7 +196,7 @@ body {
 }
 
 
-/* Stile comune dei ripieni */
+/* Ripieni */
 .burger-filling {
   display: block;
 
@@ -206,7 +208,6 @@ body {
 }
 
 
-/* Ripieno superiore */
 .burger-lettuce {
   width: 25px;
   height: 3px;
@@ -217,7 +218,6 @@ body {
 }
 
 
-/* Ripieno centrale */
 .burger-meat {
   width: 23px;
   height: 4px;
@@ -235,7 +235,8 @@ body {
 
   background-color: #ffffff;
 
-  border-radius: 5px 5px 12px 12px;
+  border-radius:
+    5px 5px 12px 12px;
 
   transition:
     transform 0.25s ease,
@@ -244,12 +245,9 @@ body {
 }
 
 
-/* =========================================================
-   ANIMAZIONE DELL'ICONA APERTA
-   L'hamburger diventa una X.
-   ========================================================= */
-
-.menu-button[aria-expanded="true"] .burger-top {
+/* Trasformazione dell'hamburger in X */
+.menu-button[aria-expanded="true"]
+.burger-top {
   width: 26px;
 
   transform:
@@ -259,14 +257,19 @@ body {
   border-radius: 999px;
 }
 
-.menu-button[aria-expanded="true"] .burger-lettuce,
-.menu-button[aria-expanded="true"] .burger-meat {
+
+.menu-button[aria-expanded="true"]
+.burger-lettuce,
+.menu-button[aria-expanded="true"]
+.burger-meat {
   opacity: 0;
 
   transform: scaleX(0);
 }
 
-.menu-button[aria-expanded="true"] .burger-bottom {
+
+.menu-button[aria-expanded="true"]
+.burger-bottom {
   width: 26px;
 
   transform:
@@ -277,12 +280,9 @@ body {
 }
 
 
-/* =========================================================
-   MENU A TENDINA APERTO
-   ========================================================= */
-
+/* Menu aperto */
 .dropdown-menu {
-  width: 210px;
+  width: 220px;
   padding: 10px;
 
   display: flex;
@@ -294,24 +294,26 @@ body {
 
   background-color: #ffffff;
 
-  border: 1px solid #eeeeee;
+  border: 1px solid #ececec;
   border-radius: 14px;
 
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 16px 38px
+    rgba(0, 0, 0, 0.17);
 
   z-index: 2000;
 }
 
 
-/* Collegamenti del menu */
 .dropdown-menu a {
   padding: 12px 14px;
 
-  color: #171717;
+  color: #202020;
 
   border-radius: 9px;
 
-  font-size: 15px;
+  font-size: 14px;
+
   text-decoration: none;
 
   transition:
@@ -321,16 +323,209 @@ body {
 }
 
 
-/* Effetto sulle voci del menu */
 .dropdown-menu a:hover {
   padding-left: 18px;
 
-  background-color: #f8eaea;
+  background-color: #f8eeee;
+
   color: #b40000;
 }
 
 
-/* Nasconde gli elementi */
+/* =========================================================
+   BARRA DELLE CATEGORIE
+   ========================================================= */
+
+.category-bar {
+  width: 100%;
+
+  background-color: #ffffff;
+
+  border-bottom:
+    1px solid #e9e7e3;
+
+  box-shadow:
+    0 3px 12px
+    rgba(0, 0, 0, 0.035);
+
+  position: sticky;
+  top: 82px;
+
+  z-index: 1050;
+}
+
+
+/*
+  Contenitore delle categorie.
+
+  Su schermi piccoli può scorrere
+  orizzontalmente.
+*/
+.category-list {
+  width: min(1390px, 100%);
+  min-height: 76px;
+
+  margin: 0 auto;
+  padding: 0 28px;
+
+  display: flex;
+  align-items: stretch;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+
+.category-list::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* Singola categoria */
+.category-item {
+  min-width: 100px;
+  padding: 12px 17px 9px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  position: relative;
+
+  flex-shrink: 0;
+
+  border: none;
+  border-right:
+    1px solid #f0efec;
+
+  background-color: transparent;
+
+  color: #77736e;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+/* Elimina il separatore dall'ultimo elemento */
+.category-item:last-child {
+  border-right: none;
+}
+
+
+/* Contenitore dell'icona */
+.category-icon {
+  min-height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #8e8983;
+
+  font-size: 19px;
+  line-height: 1;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/*
+  Mantiene tutte le icone
+  della stessa larghezza.
+*/
+.category-icon i {
+  width: 26px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Nome della categoria */
+.category-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+
+  white-space: nowrap;
+}
+
+
+/* Effetto al passaggio del mouse */
+.category-item:hover {
+  background-color: #fbfaf8;
+
+  color: #b40000;
+}
+
+
+.category-item:hover
+.category-icon {
+  color: #b40000;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* Categoria selezionata */
+.category-item.active {
+  color: #b40000;
+}
+
+
+.category-item.active
+.category-icon {
+  color: #b40000;
+}
+
+
+/* Linea rossa inferiore */
+.category-item.active::after {
+  content: "";
+
+  width: 46px;
+  height: 3px;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    999px 999px 0 0;
+
+  background-color: #b40000;
+}
+
+
+/* Contorno per navigazione da tastiera */
+.category-item:focus-visible {
+  outline:
+    2px solid
+    rgba(180, 0, 0, 0.25);
+
+  outline-offset: -4px;
+}
+
+
+/* =========================================================
+   ELEMENTI NASCOSTI
+   ========================================================= */
+
 .hidden {
   display: none !important;
 }
@@ -341,84 +536,368 @@ body {
    ========================================================= */
 
 .home {
-  min-height: calc(100vh - 82px);
+  min-height:
+    calc(100vh - 158px);
 
-  background-color: #ffffff;
+  background-color: #f8f7f5;
 }
 
 
 /* =========================================================
-   SEZIONE DELLA MAPPA
+   LAYOUT PRINCIPALE
    ========================================================= */
 
 .map-section {
-  width: min(1350px, 100%);
+  width: min(1460px, 100%);
+
   margin: 0 auto;
-  padding: 40px 32px 60px;
+  padding: 34px 30px 55px;
 
   display: grid;
-  grid-template-columns: 0.7fr 1.3fr;
 
-  align-items: start;
-  gap: 45px;
+  grid-template-columns:
+    390px 1fr;
+
+  align-items: stretch;
+
+  gap: 30px;
 }
 
 
-/* Colonna sinistra */
-.map-information {
-  max-width: 430px;
-  padding-top: 45px;
+/* =========================================================
+   PANNELLO LATERALE
+   ========================================================= */
+
+.search-panel {
+  padding: 30px;
+
+  border:
+    1px solid #e9e7e3;
+
+  border-radius: 18px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 12px 32px
+    rgba(0, 0, 0, 0.055);
 }
 
 
-/* Etichetta sopra il titolo */
+/* Etichetta rossa */
 .section-label {
-  margin-bottom: 14px;
+  margin-bottom: 11px;
 
   color: #b40000;
 
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 2.2px;
+
   text-transform: uppercase;
 }
 
 
-/* Titolo principale */
-.map-information h1 {
-  margin-bottom: 18px;
+/* Titolo */
+.search-panel > h1 {
+  margin-bottom: 14px;
 
-  font-size: clamp(38px, 5vw, 62px);
+  color: #252422;
 
-  line-height: 1;
-  letter-spacing: -2px;
+  font-size: 41px;
+  line-height: 1.04;
+  letter-spacing: -1.6px;
 }
 
 
 /* Descrizione */
-.map-information > p:last-of-type {
-  color: #666666;
+.search-panel > p {
+  margin-bottom: 27px;
 
-  font-size: 18px;
+  color: #716e69;
+
+  font-size: 15px;
   line-height: 1.6;
 }
 
 
+/* Titoli delle sezioni interne */
+.nearby-search-section h2,
+.regions-section h2 {
+  margin-bottom: 15px;
+
+  color: #2b2927;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+
 /* =========================================================
-   PULSANTE DI RIPRISTINO
+   FORM DI RICERCA
+   ========================================================= */
+
+.nearby-search-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.nearby-search-form label {
+  margin-top: 3px;
+
+  color: #44413d;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+}
+
+
+/* Campo di testo e selettore */
+.nearby-search-form input,
+.nearby-search-form select {
+  width: 100%;
+  min-height: 45px;
+  padding: 10px 12px;
+
+  border:
+    1px solid #dcd9d4;
+
+  border-radius: 7px;
+
+  background-color: #ffffff;
+
+  color: #252422;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.nearby-search-form input::placeholder {
+  color: #aaa6a0;
+}
+
+
+.nearby-search-form input:focus,
+.nearby-search-form select:focus {
+  border-color: #b40000;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(180, 0, 0, 0.09);
+}
+
+
+/* Pulsante Cerca */
+.search-button {
+  width: 100%;
+  min-height: 46px;
+
+  margin-top: 7px;
+  padding: 11px 16px;
+
+  border:
+    1px solid #b40000;
+
+  border-radius: 7px;
+
+  background-color: #b40000;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.search-button:hover {
+  background-color: #920000;
+}
+
+
+.search-button:active {
+  transform: scale(0.985);
+}
+
+
+.search-button:disabled {
+  opacity: 0.65;
+
+  cursor: wait;
+}
+
+
+/* =========================================================
+   SEPARATORE
+   ========================================================= */
+
+.panel-divider {
+  margin: 27px 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  color: #9b9791;
+
+  font-size: 10px;
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+
+.panel-divider::before,
+.panel-divider::after {
+  content: "";
+
+  height: 1px;
+
+  flex: 1;
+
+  background-color: #ebe8e4;
+}
+
+
+/* =========================================================
+   PULSANTI DELLE REGIONI
+   ========================================================= */
+
+.regions-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+
+.region-button {
+  min-height: 40px;
+  padding: 8px 9px;
+
+  border:
+    1px solid #e1dfdb;
+
+  border-radius: 7px;
+
+  background-color: #ffffff;
+
+  color: #3d3a36;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.region-button:hover {
+  border-color: #b40000;
+
+  color: #b40000;
+
+  transform:
+    translateY(-1px);
+}
+
+
+.region-button.active {
+  border-color: #b40000;
+
+  background-color: #b40000;
+
+  color: #ffffff;
+}
+
+
+.region-button:focus-visible {
+  outline:
+    3px solid
+    rgba(180, 0, 0, 0.17);
+
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   STATO DEI RISULTATI
+   ========================================================= */
+
+.restaurants-status {
+  margin-top: 22px;
+  padding: 13px 15px;
+
+  border-left:
+    3px solid #b40000;
+
+  border-radius: 6px;
+
+  background-color: #f9eeee;
+
+  color: #5f0000;
+
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+
+.restaurants-status.error {
+  border-left-color: #c50000;
+
+  background-color: #fff1f1;
+
+  color: #b40000;
+}
+
+
+/* =========================================================
+   PULSANTE RESET
    ========================================================= */
 
 .reset-button {
-  margin-top: 28px;
-  padding: 13px 20px;
+  width: 100%;
 
-  border: 1px solid #b40000;
-  border-radius: 9px;
+  margin-top: 16px;
+  padding: 13px 16px;
 
-  background-color: #ffffff;
+  border:
+    1px solid #b40000;
+
+  border-radius: 7px;
+
+  background-color: transparent;
+
   color: #b40000;
 
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
 
   cursor: pointer;
@@ -428,195 +907,74 @@ body {
     color 0.2s ease;
 }
 
+
 .reset-button:hover {
   background-color: #b40000;
+
   color: #ffffff;
 }
 
 
 /* =========================================================
-   ELENCO DEI RISTORANTI
-   ========================================================= */
-
-.restaurants-section {
-  margin-top: 38px;
-}
-
-.restaurants-section h2 {
-  margin-bottom: 18px;
-
-  font-size: 23px;
-  line-height: 1.2;
-}
-
-.restaurants-list {
-  max-height: 355px;
-  padding-right: 7px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-
-  overflow-y: auto;
-}
-
-
-/* Scheda del ristorante */
-.restaurant-card {
-  padding: 17px;
-
-  border: 1px solid #e4e4e4;
-  border-radius: 13px;
-
-  background-color: #ffffff;
-
-  cursor: pointer;
-
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.restaurant-card:hover {
-  border-color: #b40000;
-
-  transform: translateY(-2px);
-
-  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.08);
-}
-
-.restaurant-card h3 {
-  margin-bottom: 7px;
-
-  font-size: 18px;
-}
-
-.restaurant-location {
-  margin-bottom: 4px;
-
-  color: #333333;
-
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.restaurant-address {
-  margin-bottom: 10px;
-
-  color: #777777;
-
-  font-size: 13px;
-}
-
-.restaurant-cuisine {
-  padding: 6px 9px;
-
-  display: inline-block;
-
-  border-radius: 999px;
-
-  background-color: #f8eaea;
-  color: #b40000;
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.restaurant-description {
-  margin-top: 11px;
-
-  color: #666666;
-
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-
-/* Messaggi informativi */
-.restaurants-message {
-  padding: 18px;
-
-  border-radius: 10px;
-
-  background-color: #f7f7f7;
-  color: #666666;
-
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.restaurants-error {
-  color: #b40000;
-}
-
-
-/* =========================================================
-   CONTENITORE DELLA MAPPA
+   MAPPA
    ========================================================= */
 
 .map-panel {
   width: 100%;
-  min-height: 680px;
+  min-height: 760px;
 
   position: relative;
+
   overflow: hidden;
 
-  border: 1px solid #eeeeee;
-  border-radius: 24px;
+  border:
+    1px solid #e4e1dc;
 
-  background-color: #fafafa;
+  border-radius: 18px;
 
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  background-color: #eeeeec;
+
+  box-shadow:
+    0 12px 32px
+    rgba(0, 0, 0, 0.07);
 }
 
 
-/* Mappa Leaflet */
+/* Contenitore Leaflet */
 #italyMap {
   width: 100%;
-  height: 680px;
+  height: 760px;
 
-  background-color: #fafafa;
+  background-color: #eeeeec;
 }
 
 
-/* Font interno della mappa */
 .leaflet-container {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 
-/* Elementi interattivi della mappa */
-.leaflet-interactive {
-  cursor: pointer;
+/* Controlli dello zoom */
+.leaflet-control-zoom {
+  overflow: hidden;
 
-  transition:
-    fill 0.2s ease,
-    fill-opacity 0.2s ease;
+  border: none !important;
+
+  border-radius:
+    8px !important;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.16) !important;
 }
 
 
-/* =========================================================
-   TOOLTIP DELLE REGIONI
-   ========================================================= */
-
-.region-tooltip {
-  padding: 7px 11px;
-
-  border: none;
-  border-radius: 7px;
-
-  background-color: #171717;
-  color: #ffffff;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
-}
-
-.region-tooltip::before {
-  display: none;
+.leaflet-control-zoom a {
+  color:
+    #b40000 !important;
 }
 
 
@@ -625,21 +983,141 @@ body {
    ========================================================= */
 
 .restaurant-popup {
-  min-width: 180px;
+  /* =========================================================
+   PULSANTE "VEDI RISTORANTE" NEL POPUP
+   ========================================================= */
+
+/* Nome del ristorante nel popup */
+.restaurant-popup-name {
+  margin-bottom: 2px;
+
+  display: block;
+
+  color: #b40000;
+
+  font-size: 17px;
+}
+
+
+/* Collegamento alla pagina completa */
+.restaurant-popup-link {
+  width: 100%;
+  margin-top: 9px;
+  padding: 10px 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  border-radius: 7px;
+
+  background-color: #b40000;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* Effetto al passaggio del mouse */
+.restaurant-popup-link:hover {
+  background-color: #8f0000;
+
+  transform: translateY(-1px);
+}
+
+
+/* Icona della freccia */
+.restaurant-popup-link i {
+  font-size: 12px;
+
+  transition: transform 0.2s ease;
+}
+
+
+/* Sposta leggermente la freccia */
+.restaurant-popup-link:hover i {
+  transform: translateX(3px);
+}
+  min-width: 215px;
 
   display: flex;
   flex-direction: column;
-  gap: 5px;
+
+  gap: 6px;
 }
 
+
 .restaurant-popup strong {
+  color: #b40000;
+
+  font-size: 17px;
+}
+
+
+.restaurant-popup span {
+  color: #5d5954;
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+.restaurant-popup p {
+  margin-top: 5px;
+
+  color: #716d67;
+
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+
+.restaurant-cuisine-popup {
+  color:
+    #b40000 !important;
+
+  font-weight: 700;
+}
+
+
+.restaurant-distance {
+  margin-top: 4px;
+
+  color:
+    #b40000 !important;
+
+  font-weight: 700;
+}
+
+
+/* Popup della posizione cercata */
+.searched-location-popup {
+  min-width: 200px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+.searched-location-popup strong {
   color: #b40000;
 
   font-size: 16px;
 }
 
-.restaurant-popup span {
-  color: #555555;
+
+.searched-location-popup span {
+  color: #5d5954;
 
   font-size: 13px;
   line-height: 1.4;
@@ -652,7 +1130,7 @@ body {
 
 .map-error {
   width: 100%;
-  min-height: 680px;
+  min-height: 760px;
   padding: 35px;
 
   display: flex;
@@ -672,23 +1150,40 @@ body {
 
 @media (max-width: 1100px) {
   .map-section {
-    width: min(1000px, 100%);
+    grid-template-columns:
+      340px 1fr;
 
-    grid-template-columns: 0.8fr 1.2fr;
+    gap: 22px;
 
-    gap: 30px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .search-panel {
+    padding: 23px;
+  }
+
+  .search-panel > h1 {
+    font-size: 35px;
+  }
+
+  .category-item {
+    min-width: 90px;
+
+    padding-right: 13px;
+    padding-left: 13px;
   }
 
   .map-panel {
-    min-height: 620px;
+    min-height: 690px;
   }
 
   #italyMap {
-    height: 620px;
+    height: 690px;
   }
 
   .map-error {
-    min-height: 620px;
+    min-height: 690px;
   }
 }
 
@@ -697,37 +1192,28 @@ body {
    TABLET
    ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 850px) {
   .map-section {
     grid-template-columns: 1fr;
 
-    gap: 35px;
-    padding-top: 42px;
+    padding-top: 25px;
   }
 
-  .map-information {
-    max-width: none;
-    padding-top: 0;
-
-    text-align: center;
-  }
-
-  .restaurants-list {
-    max-height: none;
-
-    text-align: left;
+  .regions-list {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
   }
 
   .map-panel {
-    min-height: 560px;
+    min-height: 600px;
   }
 
   #italyMap {
-    height: 560px;
+    height: 600px;
   }
 
   .map-error {
-    min-height: 560px;
+    min-height: 600px;
   }
 }
 
@@ -736,9 +1222,10 @@ body {
    SMARTPHONE
    ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   .topbar {
     height: 72px;
+
     padding: 0 14px;
   }
 
@@ -765,60 +1252,93 @@ body {
     height: 44px;
   }
 
-  .burger-top {
-    width: 24px;
-    height: 7px;
-  }
-
-  .burger-lettuce {
-    width: 22px;
-  }
-
-  .burger-meat {
-    width: 21px;
-  }
-
-  .burger-bottom {
-    width: 24px;
-    height: 6px;
-  }
-
-  .menu-button[aria-expanded="true"] .burger-top,
-  .menu-button[aria-expanded="true"] .burger-bottom {
-    width: 24px;
-  }
-
   .dropdown-menu {
     width: 190px;
   }
 
+  /*
+    La barra delle categorie resta
+    sotto la navbar.
+  */
+  .category-bar {
+    top: 72px;
+  }
+
+  .category-list {
+    min-height: 68px;
+
+    padding: 0 8px;
+  }
+
+  .category-item {
+    min-width: 82px;
+
+    padding:
+      9px 12px 7px;
+  }
+
+  .category-icon {
+    font-size: 18px;
+  }
+
+  .category-icon i {
+    width: 23px;
+  }
+
+  .category-label {
+    font-size: 11px;
+  }
+
+  .category-item.active::after {
+    width: 38px;
+  }
+
   .home {
-    min-height: calc(100vh - 72px);
+    min-height:
+      calc(100vh - 140px);
   }
 
   .map-section {
-    padding: 28px 12px 45px;
+    padding:
+      18px 12px 35px;
+
+    gap: 18px;
   }
 
-  .map-information h1 {
-    font-size: 38px;
+  .search-panel {
+    padding: 21px 17px;
+
+    border-radius: 15px;
   }
 
-  .map-information > p:last-of-type {
-    font-size: 16px;
+  .search-panel > h1 {
+    font-size: 32px;
+  }
+
+  .search-panel > p {
+    font-size: 15px;
+  }
+
+  .regions-list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .region-button {
+    font-size: 12px;
   }
 
   .map-panel {
-    min-height: 500px;
+    min-height: 520px;
 
-    border-radius: 18px;
+    border-radius: 15px;
   }
 
   #italyMap {
-    height: 500px;
+    height: 520px;
   }
 
   .map-error {
-    min-height: 500px;
+    min-height: 520px;
   }
 }

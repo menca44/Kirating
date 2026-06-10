@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Adatta la pagina a computer, tablet e smartphone -->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Ristorante | KIRA guide</title>
+
+  <!-- Libreria Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <style>
+    /* =====================================================
+       RESET GENERALE
+       ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      background-color: #f7f5f2;
+      color: #252422;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* =====================================================
+       NAVBAR
+       ===================================================== */
+
+    .topbar {
+      width: 100%;
+      height: 82px;
+      padding: 0 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background-color: #b40000;
+
+      box-shadow:
+        0 2px 12px
+        rgba(0, 0, 0, 0.14);
+    }
+
+    .logo {
+      color: #ffffff;
+
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+
+      text-decoration: none;
+    }
+
+    .logo span {
+      font-weight: 300;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .topbar-link {
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      text-decoration: none;
+    }
+
+    .topbar-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+    }
+
+
+    /* =====================================================
+       STATO DI CARICAMENTO ED ERRORE
+       ===================================================== */
+
+    .state-container {
+      width: min(950px, calc(100% - 30px));
+      min-height: 420px;
+      margin: 45px auto;
+      padding: 35px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+
+      border: 1px solid #e5e1db;
+      border-radius: 18px;
+
+      background-color: #ffffff;
+
+      text-align: center;
+
+      box-shadow:
+        0 14px 35px
+        rgba(0, 0, 0, 0.06);
+    }
+
+    .loading-spinner {
+      width: 42px;
+      height: 42px;
+
+      border: 4px solid #eadfda;
+      border-top-color: #b40000;
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .state-container h1 {
+      font-size: 28px;
+    }
+
+    .state-container p {
+      max-width: 560px;
+
+      color: #76716b;
+
+      line-height: 1.6;
+    }
+
+    .state-link {
+      padding: 11px 18px;
+
+      border: 1px solid #b40000;
+      border-radius: 8px;
+
+      color: #b40000;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      text-decoration: none;
+    }
+
+    .state-link:hover {
+      background-color: #b40000;
+      color: #ffffff;
+    }
+
+
+    /* =====================================================
+       PAGINA PRINCIPALE
+       ===================================================== */
+
+    .restaurant-page {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 42px 24px 75px;
+    }
+
+
+    /* =====================================================
+       INTESTAZIONE DEL RISTORANTE
+       ===================================================== */
+
+    .restaurant-header {
+      padding: 36px;
+
+      border: 1px solid #e5e1db;
+      border-radius: 20px;
+
+      background-color: #ffffff;
+
+      box-shadow:
+        0 16px 40px
+        rgba(0, 0, 0, 0.065);
+    }
+
+    .restaurant-category {
+      margin-bottom: 12px;
+
+      color: #b40000;
+
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .restaurant-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .restaurant-title-content h1 {
+      margin-bottom: 13px;
+
+      font-size: clamp(37px, 6vw, 58px);
+      line-height: 1;
+      letter-spacing: -2.2px;
+    }
+
+    .restaurant-location {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+
+      color: #69645e;
+
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .restaurant-location i {
+      margin-top: 3px;
+
+      color: #b40000;
+    }
+
+    .restaurant-main-score {
+      min-width: 135px;
+      padding: 19px;
+
+      border-radius: 15px;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      text-align: center;
+    }
+
+    .main-score-number {
+      display: block;
+
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .main-score-total {
+      margin-top: 4px;
+
+      display: block;
+
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .main-score-reviews {
+      margin-top: 10px;
+
+      display: block;
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+
+    /* =====================================================
+       INFORMAZIONI PRINCIPALI
+       ===================================================== */
+
+    .restaurant-meta {
+      margin-top: 30px;
+
+      display: grid;
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+    .meta-card {
+      padding: 17px;
+
+      display: flex;
+      align-items: center;
+      gap: 13px;
+
+      border: 1px solid #ece8e2;
+      border-radius: 12px;
+
+      background-color: #fcfbf9;
+    }
+
+    .meta-icon {
+      width: 40px;
+      height: 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background-color: #f6e9e9;
+      color: #b40000;
+    }
+
+    .meta-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      color: #8a857f;
+
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      color: #33302d;
+
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+
+    /* =====================================================
+       SEZIONI GENERALI
+       ===================================================== */
+
+    .content-section {
+      margin-top: 30px;
+      padding: 32px;
+
+      border: 1px solid #e5e1db;
+      border-radius: 18px;
+
+      background-color: #ffffff;
+
+      box-shadow:
+        0 12px 32px
+        rgba(0, 0, 0, 0.05);
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .section-header h2 {
+      margin-bottom: 6px;
+
+      font-size: 25px;
+    }
+
+    .section-header p {
+      color: #78736d;
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .review-link {
+      padding: 10px 15px;
+
+      flex-shrink: 0;
+
+      border: 1px solid #b40000;
+      border-radius: 8px;
+
+      color: #b40000;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      text-decoration: none;
+    }
+
+    .review-link:hover {
+      background-color: #b40000;
+      color: #ffffff;
+    }
+
+
+    /* =====================================================
+       MEDIE DELLE VALUTAZIONI
+       ===================================================== */
+
+    .ratings-summary {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+    .rating-summary-card {
+      padding: 19px;
+
+      border: 1px solid #ece8e2;
+      border-radius: 13px;
+
+      background-color: #fcfbf9;
+    }
+
+    .rating-summary-label {
+      margin-bottom: 10px;
+
+      color: #48443f;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .rating-summary-value {
+      margin-bottom: 10px;
+
+      color: #b40000;
+
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .pizza-score {
+      display: flex;
+      gap: 4px;
+
+      color: #d8d3cc;
+
+      font-size: 17px;
+    }
+
+    .pizza-score .active {
+      color: #b40000;
+    }
+
+
+    /* =====================================================
+       GALLERIA FOTOGRAFICA
+       ===================================================== */
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+    .gallery-photo {
+      aspect-ratio: 1.25;
+
+      position: relative;
+      overflow: hidden;
+
+      border-radius: 12px;
+
+      background-color: #ece9e4;
+
+      cursor: pointer;
+    }
+
+    .gallery-photo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.25s ease;
+    }
+
+    .gallery-photo:hover img {
+      transform: scale(1.04);
+    }
+
+    .empty-message {
+      padding: 25px;
+
+      border: 1px dashed #d9d4cd;
+      border-radius: 12px;
+
+      background-color: #fcfbf9;
+      color: #7e7973;
+
+      text-align: center;
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       RECENSIONI
+       ===================================================== */
+
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .review-card {
+      padding: 24px;
+
+      border: 1px solid #e8e4de;
+      border-radius: 15px;
+
+      background-color: #fcfbf9;
+    }
+
+    .review-top {
+      margin-bottom: 19px;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background-color: #b40000;
+      color: #ffffff;
+
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .review-author-name {
+      margin-bottom: 4px;
+
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .review-date {
+      color: #8a857f;
+
+      font-size: 12px;
+    }
+
+    .review-overall {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      color: #b40000;
+
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .review-overall i {
+      font-size: 18px;
+    }
+
+    .review-ratings {
+      margin-bottom: 19px;
+
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 10px;
+    }
+
+    .review-rating-item {
+      padding: 11px;
+
+      border-radius: 9px;
+
+      background-color: #ffffff;
+
+      text-align: center;
+    }
+
+    .review-rating-label {
+      margin-bottom: 5px;
+
+      display: block;
+
+      color: #858078;
+
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .review-rating-value {
+      color: #b40000;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .review-experience {
+      color: #4f4b46;
+
+      font-size: 15px;
+      line-height: 1.7;
+
+      white-space: pre-line;
+    }
+
+    .review-price {
+      margin-top: 17px;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      color: #5d5852;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .review-price i {
+      color: #b40000;
+    }
+
+    .review-photos {
+      margin-top: 19px;
+
+      display: grid;
+      grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+      gap: 9px;
+    }
+
+    .review-photo {
+      aspect-ratio: 1;
+
+      overflow: hidden;
+
+      border-radius: 9px;
+
+      background-color: #ece9e4;
+
+      cursor: pointer;
+    }
+
+    .review-photo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.2s ease;
+    }
+
+    .review-photo:hover img {
+      transform: scale(1.04);
+    }
+
+
+    /* =====================================================
+       VISUALIZZATORE DELLE FOTO
+       ===================================================== */
+
+    .photo-modal {
+      padding: 25px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+
+      background-color:
+        rgba(15, 15, 15, 0.9);
+    }
+
+    .photo-modal img {
+      max-width: 92vw;
+      max-height: 88vh;
+
+      object-fit: contain;
+
+      border-radius: 8px;
+    }
+
+    .close-photo-modal {
+      width: 44px;
+      height: 44px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: 20px;
+      right: 20px;
+
+      border: none;
+      border-radius: 50%;
+
+      background-color:
+        rgba(255, 255, 255, 0.15);
+
+      color: #ffffff;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
+    .close-photo-modal:hover {
+      background-color:
+        rgba(255, 255, 255, 0.25);
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 900px) {
+      .restaurant-title-row {
+        flex-direction: column;
+      }
+
+      .restaurant-main-score {
+        width: 100%;
+      }
+
+      .restaurant-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .ratings-summary {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .photo-gallery {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .review-ratings {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .topbar {
+        height: 72px;
+        padding: 0 15px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .topbar-right {
+        gap: 13px;
+      }
+
+      .topbar-link {
+        font-size: 13px;
+      }
+
+      .restaurant-page {
+        padding:
+          25px 12px 50px;
+      }
+
+      .restaurant-header,
+      .content-section {
+        padding: 22px 17px;
+
+        border-radius: 15px;
+      }
+
+      .restaurant-title-content h1 {
+        font-size: 38px;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .ratings-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .review-top {
+        flex-direction: column;
+      }
+
+      .review-ratings {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .review-photos {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <header class="topbar">
+    <a href="/" class="logo">
+      KIRA <span>guide</span>
+    </a>
+
+    <div class="topbar-right">
+      <a href="/" class="topbar-link">
+        Home
+      </a>
+
+      <a href="/recensioni.html" class="topbar-link">
+        Recensisci
+      </a>
+
+      <a href="/login.html" class="topbar-link">
+        Login
+      </a>
+    </div>
+  </header>
+
+  <!-- =====================================================
+       CARICAMENTO
+       ===================================================== -->
+  <section id="loadingState" class="state-container">
+    <div class="loading-spinner"></div>
+
+    <h1>Caricamento del ristorante</h1>
+
+    <p>
+      Stiamo recuperando le informazioni,
+      le fotografie e le recensioni degli utenti.
+    </p>
+  </section>
+
+  <!-- =====================================================
+       ERRORE
+       ===================================================== -->
+  <section
+    id="errorState"
+    class="state-container hidden"
+  >
+    <i
+      class="fa-solid fa-circle-exclamation"
+      style="color: #b40000; font-size: 38px;"
+    ></i>
+
+    <h1>Ristorante non disponibile</h1>
+
+    <p id="errorMessage">
+      Non è stato possibile recuperare le informazioni.
+    </p>
+
+    <a href="/" class="state-link">
+      Torna alla mappa
+    </a>
+  </section>
+
+  <!-- =====================================================
+       CONTENUTO DEL RISTORANTE
+       ===================================================== -->
+  <main
+    id="restaurantPage"
+    class="restaurant-page hidden"
+  >
+    <!-- =================================================
+         INTESTAZIONE
+         ================================================= -->
+    <section class="restaurant-header">
+      <p
+        id="restaurantCategory"
+        class="restaurant-category"
+      >
+        Ristorante
+      </p>
+
+      <div class="restaurant-title-row">
+        <div class="restaurant-title-content">
+          <h1 id="restaurantName">
+            Nome ristorante
+          </h1>
+
+          <p class="restaurant-location">
+            <i class="fa-solid fa-location-dot"></i>
+
+            <span id="restaurantAddress">
+              Indirizzo
+            </span>
+          </p>
+        </div>
+
+        <div class="restaurant-main-score">
+          <span
+            id="overallAverage"
+            class="main-score-number"
+          >
+            –
+          </span>
+
+          <span class="main-score-total">
+            su 5
+          </span>
+
+          <span
+            id="reviewsCount"
+            class="main-score-reviews"
+          >
+            Nessuna recensione
+          </span>
+        </div>
+      </div>
+
+      <!-- Informazioni principali -->
+      <div class="restaurant-meta">
+        <article class="meta-card">
+          <div class="meta-icon">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+
+          <div class="meta-content">
+            <span class="meta-label">
+              Cucina
+            </span>
+
+            <span
+              id="restaurantCuisine"
+              class="meta-value"
+            >
+              Non indicata
+            </span>
+          </div>
+        </article>
+
+        <article class="meta-card">
+          <div class="meta-icon">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+
+          <div class="meta-content">
+            <span class="meta-label">
+              Località
+            </span>
+
+            <span
+              id="restaurantLocation"
+              class="meta-value"
+            >
+              Non indicata
+            </span>
+          </div>
+        </article>
+
+        <article class="meta-card">
+          <div class="meta-icon">
+            <i class="fa-solid fa-euro-sign"></i>
+          </div>
+
+          <div class="meta-content">
+            <span class="meta-label">
+              Prezzo medio
+            </span>
+
+            <span
+              id="restaurantPrice"
+              class="meta-value"
+            >
+              Non disponibile
+            </span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================
+         VALUTAZIONI MEDIE
+         ================================================= -->
+    <section class="content-section">
+      <header class="section-header">
+        <div>
+          <h2>Valutazioni degli utenti</h2>
+
+          <p>
+            Le medie sono calcolate sulle recensioni pubblicate.
+          </p>
+        </div>
+      </header>
+
+      <div class="ratings-summary">
+        <article class="rating-summary-card">
+          <p class="rating-summary-label">
+            Cibo
+          </p>
+
+          <p
+            id="foodAverage"
+            class="rating-summary-value"
+          >
+            –
+          </p>
+
+          <div
+            id="foodPizzaScore"
+            class="pizza-score"
+          ></div>
+        </article>
+
+        <article class="rating-summary-card">
+          <p class="rating-summary-label">
+            Servizio
+          </p>
+
+          <p
+            id="serviceAverage"
+            class="rating-summary-value"
+          >
+            –
+          </p>
+
+          <div
+            id="servicePizzaScore"
+            class="pizza-score"
+          ></div>
+        </article>
+
+        <article class="rating-summary-card">
+          <p class="rating-summary-label">
+            Ambiente
+          </p>
+
+          <p
+            id="atmosphereAverage"
+            class="rating-summary-value"
+          >
+            –
+          </p>
+
+          <div
+            id="atmospherePizzaScore"
+            class="pizza-score"
+          ></div>
+        </article>
+
+        <article class="rating-summary-card">
+          <p class="rating-summary-label">
+            Complessiva
+          </p>
+
+          <p
+            id="overallSummaryAverage"
+            class="rating-summary-value"
+          >
+            –
+          </p>
+
+          <div
+            id="overallPizzaScore"
+            class="pizza-score"
+          ></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =================================================
+         GALLERIA
+         ================================================= -->
+    <section class="content-section">
+      <header class="section-header">
+        <div>
+          <h2>Fotografie</h2>
+
+          <p>
+            Le immagini condivise dagli utenti.
+          </p>
+        </div>
+      </header>
+
+      <div
+        id="photoGallery"
+        class="photo-gallery"
+      ></div>
+
+      <div
+        id="emptyGallery"
+        class="empty-message hidden"
+      >
+        Non sono ancora state pubblicate fotografie.
+      </div>
+    </section>
+
+    <!-- =================================================
+         RECENSIONI
+         ================================================= -->
+    <section class="content-section">
+      <header class="section-header">
+        <div>
+          <h2>Recensioni</h2>
+
+          <p id="reviewsSectionDescription">
+            Le esperienze condivise dagli utenti.
+          </p>
+        </div>
+
+        <a
+          id="addReviewLink"
+          href="/recensioni.html"
+          class="review-link"
+        >
+          Scrivi una recensione
+        </a>
+      </header>
+
+      <div
+        id="reviewsList"
+        class="reviews-list"
+      ></div>
+
+      <div
+        id="emptyReviews"
+        class="empty-message hidden"
+      >
+        Questo ristorante non ha ancora recensioni.
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+       MODALE DELLE FOTOGRAFIE
+       ===================================================== -->
+  <div
+    id="photoModal"
+    class="photo-modal hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Fotografia ingrandita"
+  >
+    <button
+      id="closePhotoModal"
+      class="close-photo-modal"
+      type="button"
+      aria-label="Chiudi fotografia"
+    >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <img
+      id="modalPhoto"
+      src=""
+      alt="Fotografia del ristorante"
+    />
+  </div>
+
+  <script>
+    /* =====================================================
+       ELEMENTI DELLA PAGINA
+       ===================================================== */
+
+    const loadingState =
+      document.getElementById("loadingState");
+
+    const errorState =
+      document.getElementById("errorState");
+
+    const errorMessage =
+      document.getElementById("errorMessage");
+
+    const restaurantPage =
+      document.getElementById("restaurantPage");
+
+    const restaurantCategory =
+      document.getElementById("restaurantCategory");
+
+    const restaurantName =
+      document.getElementById("restaurantName");
+
+    const restaurantAddress =
+      document.getElementById("restaurantAddress");
+
+    const restaurantCuisine =
+      document.getElementById("restaurantCuisine");
+
+    const restaurantLocation =
+      document.getElementById("restaurantLocation");
+
+    const restaurantPrice =
+      document.getElementById("restaurantPrice");
+
+    const overallAverage =
+      document.getElementById("overallAverage");
+
+    const reviewsCount =
+      document.getElementById("reviewsCount");
+
+    const reviewsSectionDescription =
+      document.getElementById(
+        "reviewsSectionDescription"
+      );
+
+    const photoGallery =
+      document.getElementById("photoGallery");
+
+    const emptyGallery =
+      document.getElementById("emptyGallery");
+
+    const reviewsList =
+      document.getElementById("reviewsList");
+
+    const emptyReviews =
+      document.getElementById("emptyReviews");
+
+    const addReviewLink =
+      document.getElementById("addReviewLink");
+
+    const photoModal =
+      document.getElementById("photoModal");
+
+    const modalPhoto =
+      document.getElementById("modalPhoto");
+
+    const closePhotoModal =
+      document.getElementById("closePhotoModal");
+
+
+    /* =====================================================
+       RECUPERO DELL'ID DALL'INDIRIZZO
+       ===================================================== */
+
+    /*
+      Legge l'id dall'indirizzo.
+
+      Esempio:
+      /ristorante.html?id=3
+    */
+    const queryParameters =
+      new URLSearchParams(window.location.search);
+
+    const restaurantId =
+      Number.parseInt(
+        queryParameters.get("id"),
+        10
+      );
+
+
+    /* =====================================================
+       CARICAMENTO DEL RISTORANTE
+       ===================================================== */
+
+    async function loadRestaurant() {
+      /*
+        Controlla che l'id sia valido.
+      */
+      if (
+        !Number.isInteger(restaurantId) ||
+        restaurantId <= 0
+      ) {
+        showError(
+          "L'indirizzo non contiene un identificativo valido."
+        );
+
+        return;
+      }
+
+      try {
+        /*
+          Chiama la rotta creata nel server.js.
+        */
+        const response =
+          await fetch(
+            "/restaurants/" + restaurantId
+          );
+
+        const result =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result.message ||
+            "Ristorante non trovato."
+          );
+        }
+
+        /*
+          Mostra tutte le informazioni ricevute.
+        */
+        renderRestaurant(
+          result.restaurant,
+          result.reviews
+        );
+      } catch (error) {
+        console.error(
+          "Errore caricamento ristorante:",
+          error
+        );
+
+        showError(error.message);
+      }
+    }
+
+
+    /* =====================================================
+       VISUALIZZAZIONE DEL RISTORANTE
+       ===================================================== */
+
+    function renderRestaurant(
+      restaurant,
+      reviews
+    ) {
+      /*
+        Aggiorna il titolo della scheda del browser.
+      */
+      document.title =
+        restaurant.name + " | KIRA guide";
+
+      restaurantName.textContent =
+        restaurant.name;
+
+      restaurantCategory.textContent =
+        restaurant.cuisine ||
+        "Ristorante";
+
+      restaurantCuisine.textContent =
+        restaurant.cuisine ||
+        "Non indicata";
+
+      restaurantLocation.textContent =
+        restaurant.city +
+        ", " +
+        restaurant.region;
+
+      restaurantAddress.textContent =
+        restaurant.address +
+        " — " +
+        restaurant.city +
+        ", " +
+        restaurant.region;
+
+      /*
+        Mostra la media complessiva.
+      */
+      overallAverage.textContent =
+        formatAverage(
+          restaurant.average_overall_rating
+        );
+
+      const reviewNumber =
+        Number(restaurant.reviews_count);
+
+      reviewsCount.textContent =
+        reviewNumber === 1
+          ? "1 recensione"
+          : reviewNumber + " recensioni";
+
+      reviewsSectionDescription.textContent =
+        reviewNumber === 1
+          ? "1 esperienza condivisa dagli utenti."
+          : reviewNumber +
+            " esperienze condivise dagli utenti.";
+
+      /*
+        Mostra la fascia di prezzo media.
+      */
+      restaurantPrice.textContent =
+        formatPriceRange(
+          restaurant.average_price_range
+        );
+
+      /*
+        Mostra le quattro medie.
+      */
+      renderAverageRating(
+        "foodAverage",
+        "foodPizzaScore",
+        restaurant.average_food_rating
+      );
+
+      renderAverageRating(
+        "serviceAverage",
+        "servicePizzaScore",
+        restaurant.average_service_rating
+      );
+
+      renderAverageRating(
+        "atmosphereAverage",
+        "atmospherePizzaScore",
+        restaurant.average_atmosphere_rating
+      );
+
+      renderAverageRating(
+        "overallSummaryAverage",
+        "overallPizzaScore",
+        restaurant.average_overall_rating
+      );
+
+      /*
+        Collega il pulsante per scrivere una recensione.
+
+        Aggiungiamo l'id all'indirizzo, così in futuro
+        potremo precompilare automaticamente il ristorante.
+      */
+      addReviewLink.href =
+        "/recensioni.html?restaurantId=" +
+        restaurant.id;
+
+      renderGallery(reviews);
+      renderReviews(reviews);
+
+      loadingState.classList.add("hidden");
+      errorState.classList.add("hidden");
+      restaurantPage.classList.remove("hidden");
+    }
+
+
+    /* =====================================================
+       MEDIE E SPICCHI DI PIZZA
+       ===================================================== */
+
+    function renderAverageRating(
+      valueElementId,
+      pizzaElementId,
+      rating
+    ) {
+      const valueElement =
+        document.getElementById(valueElementId);
+
+      const pizzaElement =
+        document.getElementById(pizzaElementId);
+
+      valueElement.textContent =
+        formatAverage(rating);
+
+      pizzaElement.innerHTML =
+        createPizzaScore(rating);
+    }
+
+
+    /*
+      Crea cinque spicchi.
+
+      Gli spicchi fino al valore arrotondato
+      vengono colorati di rosso.
+    */
+    function createPizzaScore(rating) {
+      const numericRating =
+        Number(rating);
+
+      const activeSlices =
+        Number.isFinite(numericRating)
+          ? Math.round(numericRating)
+          : 0;
+
+      let html = "";
+
+      for (
+        let value = 1;
+        value <= 5;
+        value += 1
+      ) {
+        const activeClass =
+          value <= activeSlices
+            ? "active"
+            : "";
+
+        html += `
+          <i
+            class="fa-solid fa-pizza-slice ${activeClass}"
+            aria-hidden="true"
+          ></i>
+        `;
+      }
+
+      return html;
+    }
+
+
+    function formatAverage(value) {
+      const numericValue =
+        Number(value);
+
+      if (!Number.isFinite(numericValue)) {
+        return "–";
+      }
+
+      return numericValue.toFixed(1);
+    }
+
+
+    /*
+      Converte la media del prezzo in simboli €.
+
+      Per esempio:
+      2.6 viene arrotondato a 3 e diventa €€€.
+    */
+    function formatPriceRange(value) {
+      const numericValue =
+        Number(value);
+
+      if (!Number.isFinite(numericValue)) {
+        return "Non disponibile";
+      }
+
+      const roundedValue =
+        Math.min(
+          4,
+          Math.max(
+            1,
+            Math.round(numericValue)
+          )
+        );
+
+      return "€".repeat(roundedValue);
+    }
+
+
+    /* =====================================================
+       GALLERIA GENERALE
+       ===================================================== */
+
+    function renderGallery(reviews) {
+      /*
+        Unisce tutte le fotografie
+        di tutte le recensioni.
+      */
+      const allPhotos =
+        reviews.flatMap(function (review) {
+          return Array.isArray(review.photos)
+            ? review.photos
+            : [];
+        });
+
+      photoGallery.innerHTML = "";
+
+      if (allPhotos.length === 0) {
+        emptyGallery.classList.remove("hidden");
+        return;
+      }
+
+      emptyGallery.classList.add("hidden");
+
+      allPhotos.forEach(function (photo) {
+        const photoElement =
+          createPhotoElement(
+            photo.url,
+            "Fotografia del ristorante",
+            "gallery-photo"
+          );
+
+        photoGallery.appendChild(
+          photoElement
+        );
+      });
+    }
+
+
+    /* =====================================================
+       RECENSIONI
+       ===================================================== */
+
+    function renderReviews(reviews) {
+      reviewsList.innerHTML = "";
+
+      if (
+        !Array.isArray(reviews) ||
+        reviews.length === 0
+      ) {
+        emptyReviews.classList.remove("hidden");
+        return;
+      }
+
+      emptyReviews.classList.add("hidden");
+
+      reviews.forEach(function (review) {
+        const card =
+          createReviewCard(review);
+
+        reviewsList.appendChild(card);
+      });
+    }
+
+
+    function createReviewCard(review) {
+      const card =
+        document.createElement("article");
+
+      card.className = "review-card";
+
+      /*
+        Iniziale utilizzata nell'avatar.
+      */
+      const userName =
+        review.user_name ||
+        "Utente anonimo";
+
+      const userInitial =
+        userName
+          .trim()
+          .charAt(0)
+          .toUpperCase() || "U";
+
+      /*
+        Intestazione della recensione.
+      */
+      const top =
+        document.createElement("div");
+
+      top.className = "review-top";
+
+      top.innerHTML = `
+        <div class="review-author">
+          <div class="author-avatar">
+            ${escapeHtml(userInitial)}
+          </div>
+
+          <div>
+            <p class="review-author-name">
+              ${escapeHtml(userName)}
+            </p>
+
+            <p class="review-date">
+              ${formatDate(review.created_at)}
+            </p>
+          </div>
+        </div>
+
+        <div class="review-overall">
+          <i class="fa-solid fa-pizza-slice"></i>
+
+          <span>
+            ${escapeHtml(review.overall_rating)}/5
+          </span>
+        </div>
+      `;
+
+      /*
+        Valutazioni separate.
+      */
+      const ratings =
+        document.createElement("div");
+
+      ratings.className = "review-ratings";
+
+      ratings.innerHTML = `
+        ${createReviewRatingItem(
+          "Cibo",
+          review.food_rating
+        )}
+
+        ${createReviewRatingItem(
+          "Servizio",
+          review.service_rating
+        )}
+
+        ${createReviewRatingItem(
+          "Ambiente",
+          review.atmosphere_rating
+        )}
+
+        ${createReviewRatingItem(
+          "Complessiva",
+          review.overall_rating
+        )}
+      `;
+
+      /*
+        Testo dell'esperienza.
+      */
+      const experience =
+        document.createElement("p");
+
+      experience.className =
+        "review-experience";
+
+      experience.textContent =
+        review.experience;
+
+      /*
+        Fascia di prezzo.
+      */
+      const price =
+        document.createElement("div");
+
+      price.className = "review-price";
+
+      price.innerHTML = `
+        <i class="fa-solid fa-wallet"></i>
+
+        <span>
+          Fascia di prezzo:
+          ${escapeHtml(
+            formatPriceRange(
+              review.price_range
+            )
+          )}
+        </span>
+      `;
+
+      card.append(
+        top,
+        ratings,
+        experience,
+        price
+      );
+
+      /*
+        Fotografie collegate alla recensione.
+      */
+      if (
+        Array.isArray(review.photos) &&
+        review.photos.length > 0
+      ) {
+        const photosContainer =
+          document.createElement("div");
+
+        photosContainer.className =
+          "review-photos";
+
+        review.photos.forEach(function (photo) {
+          const photoElement =
+            createPhotoElement(
+              photo.url,
+              "Fotografia della recensione",
+              "review-photo"
+            );
+
+          photosContainer.appendChild(
+            photoElement
+          );
+        });
+
+        card.appendChild(photosContainer);
+      }
+
+      return card;
+    }
+
+
+    function createReviewRatingItem(
+      label,
+      value
+    ) {
+      return `
+        <div class="review-rating-item">
+          <span class="review-rating-label">
+            ${escapeHtml(label)}
+          </span>
+
+          <span class="review-rating-value">
+            ${escapeHtml(value)}/5
+          </span>
+        </div>
+      `;
+    }
+
+
+    /* =====================================================
+       ELEMENTI FOTOGRAFICI
+       ===================================================== */
+
+    function createPhotoElement(
+      photoUrl,
+      altText,
+      className
+    ) {
+      const container =
+        document.createElement("div");
+
+      container.className = className;
+
+      const image =
+        document.createElement("img");
+
+      image.src = photoUrl;
+      image.alt = altText;
+      image.loading = "lazy";
+
+      /*
+        Apre la fotografia ingrandita.
+      */
+      container.addEventListener(
+        "click",
+        function () {
+          openPhotoModal(
+            photoUrl,
+            altText
+          );
+        }
+      );
+
+      container.appendChild(image);
+
+      return container;
+    }
+
+
+    function openPhotoModal(
+      photoUrl,
+      altText
+    ) {
+      modalPhoto.src = photoUrl;
+      modalPhoto.alt = altText;
+
+      photoModal.classList.remove("hidden");
+
+      document.body.style.overflow =
+        "hidden";
+    }
+
+
+    function closeModal() {
+      photoModal.classList.add("hidden");
+
+      modalPhoto.src = "";
+
+      document.body.style.overflow =
+        "";
+    }
+
+
+    closePhotoModal.addEventListener(
+      "click",
+      closeModal
+    );
+
+
+    photoModal.addEventListener(
+      "click",
+      function (event) {
+        /*
+          Chiude il modale soltanto cliccando
+          sullo sfondo e non sull'immagine.
+        */
+        if (event.target === photoModal) {
+          closeModal();
+        }
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+        if (
+          event.key === "Escape" &&
+          !photoModal.classList.contains("hidden")
+        ) {
+          closeModal();
+        }
+      }
+    );
+
+
+    /* =====================================================
+       FUNZIONI DI SUPPORTO
+       ===================================================== */
+
+    function formatDate(dateValue) {
+      const date =
+        new Date(dateValue);
+
+      if (
+        Number.isNaN(date.getTime())
+      ) {
+        return "Data non disponibile";
+      }
+
+      return new Intl.DateTimeFormat(
+        "it-IT",
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      ).format(date);
+    }
+
+
+    function escapeHtml(value) {
+      const temporaryElement =
+        document.createElement("div");
+
+      temporaryElement.textContent =
+        value === null ||
+        value === undefined
+          ? ""
+          : String(value);
+
+      return temporaryElement.innerHTML;
+    }
+
+
+    function showError(message) {
+      loadingState.classList.add("hidden");
+      restaurantPage.classList.add("hidden");
+
+      errorMessage.textContent = message;
+
+      errorState.classList.remove("hidden");
+    }
+
+
+    /* =====================================================
+       AVVIO
+       ===================================================== */
+
+    loadRestaurant();
+  </script>
+</body>
+</html>
