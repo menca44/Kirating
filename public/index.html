@@ -86,36 +86,18 @@
       gap: 12px;
     }
 
-    .brand-logo {
-      width: 54px;
-      height: 54px;
+    .brand-logo-full {
+  width: 168px;
+  height: 58px;
 
-      border: 2px solid rgba(255, 255, 255, 0.72);
-      border-radius: 50%;
+  display: block;
 
-      object-fit: cover;
+  border-radius: 12px;
 
-      background-color: #ffffff;
-    }
+  object-fit: contain;
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-title {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: 0.2px;
-    }
-
-    .brand-subtitle {
-      color: rgba(255, 255, 255, 0.82);
-
-      font-size: 12px;
-      font-weight: 700;
-    }
+  background-color: #ffffff;
+}
 
     .navbar-actions {
       display: flex;
@@ -745,13 +727,10 @@
         padding: 11px 14px;
       }
 
-      .brand-title {
-        font-size: 20px;
-      }
-
-      .brand-subtitle {
-        display: none;
-      }
+      .brand-logo-full {
+  width: 138px;
+  height: 50px;
+}
 
       .navbar-link span {
         display: none;
@@ -775,25 +754,16 @@
 <body>
   <header class="navbar">
     <a
-      class="brand"
-      href="/"
-    >
-      <img
-        class="brand-logo"
-        src="/logo-kira.jpeg"
-        alt="Logo KiRating"
-      />
-
-      <span class="brand-text">
-        <span class="brand-title">
-          KiRating
-        </span>
-
-        <span class="brand-subtitle">
-          Trova e recensisci ristoranti
-        </span>
-      </span>
-    </a>
+  class="brand"
+  href="/"
+  aria-label="Vai alla home di KiRating"
+>
+  <img
+    class="brand-logo-full"
+    src="/logo-kira.jpeg"
+    alt="KiRating"
+  />
+</a>
 
     <div class="navbar-actions">
       <a
