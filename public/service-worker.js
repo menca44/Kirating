@@ -7,6 +7,7 @@ const CACHE_NAME = "kirating-cache-v1";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
+  "/account.html",
   "/login.html",
   "/recensioni.html",
   "/ristorante.html",
@@ -15,6 +16,7 @@ const STATIC_ASSETS = [
   "/logo-cane.jpg",
   "/icon-192.png",
   "/icon-512.png"
+  
 ];
 
 // Evento install: viene eseguito quando il service worker viene installato.

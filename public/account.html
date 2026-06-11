@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+
+  <title>KiRating | Account</title>
+
+  <link rel="manifest" href="/manifest.json" />
+
+  <meta name="theme-color" content="#b90006" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KiRating" />
+
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.16), transparent 32%),
+        linear-gradient(145deg, #8f0000 0%, #b90006 45%, #7e0000 100%);
+
+      color: #2b2118;
+
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button,
+    input {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 18px 18px 28px;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-actions {
+      width: 100%;
+      max-width: 520px;
+      margin: 52px auto 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      position: relative;
+      z-index: 20;
+    }
+
+    .top-title {
+      color: #ffffff;
+
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -0.3px;
+    }
+
+    .home-link {
+      width: 48px;
+      height: 48px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 50%;
+
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+
+      font-size: 18px;
+
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+    }
+
+    .account-card {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 22px 20px;
+
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 30px;
+
+      background-color: rgba(255, 250, 245, 0.96);
+
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+
+      backdrop-filter: blur(18px);
+    }
+
+    .profile-header {
+      margin-bottom: 22px;
+
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-avatar {
+      width: 74px;
+      height: 74px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 22px;
+
+      background: linear-gradient(135deg, #b90006, #7e0000);
+      color: #ffffff;
+
+      font-size: 30px;
+
+      box-shadow: 0 15px 32px rgba(180, 0, 0, 0.26);
+    }
+
+    .profile-info {
+      min-width: 0;
+    }
+
+    .profile-info h1 {
+      margin-bottom: 5px;
+
+      color: #b40000;
+
+      font-size: 28px;
+      line-height: 1.05;
+      font-weight: 950;
+      letter-spacing: -0.6px;
+    }
+
+    .profile-info p {
+      color: #746f68;
+
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 750;
+
+      word-break: break-word;
+    }
+
+    .status-pill {
+      margin-bottom: 18px;
+      padding: 12px 14px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      border: 1px solid rgba(44, 122, 63, 0.18);
+      border-radius: 17px;
+
+      background-color: #effaf2;
+      color: #246b38;
+
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .account-section {
+      margin-top: 16px;
+      padding: 16px;
+
+      border: 1px solid #eadfd6;
+      border-radius: 22px;
+
+      background-color: #ffffff;
+    }
+
+    .account-section h2 {
+      margin-bottom: 12px;
+
+      color: #b40000;
+
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .info-item {
+      padding: 12px 0;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+
+      border-bottom: 1px solid #f0e7df;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      color: #6c6259;
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .info-label i {
+      width: 18px;
+
+      color: #b40000;
+
+      text-align: center;
+    }
+
+    .info-value {
+      color: #2b2118;
+
+      font-size: 14px;
+      font-weight: 850;
+      text-align: right;
+
+      word-break: break-word;
+    }
+
+    .quick-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .action-link,
+    .logout-button {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 16px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+
+      border-radius: 999px;
+
+      font-size: 15px;
+      font-weight: 950;
+
+      cursor: pointer;
+    }
+
+    .action-link {
+      border: 1px solid rgba(180, 0, 0, 0.18);
+
+      background-color: #fff3f3;
+      color: #b40000;
+    }
+
+    .action-link.primary {
+      border: none;
+
+      background: linear-gradient(135deg, #b90006, #8f0000);
+      color: #ffffff;
+
+      box-shadow: 0 14px 30px rgba(180, 0, 0, 0.24);
+    }
+
+    .logout-button {
+      border: 1px solid rgba(180, 0, 0, 0.30);
+
+      background-color: #ffffff;
+      color: #b40000;
+    }
+
+    .logout-button:disabled {
+      opacity: 0.68;
+      cursor: wait;
+    }
+
+    .message {
+      margin-bottom: 14px;
+      padding: 12px 13px;
+
+      display: none;
+
+      border-radius: 15px;
+
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 850;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      border: 1px solid rgba(180, 0, 0, 0.20);
+
+      background-color: #fff0f0;
+      color: #9b0000;
+    }
+
+    .message.success {
+      border: 1px solid rgba(44, 122, 63, 0.20);
+
+      background-color: #effaf2;
+      color: #246b38;
+    }
+
+    .bottom-brand {
+      width: 100%;
+      max-width: 520px;
+      margin: 20px auto 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 86px;
+      height: 86px;
+
+      display: block;
+
+      object-fit: cover;
+      object-position: center;
+
+      border-radius: 20px;
+
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+    }
+
+    .loading-card {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 28px 20px;
+
+      border-radius: 28px;
+
+      background-color: rgba(255, 250, 245, 0.96);
+      color: #746f68;
+
+      font-size: 15px;
+      font-weight: 850;
+      text-align: center;
+
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.22);
+    }
+
+    .loading-card i {
+      margin-bottom: 10px;
+
+      display: block;
+
+      color: #b40000;
+
+      font-size: 28px;
+    }
+
+    @media (min-width: 760px) {
+      .page {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .page {
+        padding: 14px 14px 24px;
+      }
+
+      .top-actions {
+        margin-top: 58px;
+        margin-bottom: 16px;
+      }
+
+      .top-title {
+        font-size: 21px;
+      }
+
+      .home-link {
+        width: 48px;
+        height: 48px;
+
+        font-size: 18px;
+      }
+
+      .account-card {
+        padding: 20px 16px;
+        border-radius: 28px;
+      }
+
+      .profile-avatar {
+        width: 66px;
+        height: 66px;
+
+        border-radius: 20px;
+
+        font-size: 27px;
+      }
+
+      .profile-info h1 {
+        font-size: 25px;
+      }
+
+      .account-section {
+        padding: 15px;
+        border-radius: 20px;
+      }
+
+      .info-item {
+        gap: 10px;
+      }
+
+      .info-label,
+      .info-value {
+        font-size: 13px;
+      }
+
+      .brand-logo {
+        width: 78px;
+        height: 78px;
+
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="top-actions">
+      <h1 class="top-title">
+        Account
+      </h1>
+
+      <a
+        class="home-link"
+        href="/"
+        aria-label="Torna alla home"
+      >
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </div>
+
+    <section
+      id="loadingCard"
+      class="loading-card"
+    >
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      Caricamento account...
+    </section>
+
+    <section
+      id="accountCard"
+      class="account-card"
+      style="display: none;"
+    >
+      <div
+        id="accountMessage"
+        class="message"
+      ></div>
+
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="profile-info">
+          <h1 id="userName">
+            Utente
+          </h1>
+
+          <p id="userEmail">
+            email@example.com
+          </p>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i class="fa-solid fa-circle-check"></i>
+        Sei collegato a KiRating.
+      </div>
+
+      <section class="account-section">
+        <h2>
+          Informazioni account
+        </h2>
+
+        <div class="info-list">
+          <div class="info-item">
+            <span class="info-label">
+              <i class="fa-solid fa-user"></i>
+              Nome
+            </span>
+
+            <span
+              id="accountNameValue"
+              class="info-value"
+            >
+              -
+            </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">
+              <i class="fa-solid fa-envelope"></i>
+              Email
+            </span>
+
+            <span
+              id="accountEmailValue"
+              class="info-value"
+            >
+              -
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="account-section">
+        <h2>
+          Azioni rapide
+        </h2>
+
+        <div class="quick-actions">
+          <a
+            class="action-link primary"
+            href="/recensioni.html"
+          >
+            <i class="fa-solid fa-store"></i>
+            Aggiungi ristorante
+          </a>
+
+          <a
+            class="action-link"
+            href="/"
+          >
+            <i class="fa-solid fa-map-location-dot"></i>
+            Torna alla mappa
+          </a>
+
+          <button
+            id="logoutButton"
+            class="logout-button"
+            type="button"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Esci
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <a
+      class="bottom-brand"
+      href="/"
+      aria-label="Vai alla home di KiRating"
+    >
+      <img
+        class="brand-logo"
+        src="/logo-kirina.png"
+        alt="Paw approved by Kira"
+      />
+    </a>
+  </main>
+
+  <script>
+    const loadingCard =
+      document.getElementById("loadingCard");
+
+    const accountCard =
+      document.getElementById("accountCard");
+
+    const accountMessage =
+      document.getElementById("accountMessage");
+
+    const userName =
+      document.getElementById("userName");
+
+    const userEmail =
+      document.getElementById("userEmail");
+
+    const accountNameValue =
+      document.getElementById("accountNameValue");
+
+    const accountEmailValue =
+      document.getElementById("accountEmailValue");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
+    function showMessage(message, type) {
+      accountMessage.textContent =
+        message;
+
+      accountMessage.className =
+        "message show " + type;
+    }
+
+    function clearMessage() {
+      accountMessage.textContent =
+        "";
+
+      accountMessage.className =
+        "message";
+    }
+
+    function getUserName(user) {
+      return (
+        user.name ||
+        user.username ||
+        user.full_name ||
+        "Utente KiRating"
+      );
+    }
+
+    function getUserEmail(user) {
+      return (
+        user.email ||
+        "Email non disponibile"
+      );
+    }
+
+    async function loadAccount() {
+      try {
+        const response =
+          await fetch("/me");
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.success ||
+          !data.authenticated
+        ) {
+          window.location.href =
+            "/login.html?redirect=" +
+            encodeURIComponent("/account.html");
+
+          return;
+        }
+
+        const user =
+          data.user || {};
+
+        const name =
+          getUserName(user);
+
+        const email =
+          getUserEmail(user);
+
+        userName.textContent =
+          name;
+
+        userEmail.textContent =
+          email;
+
+        accountNameValue.textContent =
+          name;
+
+        accountEmailValue.textContent =
+          email;
+
+        loadingCard.style.display =
+          "none";
+
+        accountCard.style.display =
+          "block";
+      } catch (error) {
+        console.error(
+          "Errore durante il caricamento account:",
+          error
+        );
+
+        loadingCard.style.display =
+          "none";
+
+        accountCard.style.display =
+          "block";
+
+        showMessage(
+          "Non è stato possibile caricare i dati dell’account.",
+          "error"
+        );
+      }
+    }
+
+    async function logoutUser() {
+      clearMessage();
+
+      logoutButton.disabled =
+        true;
+
+      logoutButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Uscita...';
+
+      try {
+        const response =
+          await fetch(
+            "/logout",
+            {
+              method: "POST"
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+          throw new Error(
+            data.message ||
+            "Logout non riuscito."
+          );
+        }
+
+        localStorage.removeItem(
+          "kiratingRememberedEmail"
+        );
+
+        localStorage.removeItem(
+          "kiratingRememberMe"
+        );
+
+        showMessage(
+          "Sei uscito correttamente. Reindirizzamento...",
+          "success"
+        );
+
+        setTimeout(function () {
+          window.location.href =
+            "/login.html";
+        }, 600);
+      } catch (error) {
+        showMessage(
+          error.message,
+          "error"
+        );
+
+        logoutButton.disabled =
+          false;
+
+        logoutButton.innerHTML =
+          '<i class="fa-solid fa-right-from-bracket"></i> Esci';
+      }
+    }
+
+    logoutButton.addEventListener(
+      "click",
+      logoutUser
+    );
+
+    loadAccount();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener(
+        "load",
+        function () {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .catch(function (error) {
+              console.error(
+                "Service worker non registrato:",
+                error
+              );
+            });
+        }
+      );
+    }
+  </script>
+</body>
+</html>
