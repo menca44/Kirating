@@ -9,14 +9,20 @@
   />
 
   <title>Scrivi una recensione | KiRating</title>
+  <link rel="manifest" href="/manifest.json" />
 
-  <!-- Font Awesome per icone e spicchi di pizza -->
+<meta name="theme-color" content="#b90006" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="KiRating" />
+
+<link rel="apple-touch-icon" href="/icon-192.png" />
+
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
   />
 
-  <!-- Leaflet per la mappa -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -31,6 +37,7 @@
 
     body {
       min-height: 100vh;
+
       background:
         radial-gradient(
           circle at top left,
@@ -38,7 +45,9 @@
           transparent 35%
         ),
         linear-gradient(135deg, #fff8f0, #f3eee7);
+
       color: #2b2118;
+
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -55,6 +64,7 @@
 
     .top-bar {
       margin-bottom: 24px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -64,51 +74,65 @@
     .brand-link {
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: flex-start;
     }
 
-    .brand-logo-full {
-  width: 168px;
-  height: 58px;
+    .brand-wordmark {
+      width: 285px;
+      height: 68px;
 
-  display: block;
+      display: block;
 
-  border-radius: 12px;
+      object-fit: cover;
+      object-position: center;
 
-  object-fit: contain;
+      border: none;
+      border-radius: 0;
 
-  background-color: #ffffff;
-
-  box-shadow:
-    0 10px 25px
-    rgba(0, 0, 0, 0.18);
-}
+      background: transparent;
+      box-shadow: none;
+    }
 
     .back-home-link {
       padding: 11px 15px;
+
       display: inline-flex;
       align-items: center;
       gap: 8px;
+
       border: 1px solid rgba(180, 0, 0, 0.18);
       border-radius: 999px;
+
       background-color: #ffffff;
       color: #b40000;
+
       font-size: 13px;
       font-weight: 800;
+
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
     }
 
     .hero-card {
       margin-bottom: 22px;
       padding: 28px;
+
       border-radius: 24px;
-      background: linear-gradient(135deg, #b40000, #7f0000);
+
+      background:
+        linear-gradient(
+          135deg,
+          #b40000,
+          #7f0000
+        );
+
       color: #ffffff;
+
       box-shadow: 0 18px 45px rgba(180, 0, 0, 0.22);
     }
 
     .hero-card h1 {
       margin-bottom: 10px;
+
       font-size: clamp(30px, 5vw, 48px);
       line-height: 1;
       letter-spacing: -1px;
@@ -116,19 +140,25 @@
 
     .hero-card p {
       max-width: 760px;
+
       color: rgba(255, 255, 255, 0.86);
+
       font-size: 16px;
       line-height: 1.55;
     }
 
     .prefilled-banner {
       display: none;
+
       margin-bottom: 18px;
       padding: 14px 15px;
+
       border-left: 4px solid #2c7a3f;
       border-radius: 12px;
+
       background-color: #eef8f0;
       color: #205e30;
+
       font-size: 14px;
       font-weight: 800;
       line-height: 1.45;
@@ -149,8 +179,11 @@
     .tips-card {
       border: 1px solid rgba(72, 54, 38, 0.08);
       border-radius: 24px;
+
       background-color: rgba(255, 255, 255, 0.92);
+
       box-shadow: 0 18px 45px rgba(38, 27, 18, 0.10);
+
       backdrop-filter: blur(12px);
     }
 
@@ -160,36 +193,46 @@
 
     .tips-card {
       padding: 22px;
+
       position: sticky;
       top: 20px;
     }
 
     .tips-card h2 {
       margin-bottom: 12px;
+
       color: #b40000;
+
       font-size: 19px;
     }
 
     .tips-card p {
       margin-bottom: 12px;
+
       color: #746f68;
+
       font-size: 14px;
       line-height: 1.55;
     }
 
     .tips-list {
       padding-left: 18px;
+
       color: #5f574e;
+
       font-size: 14px;
       line-height: 1.65;
     }
 
     .section-title {
       margin: 4px 0 18px;
+
       display: flex;
       align-items: center;
       gap: 10px;
+
       color: #2b2118;
+
       font-size: 22px;
       font-weight: 900;
     }
@@ -201,6 +244,7 @@
     .form-section {
       margin-bottom: 30px;
       padding-bottom: 26px;
+
       border-bottom: 1px solid #eee7df;
     }
 
@@ -226,6 +270,7 @@
 
     label {
       color: #3b3028;
+
       font-size: 13px;
       font-weight: 900;
     }
@@ -240,63 +285,75 @@
       width: 100%;
       min-height: 46px;
       padding: 12px 13px;
+
       border: 1px solid #ded7cf;
       border-radius: 11px;
+
       background-color: #ffffff;
       color: #2b2118;
+
       font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
+
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
       border-color: #b40000;
-      box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.10);
-    }
 
-    input[readonly] {
-      background-color: #f7f4f0;
-      color: #5f574e;
+      box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.10);
     }
 
     textarea {
       min-height: 150px;
+
       line-height: 1.5;
+
       resize: vertical;
     }
 
     .field-help {
       color: #98938d;
+
       font-size: 12px;
       line-height: 1.4;
     }
 
     .location-tools {
       margin-top: 4px;
+
       display: flex;
       align-items: center;
       gap: 13px;
+
       flex-wrap: wrap;
     }
 
     .secondary-button {
       min-height: 43px;
       padding: 10px 15px;
+
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+
       border: 1px solid #b40000;
       border-radius: 8px;
+
       background-color: #b40000;
       color: #ffffff;
+
       font-size: 13px;
       font-weight: 800;
+
       cursor: pointer;
-      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
     }
 
     .secondary-button:hover {
@@ -310,7 +367,9 @@
 
     .secondary-button.light {
       width: fit-content;
+
       margin-top: 3px;
+
       background-color: #ffffff;
       color: #b40000;
     }
@@ -322,10 +381,13 @@
 
     .position-status {
       padding: 10px 12px;
+
       border-left: 3px solid #d7d2cb;
       border-radius: 7px;
+
       background-color: #f7f4f0;
       color: #746f68;
+
       font-size: 12px;
       font-weight: 700;
       line-height: 1.4;
@@ -345,6 +407,7 @@
 
     .manual-coordinates-grid {
       margin-top: 12px;
+
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
@@ -354,9 +417,12 @@
       width: 100%;
       height: 360px;
       margin-top: 16px;
+
       overflow: hidden;
+
       border: 1px solid #dedad4;
       border-radius: 13px;
+
       background-color: #eeeeeb;
     }
 
@@ -379,24 +445,30 @@
 
     .rating-box {
       padding: 16px;
+
       border: 1px solid #eee1d7;
       border-radius: 16px;
+
       background-color: #fffaf5;
     }
 
     .rating-label {
       margin-bottom: 10px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+
       color: #3b3028;
+
       font-size: 13px;
       font-weight: 900;
     }
 
     .rating-value {
       color: #b40000;
+
       font-size: 12px;
       font-weight: 900;
     }
@@ -408,11 +480,14 @@
 
     .pizza-rating button {
       border: none;
+
       background: none;
+
       color: #d7d2cb;
+
       font-size: 25px;
+
       cursor: pointer;
-      transition: color 0.2s ease, transform 0.2s ease;
     }
 
     .pizza-rating button:hover,
@@ -437,13 +512,17 @@
     .price-option span {
       min-height: 46px;
       padding: 10px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       border: 1px solid #ded7cf;
       border-radius: 11px;
+
       background-color: #ffffff;
       color: #746f68;
+
       font-size: 14px;
       font-weight: 900;
     }
@@ -456,33 +535,43 @@
 
     .photo-input-box {
       padding: 20px;
+
       border: 2px dashed #d8cfc6;
       border-radius: 17px;
+
       background-color: #fffaf5;
+
       text-align: center;
     }
 
     .photo-input-box i {
       margin-bottom: 10px;
+
       color: #b40000;
+
       font-size: 28px;
     }
 
     .photo-input-box p {
       margin-bottom: 12px;
+
       color: #746f68;
+
       font-size: 14px;
       line-height: 1.45;
     }
 
     .photo-input-box input {
       padding: 10px;
+
       border: none;
+
       background-color: transparent;
     }
 
     .photo-preview-grid {
       margin-top: 16px;
+
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
@@ -490,36 +579,48 @@
 
     .photo-preview-item {
       position: relative;
+
       aspect-ratio: 1 / 1;
+
       overflow: hidden;
+
       border-radius: 12px;
+
       background-color: #eee7df;
     }
 
     .photo-preview-item img {
       width: 100%;
       height: 100%;
+
       object-fit: cover;
     }
 
     .remove-photo-button {
       width: 27px;
       height: 27px;
+
       position: absolute;
       top: 6px;
       right: 6px;
+
       border: none;
       border-radius: 50%;
+
       background-color: rgba(0, 0, 0, 0.70);
       color: #ffffff;
+
       cursor: pointer;
     }
 
     .message-box {
       display: none;
+
       margin-bottom: 18px;
       padding: 14px 15px;
+
       border-radius: 12px;
+
       font-size: 14px;
       font-weight: 800;
       line-height: 1.45;
@@ -539,27 +640,35 @@
 
     .submit-row {
       margin-top: 26px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
+
       flex-wrap: wrap;
     }
 
     .submit-button {
       min-height: 50px;
       padding: 13px 24px;
+
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 9px;
+
       border: none;
       border-radius: 999px;
+
       background-color: #b40000;
       color: #ffffff;
+
       font-size: 15px;
       font-weight: 900;
+
       cursor: pointer;
+
       box-shadow: 0 12px 28px rgba(180, 0, 0, 0.26);
     }
 
@@ -574,7 +683,9 @@
 
     .submit-note {
       max-width: 420px;
+
       color: #98938d;
+
       font-size: 12px;
       line-height: 1.45;
     }
@@ -598,6 +709,11 @@
       .top-bar {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .brand-wordmark {
+        width: 205px;
+        height: 56px;
       }
 
       .hero-card,
@@ -649,16 +765,16 @@
   <main class="page-shell">
     <header class="top-bar">
       <a
-  class="brand-link"
-  href="/"
-  aria-label="Vai alla home di KiRating"
->
-  <img
-    class="brand-logo-full"
-    src="/logo-kira.jpeg"
-    alt="KiRating"
-  />
-</a>
+        class="brand-link"
+        href="/"
+        aria-label="Vai alla home di KiRating"
+      >
+        <img
+          class="brand-wordmark"
+          src="/logo-kira.png"
+          alt="KiRating"
+        />
+      </a>
 
       <a
         class="back-home-link"
@@ -698,7 +814,6 @@
           id="reviewForm"
           enctype="multipart/form-data"
         >
-          <!-- Coordinate inviate al server -->
           <input
             id="latitudeInput"
             name="latitude"
@@ -1124,14 +1239,9 @@
     </section>
   </main>
 
-  <!-- JavaScript di Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // =====================================================
-    // ELEMENTI PRINCIPALI
-    // =====================================================
-
     const reviewForm =
       document.getElementById("reviewForm");
 
@@ -1212,10 +1322,6 @@
 
     const defaultMapZoom = 13;
 
-    // =====================================================
-    // MESSAGGI
-    // =====================================================
-
     function showMessage(message, type) {
       messageBox.textContent = message;
 
@@ -1257,10 +1363,6 @@
       }
     }
 
-    // =====================================================
-    // CONTROLLO LOGIN
-    // =====================================================
-
     async function checkUserAuthentication() {
       try {
         const response =
@@ -1296,10 +1398,6 @@
           encodeURIComponent(currentPath);
       }
     }
-
-    // =====================================================
-    // MAPPA E COORDINATE
-    // =====================================================
 
     function areCoordinatesValid(
       latitude,
@@ -1556,10 +1654,6 @@
       }
     }
 
-    // =====================================================
-    // PRECOMPILAMENTO DA RISTORANTE ESISTENTE
-    // =====================================================
-
     function fillRestaurantFields(restaurant) {
       restaurantNameInput.value =
         restaurant.name || "";
@@ -1652,10 +1746,6 @@
       }
     }
 
-    // =====================================================
-    // VALUTAZIONI
-    // =====================================================
-
     function initializePizzaRatings() {
       const ratingBoxes =
         document.querySelectorAll(".rating-box");
@@ -1736,10 +1826,6 @@
         }
       );
     }
-
-    // =====================================================
-    // FOTO
-    // =====================================================
 
     function renderPhotoPreviews() {
       photoPreviewGrid.innerHTML = "";
@@ -1840,10 +1926,6 @@
 
       renderPhotoPreviews();
     }
-
-    // =====================================================
-    // INVIO RECENSIONE
-    // =====================================================
 
     async function handleReviewSubmit(event) {
       event.preventDefault();
@@ -1983,10 +2065,6 @@
       }
     }
 
-    // =====================================================
-    // EVENTI
-    // =====================================================
-
     initializePizzaRatings();
 
     initializeRestaurantLocationMap();
@@ -2019,5 +2097,17 @@
       handleReviewSubmit
     );
   </script>
+  <script>
+  // Registra il service worker per rendere KiRating installabile come PWA.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .catch(function (error) {
+          console.error("Service worker non registrato:", error);
+        });
+    });
+  }
+</script>
 </body>
 </html>

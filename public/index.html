@@ -9,6 +9,14 @@
   />
 
   <title>KiRating | Mappa ristoranti</title>
+  <link rel="manifest" href="/manifest.json" />
+
+<meta name="theme-color" content="#b90006" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="KiRating" />
+
+<link rel="apple-touch-icon" href="/icon-192.png" />
 
   <link
     rel="stylesheet"
@@ -1107,22 +1115,23 @@
 
     <div class="navbar-actions">
       <a
-        class="navbar-link"
-        href="/recensioni.html"
-        aria-label="Scrivi recensione"
-      >
-        <i class="fa-solid fa-pen"></i>
-        <span>Scrivi recensione</span>
-      </a>
+  class="navbar-link"
+  href="/recensioni.html"
+  aria-label="Aggiungi ristorante"
+>
+  <i class="fa-solid fa-store"></i>
+  <span>Aggiungi ristorante</span>
+</a>
 
       <a
-        class="navbar-link"
-        href="/login.html"
-        aria-label="Login"
-      >
-        <i class="fa-solid fa-user"></i>
-        <span>Login</span>
-      </a>
+  id="loginNavbarLink"
+  class="navbar-link"
+  href="/login.html"
+  aria-label="Login"
+>
+  <i class="fa-solid fa-user"></i>
+  <span>Login</span>
+</a>
 
       <div class="menu-wrapper">
         <button
@@ -1416,6 +1425,8 @@ const mobileRegionsList =
 
     const mapMessage =
       document.getElementById("mapMessage");
+      const loginNavbarLink =
+  document.getElementById("loginNavbarLink");
 
     let allRestaurants = [];
     let visibleRestaurants = [];
@@ -2237,14 +2248,52 @@ if (mobileRegionSheet) {
     }
   );
 }
+async function updateNavbarAuthenticationState() {
+  try {
+    const response =
+      await fetch("/me");
 
-    renderRegions();
+    const data =
+      await response.json();
 
-    loadRestaurants();
+    if (
+      data.success &&
+      data.authenticated
+    ) {
+      loginNavbarLink.style.display = "none";
+    } else {
+      loginNavbarLink.style.display = "inline-flex";
+    }
+  } catch (error) {
+    console.error(
+      "Errore durante il controllo dello stato login:",
+      error
+    );
 
-    setTimeout(function () {
-      map.invalidateSize();
-    }, 250);
+    loginNavbarLink.style.display = "inline-flex";
+  }
+}
+    updateNavbarAuthenticationState();
+
+renderRegions();
+
+loadRestaurants();
+
+setTimeout(function () {
+  map.invalidateSize();
+}, 250);
   </script>
+  <script>
+  // Registra il service worker per rendere KiRating installabile come PWA.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .catch(function (error) {
+          console.error("Service worker non registrato:", error);
+        });
+    });
+  }
+</script>
 </body>
 </html>

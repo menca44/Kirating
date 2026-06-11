@@ -9,6 +9,14 @@
   />
 
   <title>Login | KiRating</title>
+  <link rel="manifest" href="/manifest.json" />
+
+<meta name="theme-color" content="#b90006" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="KiRating" />
+
+<link rel="apple-touch-icon" href="/icon-192.png" />
 
   <!-- Font Awesome per le icone -->
   <link
@@ -927,5 +935,17 @@
       }
     }
   </script>
+  <script>
+  // Registra il service worker per rendere KiRating installabile come PWA.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .catch(function (error) {
+          console.error("Service worker non registrato:", error);
+        });
+    });
+  }
+</script>
 </body>
 </html>
