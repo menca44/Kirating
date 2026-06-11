@@ -1476,10 +1476,16 @@ const mobileRegionsList =
   document.getElementById("loginNavbarLink");
 
     let allRestaurants = [];
-    let visibleRestaurants = [];
-    let restaurantMarkers = [];
-    let selectedCategory = "tutti";
-    let selectedRegion = "";
+let visibleRestaurants = [];
+let restaurantMarkers = [];
+let selectedCategory = "tutti";
+let selectedRegion = "";
+
+// Cerchio del raggio di ricerca attualmente visibile sulla mappa.
+let activeSearchCircle = null;
+
+// Marker della posizione cercata o della posizione GPS dell’utente.
+let activeUserPositionMarker = null;
 
     const map =
       L.map("map", {
@@ -1732,7 +1738,19 @@ const mobileRegionsList =
 
       restaurantMarkers = [];
     }
+function clearSearchArea() {
+  // Rimuove il vecchio cerchio del raggio di ricerca, se presente.
+  if (activeSearchCircle) {
+    map.removeLayer(activeSearchCircle);
+    activeSearchCircle = null;
+  }
 
+  // Rimuove il vecchio marker della posizione cercata/GPS, se presente.
+  if (activeUserPositionMarker) {
+    map.removeLayer(activeUserPositionMarker);
+    activeUserPositionMarker = null;
+  }
+}
     function renderMarkers(restaurants) {
       clearMarkers();
 
@@ -2293,25 +2311,29 @@ if (mobileRegionsList) {
           14
         );
 
-        L.circle(
-          [latitude, longitude],
-          {
-            radius: Number(radius) * 1000,
-            color: "#b40000",
-            fillColor: "#b40000",
-            fillOpacity: 0.08
-          }
-        ).addTo(map);
+        clearSearchArea();
 
-        L.marker(
-          [latitude, longitude],
-          {
-            icon: defaultIcon
-          }
-        )
-          .addTo(map)
-          .bindPopup("Sei qui")
-          .openPopup();
+activeSearchCircle =
+  L.circle(
+    [latitude, longitude],
+    {
+      radius: Number(radius) * 1000,
+      color: "#b40000",
+      fillColor: "#b40000",
+      fillOpacity: 0.08
+    }
+  ).addTo(map);
+
+activeUserPositionMarker =
+  L.marker(
+    [latitude, longitude],
+    {
+      icon: defaultIcon
+    }
+  )
+    .addTo(map)
+    .bindPopup("Sei qui")
+    .openPopup();
 
         showMapMessage(
           "Ristoranti trovati vicino alla tua posizione.",
@@ -2403,6 +2425,8 @@ gpsSearchButton.addEventListener(
         selectedRegion = "";
         selectedCategory = "tutti";
 
+            clearSearchArea();
+
         categoryButtons.forEach(function (button) {
           button.classList.toggle(
             "active",
@@ -2416,6 +2440,29 @@ gpsSearchButton.addEventListener(
           [41.8719, 12.5674],
           6
         );
+        clearSearchArea();
+
+activeSearchCircle =
+  L.circle(
+    [latitude, longitude],
+    {
+      radius: Number(radius) * 1000,
+      color: "#b40000",
+      fillColor: "#b40000",
+      fillOpacity: 0.08
+    }
+  ).addTo(map);
+
+activeUserPositionMarker =
+  L.marker(
+    [latitude, longitude],
+    {
+      icon: defaultIcon
+    }
+  )
+    .addTo(map)
+    .bindPopup("Posizione cercata")
+    .openPopup();
 
         await loadRestaurants();
       }
