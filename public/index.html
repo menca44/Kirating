@@ -10,13 +10,11 @@
 
   <title>KiRating | Mappa ristoranti</title>
 
-  <!-- Font Awesome per le icone -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
   />
 
-  <!-- Leaflet per la mappa -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -31,14 +29,9 @@
 
     body {
       min-height: 100vh;
-
       background-color: #f7f2ec;
       color: #2b2118;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     a {
@@ -49,15 +42,8 @@
     button,
     input,
     select {
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
-
-    /* =====================================================
-       NAVBAR
-       ===================================================== */
 
     .navbar {
       min-height: 78px;
@@ -75,29 +61,30 @@
       background-color: #b40000;
       color: #ffffff;
 
-      box-shadow:
-        0 10px 28px
-        rgba(0, 0, 0, 0.22);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
     }
 
     .brand-logo-full {
-  width: 168px;
-  height: 58px;
+      width: 280px;
+      height: auto;
 
-  display: block;
+      display: block;
 
-  border-radius: 12px;
+      object-fit: contain;
 
-  object-fit: contain;
+      background: transparent;
+      border: none;
+      border-radius: 0;
 
-  background-color: #ffffff;
-}
+      box-shadow: none;
+
+      mix-blend-mode: multiply;
+    }
 
     .navbar-actions {
       display: flex;
@@ -127,7 +114,6 @@
 
     .navbar-link:hover {
       background-color: rgba(255, 255, 255, 0.22);
-
       transform: translateY(-1px);
     }
 
@@ -171,9 +157,7 @@
       background-color: #ffffff;
       color: #2b2118;
 
-      box-shadow:
-        0 18px 45px
-        rgba(0, 0, 0, 0.20);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.20);
     }
 
     .menu-panel.open {
@@ -200,10 +184,6 @@
       color: #b40000;
     }
 
-    /* =====================================================
-       CATEGORIE
-       ===================================================== */
-
     .categories-bar {
       padding: 14px 24px;
 
@@ -214,9 +194,7 @@
 
       background-color: #ffffff;
 
-      box-shadow:
-        0 8px 22px
-        rgba(0, 0, 0, 0.07);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
     }
 
     .category-button {
@@ -249,16 +227,10 @@
     .category-button:hover,
     .category-button.active {
       border-color: #b40000;
-
       background-color: #b40000;
       color: #ffffff;
-
       transform: translateY(-1px);
     }
-
-    /* =====================================================
-       LAYOUT
-       ===================================================== */
 
     .main-layout {
       height: calc(100vh - 146px);
@@ -286,9 +258,7 @@
 
       background-color: #ffffff;
 
-      box-shadow:
-        0 12px 28px
-        rgba(38, 27, 18, 0.08);
+      box-shadow: 0 12px 28px rgba(38, 27, 18, 0.08);
     }
 
     .sidebar-card h2 {
@@ -344,12 +314,11 @@
     .form-group select:focus {
       border-color: #b40000;
 
-      box-shadow:
-        0 0 0 3px
-        rgba(180, 0, 0, 0.10);
+      box-shadow: 0 0 0 3px rgba(180, 0, 0, 0.10);
     }
 
-    .primary-button {
+    .primary-button,
+    .secondary-button {
       width: 100%;
       min-height: 44px;
       padding: 11px 14px;
@@ -359,60 +328,37 @@
       justify-content: center;
       gap: 8px;
 
-      border: none;
       border-radius: 999px;
+
+      font-size: 13px;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .primary-button {
+      border: none;
 
       background-color: #b40000;
       color: #ffffff;
 
-      font-size: 13px;
-      font-weight: 900;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 10px 22px
-        rgba(180, 0, 0, 0.22);
-
-      transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        opacity 0.2s ease;
+      box-shadow: 0 10px 22px rgba(180, 0, 0, 0.22);
     }
 
     .primary-button:hover {
       background-color: #8f0000;
-
-      transform: translateY(-1px);
     }
 
     .primary-button:disabled {
       opacity: 0.65;
-
       cursor: wait;
-      transform: none;
     }
 
     .secondary-button {
-      width: 100%;
-      min-height: 40px;
-      padding: 10px 13px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-
       border: 1px solid #b40000;
-      border-radius: 999px;
 
       background-color: #ffffff;
       color: #b40000;
-
-      font-size: 13px;
-      font-weight: 900;
-
-      cursor: pointer;
     }
 
     .secondary-button:hover {
@@ -443,17 +389,11 @@
       font-weight: 850;
 
       cursor: pointer;
-
-      transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
     }
 
     .region-button:hover,
     .region-button.active {
       border-color: #b40000;
-
       background-color: #b40000;
       color: #ffffff;
     }
@@ -472,21 +412,11 @@
       background-color: #ffffff;
 
       cursor: pointer;
-
-      transition:
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
     }
 
     .restaurant-list-item:hover {
       border-color: #b40000;
-
-      transform: translateY(-1px);
-
-      box-shadow:
-        0 10px 24px
-        rgba(38, 27, 18, 0.10);
+      box-shadow: 0 10px 24px rgba(38, 27, 18, 0.10);
     }
 
     .restaurant-list-item h3 {
@@ -556,9 +486,7 @@
       font-weight: 800;
       line-height: 1.4;
 
-      box-shadow:
-        0 12px 30px
-        rgba(0, 0, 0, 0.16);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
     }
 
     .map-message.show {
@@ -572,10 +500,6 @@
     .map-message.success {
       border-left: 4px solid #2c7a3f;
     }
-
-    /* =====================================================
-       POPUP MAPPA
-       ===================================================== */
 
     .restaurant-popup {
       min-width: 220px;
@@ -642,10 +566,6 @@
       color: #b40000;
     }
 
-    .popup-description {
-      color: #746f68;
-    }
-
     .popup-actions {
       margin-top: 10px;
 
@@ -699,20 +619,14 @@
       border-radius: 16px;
     }
 
-    /* =====================================================
-       RESPONSIVE
-       ===================================================== */
-
     @media (max-width: 950px) {
       .main-layout {
         height: auto;
-
         grid-template-columns: 1fr;
       }
 
       .sidebar {
         max-height: none;
-
         border-right: none;
         border-bottom: 1px solid #eadfd6;
       }
@@ -728,9 +642,9 @@
       }
 
       .brand-logo-full {
-  width: 138px;
-  height: 50px;
-}
+        width: 210px;
+        height: auto;
+      }
 
       .navbar-link span {
         display: none;
@@ -754,16 +668,16 @@
 <body>
   <header class="navbar">
     <a
-  class="brand"
-  href="/"
-  aria-label="Vai alla home di KiRating"
->
-  <img
-    class="brand-logo-full"
-    src="/logo-kira.jpeg"
-    alt="KiRating"
-  />
-</a>
+      class="brand"
+      href="/"
+      aria-label="Vai alla home di KiRating"
+    >
+      <img
+        class="brand-logo-full"
+        src="/logo-kira.jpeg"
+        alt="KiRating"
+      />
+    </a>
 
     <div class="navbar-actions">
       <a
@@ -829,101 +743,57 @@
     class="categories-bar"
     aria-label="Categorie ristoranti"
   >
-    <button
-      class="category-button active"
-      type="button"
-      data-category="tutti"
-    >
+    <button class="category-button active" type="button" data-category="tutti">
       <i class="fa-solid fa-border-all"></i>
       Tutti
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="italiano"
-    >
+    <button class="category-button" type="button" data-category="italiano">
       <i class="fa-solid fa-utensils"></i>
       Italiano
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="pizza"
-    >
+    <button class="category-button" type="button" data-category="pizza">
       <i class="fa-solid fa-pizza-slice"></i>
       Pizza
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="sushi"
-    >
+    <button class="category-button" type="button" data-category="sushi">
       <i class="fa-solid fa-fish"></i>
       Sushi
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="pesce"
-    >
+    <button class="category-button" type="button" data-category="pesce">
       <i class="fa-solid fa-shrimp"></i>
       Pesce
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="carne"
-    >
+    <button class="category-button" type="button" data-category="carne">
       <i class="fa-solid fa-drumstick-bite"></i>
       Carne
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="gourmet"
-    >
+    <button class="category-button" type="button" data-category="gourmet">
       <i class="fa-solid fa-wand-magic-sparkles"></i>
       Gourmet
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="fast food"
-    >
+    <button class="category-button" type="button" data-category="fast food">
       <i class="fa-solid fa-burger"></i>
       Fast food
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="poke"
-    >
+    <button class="category-button" type="button" data-category="poke">
       <i class="fa-solid fa-bowl-food"></i>
       Poke
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="vegetariano"
-    >
+    <button class="category-button" type="button" data-category="vegetariano">
       <i class="fa-solid fa-leaf"></i>
       Vegetariano
     </button>
 
-    <button
-      class="category-button"
-      type="button"
-      data-category="dolci"
-    >
+    <button class="category-button" type="button" data-category="dolci">
       <i class="fa-solid fa-ice-cream"></i>
       Dolci
     </button>
@@ -1026,14 +896,9 @@
     </section>
   </main>
 
-  <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // =====================================================
-    // ELEMENTI DELLA PAGINA
-    // =====================================================
-
     const menuButton =
       document.getElementById("menuButton");
 
@@ -1067,32 +932,24 @@
     const mapMessage =
       document.getElementById("mapMessage");
 
-    // =====================================================
-    // STATO APPLICAZIONE
-    // =====================================================
-
     let allRestaurants = [];
     let visibleRestaurants = [];
     let restaurantMarkers = [];
     let selectedCategory = "tutti";
     let selectedRegion = "";
 
-    // =====================================================
-    // MAPPA
-    // =====================================================
-
-    const map = L.map("map", {
-      zoomControl: true
-    }).setView(
-      [41.8719, 12.5674],
-      6
-    );
+    const map =
+      L.map("map", {
+        zoomControl: true
+      }).setView(
+        [41.8719, 12.5674],
+        6
+      );
 
     L.tileLayer(
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
         maxZoom: 19,
-
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }
@@ -1112,116 +969,28 @@
         shadowSize: [41, 41]
       });
 
-    // =====================================================
-    // REGIONI
-    // =====================================================
-
     const regions = [
-      {
-        name: "Abruzzo",
-        center: [42.3500, 13.3995],
-        zoom: 8
-      },
-      {
-        name: "Basilicata",
-        center: [40.6395, 15.8051],
-        zoom: 8
-      },
-      {
-        name: "Calabria",
-        center: [39.3088, 16.3464],
-        zoom: 8
-      },
-      {
-        name: "Campania",
-        center: [40.8518, 14.2681],
-        zoom: 8
-      },
-      {
-        name: "Emilia-Romagna",
-        center: [44.4949, 11.3426],
-        zoom: 8
-      },
-      {
-        name: "Friuli-Venezia Giulia",
-        center: [45.6495, 13.7768],
-        zoom: 8
-      },
-      {
-        name: "Lazio",
-        center: [41.9028, 12.4964],
-        zoom: 8
-      },
-      {
-        name: "Liguria",
-        center: [44.4056, 8.9463],
-        zoom: 8
-      },
-      {
-        name: "Lombardia",
-        center: [45.4642, 9.1900],
-        zoom: 8
-      },
-      {
-        name: "Marche",
-        center: [43.6168, 13.5189],
-        zoom: 8
-      },
-      {
-        name: "Molise",
-        center: [41.5603, 14.6686],
-        zoom: 8
-      },
-      {
-        name: "Piemonte",
-        center: [45.0703, 7.6869],
-        zoom: 8
-      },
-      {
-        name: "Puglia",
-        center: [40.7928, 17.1012],
-        zoom: 8
-      },
-      {
-        name: "Sardegna",
-        center: [40.1209, 9.0129],
-        zoom: 7
-      },
-      {
-        name: "Sicilia",
-        center: [37.5990, 14.0154],
-        zoom: 7
-      },
-      {
-        name: "Toscana",
-        center: [43.7711, 11.2486],
-        zoom: 8
-      },
-      {
-        name: "Trentino-Alto Adige",
-        center: [46.4983, 11.3548],
-        zoom: 8
-      },
-      {
-        name: "Umbria",
-        center: [43.1107, 12.3908],
-        zoom: 8
-      },
-      {
-        name: "Valle d'Aosta",
-        center: [45.7370, 7.3201],
-        zoom: 9
-      },
-      {
-        name: "Veneto",
-        center: [45.4408, 12.3155],
-        zoom: 8
-      }
+      { name: "Abruzzo", center: [42.3500, 13.3995], zoom: 8 },
+      { name: "Basilicata", center: [40.6395, 15.8051], zoom: 8 },
+      { name: "Calabria", center: [39.3088, 16.3464], zoom: 8 },
+      { name: "Campania", center: [40.8518, 14.2681], zoom: 8 },
+      { name: "Emilia-Romagna", center: [44.4949, 11.3426], zoom: 8 },
+      { name: "Friuli-Venezia Giulia", center: [45.6495, 13.7768], zoom: 8 },
+      { name: "Lazio", center: [41.9028, 12.4964], zoom: 8 },
+      { name: "Liguria", center: [44.4056, 8.9463], zoom: 8 },
+      { name: "Lombardia", center: [45.4642, 9.1900], zoom: 8 },
+      { name: "Marche", center: [43.6168, 13.5189], zoom: 8 },
+      { name: "Molise", center: [41.5603, 14.6686], zoom: 8 },
+      { name: "Piemonte", center: [45.0703, 7.6869], zoom: 8 },
+      { name: "Puglia", center: [40.7928, 17.1012], zoom: 8 },
+      { name: "Sardegna", center: [40.1209, 9.0129], zoom: 7 },
+      { name: "Sicilia", center: [37.5990, 14.0154], zoom: 7 },
+      { name: "Toscana", center: [43.7711, 11.2486], zoom: 8 },
+      { name: "Trentino-Alto Adige", center: [46.4983, 11.3548], zoom: 8 },
+      { name: "Umbria", center: [43.1107, 12.3908], zoom: 8 },
+      { name: "Valle d'Aosta", center: [45.7370, 7.3201], zoom: 9 },
+      { name: "Veneto", center: [45.4408, 12.3155], zoom: 8 }
     ];
-
-    // =====================================================
-    // MENU
-    // =====================================================
 
     menuButton.addEventListener(
       "click",
@@ -1243,10 +1012,6 @@
       }
     );
 
-    // =====================================================
-    // MESSAGGI MAPPA
-    // =====================================================
-
     function showMapMessage(message, type) {
       mapMessage.textContent = message;
 
@@ -1265,10 +1030,6 @@
         mapMessage.classList.remove("show");
       }, 4200);
     }
-
-    // =====================================================
-    // VALUTAZIONI
-    // =====================================================
 
     function formatReviewsCount(count) {
       const reviewsCount =
@@ -1347,10 +1108,6 @@
       `;
     }
 
-    // =====================================================
-    // POPUP RISTORANTE
-    // =====================================================
-
     function buildRestaurantPopup(restaurant) {
       const ratingHtml =
         buildRatingHtml(restaurant);
@@ -1424,10 +1181,6 @@
         </div>
       `;
     }
-
-    // =====================================================
-    // RENDER MARKER
-    // =====================================================
 
     function clearMarkers() {
       restaurantMarkers.forEach(function (marker) {
@@ -1511,10 +1264,6 @@
       }
     }
 
-    // =====================================================
-    // LISTA RISTORANTI
-    // =====================================================
-
     function renderRestaurantList(restaurants) {
       restaurantList.innerHTML = "";
 
@@ -1589,10 +1338,6 @@
       });
     }
 
-    // =====================================================
-    // FILTRI
-    // =====================================================
-
     function restaurantMatchesCategory(restaurant) {
       if (selectedCategory === "tutti") {
         return true;
@@ -1629,10 +1374,6 @@
       renderMarkers(visibleRestaurants);
       renderRestaurantList(visibleRestaurants);
     }
-
-    // =====================================================
-    // REGIONI
-    // =====================================================
 
     function renderRegions() {
       regionsList.innerHTML = "";
@@ -1731,10 +1472,6 @@
       }
     );
 
-    // =====================================================
-    // CATEGORIE
-    // =====================================================
-
     categoryButtons.forEach(function (button) {
       button.addEventListener(
         "click",
@@ -1752,10 +1489,6 @@
         }
       );
     });
-
-    // =====================================================
-    // CARICAMENTO RISTORANTI
-    // =====================================================
 
     async function loadRestaurants() {
       try {
@@ -1792,10 +1525,6 @@
           "Errore durante il caricamento.";
       }
     }
-
-    // =====================================================
-    // RICERCA NEI DINTORNI
-    // =====================================================
 
     async function searchNearbyRestaurants() {
       const query =
@@ -1957,10 +1686,6 @@
         await loadRestaurants();
       }
     );
-
-    // =====================================================
-    // AVVIO
-    // =====================================================
 
     renderRegions();
 
