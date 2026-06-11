@@ -69,48 +69,19 @@
       flex-direction: column;
     }
 
-    .top-bar {
+    .top-actions {
       width: 100%;
       max-width: 520px;
-      margin: 65 auto 34px;
-
-      position: relative;
+      margin: 0 auto 18px;
 
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      text-decoration: none;
-    }
-
-    .brand-logo {
-      width: 110px;
-      height: 110px;
-
-      display: block;
-
-      object-fit: cover;
-      object-position: center;
-
-      border-radius: 22px;
-
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+      justify-content: flex-end;
     }
 
     .home-link {
       width: 44px;
       height: 44px;
-
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
 
       display: inline-flex;
       align-items: center;
@@ -123,12 +94,14 @@
       color: #ffffff;
 
       font-size: 17px;
+
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
     }
 
     .auth-card {
       width: 100%;
       max-width: 520px;
-      margin:0 auto;
+      margin: auto auto 0;
       padding: 20px;
 
       border: 1px solid rgba(255, 255, 255, 0.26);
@@ -421,10 +394,36 @@
       cursor: pointer;
     }
 
+    .bottom-brand {
+      width: 100%;
+      max-width: 520px;
+      margin: 20px auto 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 100px;
+      height: 100px;
+
+      display: block;
+
+      object-fit: cover;
+      object-position: center;
+
+      border-radius: 22px;
+
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+    }
+
     .privacy-note {
       width: 100%;
       max-width: 520px;
-      margin: 14px auto 0;
+      margin: 10px auto 0;
 
       color: rgba(255, 255, 255, 0.78);
 
@@ -449,11 +448,8 @@
         padding: 14px 14px 24px;
       }
 
-      .brand-logo {
-        width: 88px;
-        height: 88px;
-
-        border-radius: 18px;
+      .top-actions {
+        margin-bottom: 14px;
       }
 
       .home-link {
@@ -479,25 +475,24 @@
       .small-note {
         max-width: 130px;
       }
+
+      .bottom-brand {
+        margin-top: 16px;
+      }
+
+      .brand-logo {
+        width: 88px;
+        height: 88px;
+
+        border-radius: 18px;
+      }
     }
   </style>
 </head>
 
 <body>
   <main class="page">
-    <header class="top-bar">
-      <a
-        class="brand"
-        href="/"
-        aria-label="Vai alla home di KiRating"
-      >
-        <img
-          class="brand-logo"
-          src="/logo-cane.jpg"
-          alt="Paw approved by Kira"
-        />
-      </a>
-
+    <div class="top-actions">
       <a
         class="home-link"
         href="/"
@@ -505,7 +500,7 @@
       >
         <i class="fa-solid fa-house"></i>
       </a>
-    </header>
+    </div>
 
     <section class="auth-card">
       <div class="auth-header">
@@ -721,6 +716,18 @@
         </p>
       </form>
     </section>
+
+    <a
+      class="bottom-brand"
+      href="/"
+      aria-label="Vai alla home di KiRating"
+    >
+      <img
+        class="brand-logo"
+        src="/logo-cane.jpg"
+        alt="Paw approved by Kira"
+      />
+    </a>
 
     <p class="privacy-note">
       Per sicurezza KiRating non salva la password nel browser. Il browser può però ricordarla tramite il suo gestore password.
