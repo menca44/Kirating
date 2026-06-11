@@ -358,6 +358,38 @@
       box-shadow: 0 0 0 3px rgba(180, 0, 0, 0.10);
     }
 
+    .gps-button {
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 10px;
+  padding: 11px 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: 1px solid rgba(180, 0, 0, 0.18);
+  border-radius: 999px;
+
+  background-color: #fff3f3;
+  color: #b40000;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.gps-button:hover {
+  background-color: #b40000;
+  color: #ffffff;
+}
+
+.gps-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
     .primary-button,
     .secondary-button {
       width: 100%;
@@ -700,6 +732,10 @@
     }
 
     @media (max-width: 650px) {
+    .gps-button {
+  min-height: 54px;
+  font-size: 16px;
+}
       .navbar {
   width: 100%;
   min-height: 92px;
@@ -1271,6 +1307,14 @@
             <option value="50">50 km</option>
           </select>
         </div>
+        <button
+  id="gpsSearchButton"
+  class="gps-button"
+  type="button"
+>
+  <i class="fa-solid fa-location-dot"></i>
+  Cerca vicino a me
+</button>
 
         <button
           id="nearbySearchButton"
@@ -1396,6 +1440,9 @@
 
     const nearbySearchButton =
       document.getElementById("nearbySearchButton");
+
+      const gpsSearchButton =
+  document.getElementById("gpsSearchButton");
 
     const resetSearchButton =
       document.getElementById("resetSearchButton");
@@ -2179,7 +2226,163 @@ if (mobileRegionsList) {
           '<i class="fa-solid fa-location-crosshairs"></i> Cerca ristoranti vicini';
       }
     }
+    async function searchRestaurantsNearCurrentPosition() {
+  if (!navigator.geolocation) {
+    showMapMessage(
+      "Il GPS non è supportato da questo dispositivo.",
+      "error"
+    );
 
+    return;
+  }
+
+  gpsSearchButton.disabled = true;
+
+  gpsSearchButton.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Localizzazione...';
+
+  navigator.geolocation.getCurrentPosition(
+    async function (position) {
+      const latitude =
+        position.coords.latitude;
+
+      const longitude =
+        position.coords.longitude;
+
+      const radius =
+        radiusSelect.value;
+
+      try {
+        const restaurantsResponse =
+          await fetch(
+            "/restaurants/nearby?lat=" +
+              encodeURIComponent(latitude) +
+              "&lng=" +
+              encodeURIComponent(longitude) +
+              "&radius=" +
+              encodeURIComponent(radius)
+          );
+
+        const restaurants =
+          await restaurantsResponse.json();
+
+        if (!restaurantsResponse.ok) {
+          showMapMessage(
+            restaurants.message ||
+              "Non è stato possibile cercare i ristoranti vicini.",
+            "error"
+          );
+
+          return;
+        }
+
+        allRestaurants =
+          Array.isArray(restaurants)
+            ? restaurants
+            : [];
+
+        selectedRegion =
+          "";
+
+        setActiveRegionButton("");
+
+        applyFilters();
+
+        map.setView(
+          [latitude, longitude],
+          14
+        );
+
+        L.circle(
+          [latitude, longitude],
+          {
+            radius: Number(radius) * 1000,
+            color: "#b40000",
+            fillColor: "#b40000",
+            fillOpacity: 0.08
+          }
+        ).addTo(map);
+
+        L.marker(
+          [latitude, longitude],
+          {
+            icon: defaultIcon
+          }
+        )
+          .addTo(map)
+          .bindPopup("Sei qui")
+          .openPopup();
+
+        showMapMessage(
+          "Ristoranti trovati vicino alla tua posizione.",
+          "success"
+        );
+      } catch (error) {
+        console.error(
+          "Errore durante la ricerca con GPS:",
+          error
+        );
+
+        showMapMessage(
+          "Errore durante la ricerca vicino a te.",
+          "error"
+        );
+      } finally {
+        gpsSearchButton.disabled = false;
+
+        gpsSearchButton.innerHTML =
+          '<i class="fa-solid fa-location-dot"></i> Cerca vicino a me';
+      }
+    },
+    function (error) {
+      gpsSearchButton.disabled = false;
+
+      gpsSearchButton.innerHTML =
+        '<i class="fa-solid fa-location-dot"></i> Cerca vicino a me';
+
+      if (error.code === error.PERMISSION_DENIED) {
+        showMapMessage(
+          "Hai negato il permesso di usare la posizione.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (error.code === error.POSITION_UNAVAILABLE) {
+        showMapMessage(
+          "Posizione non disponibile. Controlla il GPS.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (error.code === error.TIMEOUT) {
+        showMapMessage(
+          "Tempo scaduto durante la localizzazione.",
+          "error"
+        );
+
+        return;
+      }
+
+      showMapMessage(
+        "Non è stato possibile ottenere la posizione.",
+        "error"
+      );
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000
+    }
+  );
+}
+gpsSearchButton.addEventListener(
+  "click",
+  searchRestaurantsNearCurrentPosition
+);
     nearbySearchButton.addEventListener(
       "click",
       searchNearbyRestaurants
