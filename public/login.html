@@ -871,24 +871,24 @@
         </div>
 
         <div class="field">
-          <label for="registerEmail">
-            Email
-          </label>
+  <label for="registerUsername">
+    Username
+  </label>
 
-          <div class="input-wrapper">
-            <i class="fa-solid fa-envelope"></i>
+  <div class="input-wrapper">
+    <i class="fa-solid fa-user"></i>
 
-            <input
-              id="registerEmail"
-              type="email"
-              name="email"
-              placeholder="nome@email.com"
-              autocomplete="email"
-              inputmode="email"
-              required
-            />
-          </div>
-        </div>
+    <input
+      id="registerUsername"
+      type="text"
+      name="username"
+      placeholder="Scegli il tuo username"
+      autocomplete="username"
+      minlength="3"
+      required
+    />
+  </div>
+</div>
 
         <div class="field">
           <label for="registerPassword">
@@ -1055,7 +1055,7 @@
       document.getElementById("loginPassword");
 
     const registerName =
-      document.getElementById("registerName");
+      document.getElementById("registerUsername");
 
     const registerEmail =
       document.getElementById("registerEmail");
@@ -1301,9 +1301,10 @@
             },
 
             body: JSON.stringify({
-              email: email,
-              password: password
-            })
+  name: username,
+  email: email,
+  password: password
+})
           }
         );
 
@@ -1527,7 +1528,7 @@
 
         clearMessage();
 
-        const name =
+        const username =
           registerName.value.trim();
 
         const email =
@@ -1540,11 +1541,11 @@
           registerConfirmPassword.value;
 
         if (
-          !name ||
-          !email ||
-          !password ||
-          !confirmPassword
-        ) {
+  !username ||
+  !email ||
+  !password ||
+  !confirmPassword
+) {
           showMessage(
             "Compila tutti i campi.",
             "error"
@@ -1553,16 +1554,16 @@
           return;
         }
 
-        if (name.length < 2) {
-          showMessage(
-            "Inserisci un nome di almeno 2 caratteri.",
-            "error"
-          );
+        if (username.length < 3) {
+  showMessage(
+    "Lo username deve contenere almeno 3 caratteri.",
+    "error"
+  );
 
-          registerName.focus();
+  registerUsername.focus();
 
-          return;
-        }
+  return;
+}
 
         if (!isValidEmail(email)) {
           showMessage(
@@ -1610,10 +1611,10 @@
 
         try {
           await registerUser(
-            name,
-            email,
-            password
-          );
+  username,
+  email,
+  password
+);
 
           /*
            * Dopo la registrazione viene effettuato
