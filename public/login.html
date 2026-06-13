@@ -70,14 +70,14 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    button {
+    button,
+    a {
       -webkit-tap-highlight-color: transparent;
     }
 
     a {
       color: inherit;
       text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
     }
 
     /* Contenitore principale */
@@ -101,7 +101,7 @@
       flex-direction: column;
     }
 
-    /* Pulsante per tornare alla home */
+    /* Pulsante Home */
     .top-actions {
       width: 100%;
       max-width: 520px;
@@ -227,7 +227,7 @@
       color: #246b38;
     }
 
-    /* Pulsanti Accedi e Registrati */
+    /* Schede Accedi e Registrati */
     .tabs {
       margin-bottom: 18px;
       padding: 5px;
@@ -278,7 +278,7 @@
       margin-bottom: 14px;
     }
 
-    .field label {
+    .field label.field-label {
       margin-bottom: 7px;
 
       display: block;
@@ -289,7 +289,95 @@
       font-weight: 900;
     }
 
-    /* Contenitore degli input */
+    /* Selettore ruolo */
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .role-option {
+      cursor: pointer;
+    }
+
+    .role-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .role-card {
+      min-height: 80px;
+      padding: 13px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      border: 1px solid #ded7cf;
+      border-radius: 17px;
+
+      background-color: #ffffff;
+      color: #6c6259;
+
+      transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .role-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .role-card > i {
+      width: 40px;
+      height: 40px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 13px;
+
+      background-color: #fff0f0;
+      color: #b40000;
+
+      font-size: 17px;
+    }
+
+    .role-text {
+      min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .role-text strong {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .role-text small {
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .role-option input:checked + .role-card {
+      border-color: #b40000;
+
+      background-color: #fff3f3;
+      color: #b40000;
+
+      box-shadow: 0 0 0 3px rgba(180, 0, 0, 0.09);
+    }
+
+    /* Input */
     .input-wrapper {
       min-height: 54px;
       padding: 0 14px;
@@ -355,7 +443,7 @@
       font-weight: 650;
     }
 
-    /* Mostra o nasconde la password */
+    /* Mostra/nasconde password */
     .password-toggle {
       width: 36px;
       height: 36px;
@@ -379,7 +467,7 @@
       pointer-events: none;
     }
 
-    /* Indicatore password */
+    /* Controllo password */
     .password-requirements {
       margin-top: 8px;
       padding-left: 2px;
@@ -484,7 +572,7 @@
       cursor: wait;
     }
 
-    /* Cambio tra login e registrazione */
+    /* Cambio scheda */
     .switch-text {
       margin-top: 16px;
 
@@ -508,7 +596,7 @@
       cursor: pointer;
     }
 
-    /* Logo sotto il modulo */
+    /* Logo */
     .bottom-brand {
       width: 100%;
       max-width: 520px;
@@ -592,6 +680,16 @@
       }
     }
 
+    @media (max-width: 360px) {
+      .role-selector {
+        grid-template-columns: 1fr;
+      }
+
+      .role-card {
+        min-height: 66px;
+      }
+    }
+
     /* Desktop */
     @media (min-width: 760px) {
       .page {
@@ -618,7 +716,7 @@
       </a>
     </div>
 
-    <!-- Scheda di autenticazione -->
+    <!-- Scheda autenticazione -->
     <section class="auth-card">
       <div class="auth-header">
         <h1 id="authTitle">
@@ -626,12 +724,11 @@
         </h1>
 
         <p id="authSubtitle">
-          Accedi al tuo account KiRating per aggiungere ristoranti e
-          pubblicare recensioni.
+          Seleziona il tipo di accesso e inserisci le tue credenziali.
         </p>
       </div>
 
-      <!-- Messaggi di errore e conferma -->
+      <!-- Messaggi -->
       <div
         id="authMessage"
         class="message"
@@ -639,7 +736,7 @@
         aria-live="polite"
       ></div>
 
-      <!-- Selezione modalità -->
+      <!-- Schede -->
       <div
         class="tabs"
         aria-label="Accesso o registrazione"
@@ -661,14 +758,62 @@
         </button>
       </div>
 
-      <!-- Modulo di accesso -->
+      <!-- Modulo login -->
       <form
         id="loginForm"
         class="form active"
         novalidate
       >
+        <!-- Selettore ruolo -->
         <div class="field">
-          <label for="loginEmail">
+          <label class="field-label">
+            Tipo di accesso
+          </label>
+
+          <div class="role-selector">
+            <label class="role-option">
+              <input
+                type="radio"
+                name="loginRole"
+                value="user"
+                checked
+              />
+
+              <span class="role-card">
+                <i class="fa-solid fa-user"></i>
+
+                <span class="role-text">
+                  <strong>Utente</strong>
+                  <small>Recensioni e ristoranti</small>
+                </span>
+              </span>
+            </label>
+
+            <label class="role-option">
+              <input
+                type="radio"
+                name="loginRole"
+                value="admin"
+              />
+
+              <span class="role-card">
+                <i class="fa-solid fa-user-shield"></i>
+
+                <span class="role-text">
+                  <strong>Admin</strong>
+                  <small>Gestione applicazione</small>
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label
+            class="field-label"
+            for="loginEmail"
+          >
             Email
           </label>
 
@@ -687,8 +832,12 @@
           </div>
         </div>
 
+        <!-- Password -->
         <div class="field">
-          <label for="loginPassword">
+          <label
+            class="field-label"
+            for="loginPassword"
+          >
             Password
           </label>
 
@@ -715,6 +864,7 @@
           </div>
         </div>
 
+        <!-- Ricordami -->
         <div class="remember-row">
           <label class="remember-label">
             <input
@@ -751,7 +901,7 @@
         </p>
       </form>
 
-      <!-- Modulo di registrazione -->
+      <!-- Modulo registrazione -->
       <form
         id="registerForm"
         class="form"
@@ -759,7 +909,10 @@
       >
         <!-- Username -->
         <div class="field">
-          <label for="registerUsername">
+          <label
+            class="field-label"
+            for="registerUsername"
+          >
             Username
           </label>
 
@@ -781,7 +934,10 @@
 
         <!-- Email -->
         <div class="field">
-          <label for="registerEmail">
+          <label
+            class="field-label"
+            for="registerEmail"
+          >
             Email
           </label>
 
@@ -802,7 +958,10 @@
 
         <!-- Password -->
         <div class="field">
-          <label for="registerPassword">
+          <label
+            class="field-label"
+            for="registerPassword"
+          >
             Password
           </label>
 
@@ -836,7 +995,10 @@
 
         <!-- Conferma password -->
         <div class="field">
-          <label for="registerConfirmPassword">
+          <label
+            class="field-label"
+            for="registerConfirmPassword"
+          >
             Conferma password
           </label>
 
@@ -894,7 +1056,7 @@
       </form>
     </section>
 
-    <!-- Logo KiRating -->
+    <!-- Logo -->
     <a
       class="bottom-brand"
       href="/"
@@ -908,13 +1070,13 @@
     </a>
 
     <p class="privacy-note">
-      KiRating non salva la password nel browser. La password viene inviata
-      al server tramite connessione HTTPS.
+      Gli account amministratore possono accedere soltanto se il ruolo admin
+      è stato assegnato nel database.
     </p>
   </main>
 
   <script>
-    /* Pulsanti delle schede */
+    /* Schede */
     const loginTabButton =
       document.getElementById("loginTabButton");
 
@@ -935,7 +1097,7 @@
     const authSubtitle =
       document.getElementById("authSubtitle");
 
-    /* Messaggio generale */
+    /* Messaggi */
     const authMessage =
       document.getElementById("authMessage");
 
@@ -968,7 +1130,7 @@
     const passwordMatchMessage =
       document.getElementById("passwordMatchMessage");
 
-    /* Pulsanti di invio */
+    /* Pulsanti */
     const loginSubmitButton =
       document.getElementById("loginSubmitButton");
 
@@ -976,9 +1138,7 @@
       document.getElementById("registerSubmitButton");
 
     /*
-     * Pagina alla quale tornare dopo l'accesso.
-     * Esempio:
-     * /login.html?redirect=/account.html
+     * Pagina alla quale tornare dopo l'accesso utente.
      */
     const redirectUrl =
       new URLSearchParams(window.location.search).get("redirect") || "/";
@@ -997,7 +1157,7 @@
       });
     }
 
-    /* Cancella il messaggio */
+    /* Nasconde il messaggio */
     function clearMessage() {
       authMessage.textContent =
         "";
@@ -1006,7 +1166,7 @@
         "message";
     }
 
-    /* Cambia tra accesso e registrazione */
+    /* Cambia tra login e registrazione */
     function setMode(mode) {
       clearMessage();
 
@@ -1040,8 +1200,8 @@
 
       authSubtitle.textContent =
         isLoginMode
-          ? "Accedi al tuo account KiRating per aggiungere ristoranti e pubblicare recensioni."
-          : "Scegli uno username, inserisci la tua email e crea una password.";
+          ? "Seleziona il tipo di accesso e inserisci le tue credenziali."
+          : "Crea un account utente per aggiungere ristoranti e pubblicare recensioni.";
 
       if (isLoginMode) {
         loginEmail.focus();
@@ -1050,7 +1210,7 @@
       }
     }
 
-    /* Modifica lo stato di caricamento di un pulsante */
+    /* Stato di caricamento dei pulsanti */
     function setButtonLoading(
       button,
       isLoading,
@@ -1066,17 +1226,29 @@
           : defaultHtml;
     }
 
-    /* Controlla il formato dell'email */
+    /* Validazione email */
     function isValidEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    /* Controlla il formato dello username */
+    /* Validazione username */
     function isValidUsername(username) {
       return /^[a-zA-Z0-9._-]{3,30}$/.test(username);
     }
 
-    /* Salva l'email se l'utente seleziona Ricordami */
+    /* Recupera il ruolo selezionato */
+    function getSelectedRole() {
+      const selectedRole =
+        document.querySelector(
+          'input[name="loginRole"]:checked'
+        );
+
+      return selectedRole
+        ? selectedRole.value
+        : "user";
+    }
+
+    /* Salva l'email ricordata */
     function saveRememberedEmail() {
       if (rememberMe.checked) {
         localStorage.setItem(
@@ -1099,7 +1271,7 @@
       }
     }
 
-    /* Recupera l'email ricordata */
+    /* Carica l'email ricordata */
     function loadRememberedEmail() {
       const shouldRemember =
         localStorage.getItem("kiratingRememberMe") === "true";
@@ -1119,7 +1291,7 @@
       }
     }
 
-    /* Controllo in tempo reale della conferma password */
+    /* Controlla che le password coincidano */
     function updatePasswordMatchState() {
       const password =
         registerPassword.value;
@@ -1165,7 +1337,7 @@
       }
     }
 
-    /* Controlla se l'utente è già autenticato */
+    /* Controlla la sessione già attiva */
     async function checkIfAlreadyLoggedIn() {
       try {
         const response =
@@ -1180,8 +1352,18 @@
           data.success &&
           data.authenticated
         ) {
-          window.location.href =
-            redirectUrl;
+          const role =
+            data.user && data.user.role
+              ? data.user.role
+              : "user";
+
+          if (role === "admin") {
+            window.location.href =
+              "/admin.html";
+          } else {
+            window.location.href =
+              redirectUrl;
+          }
         }
       } catch (error) {
         console.error(
@@ -1191,8 +1373,12 @@
       }
     }
 
-    /* Richiesta di accesso */
-    async function loginUser(email, password) {
+    /* Richiesta login */
+    async function loginUser(
+      email,
+      password,
+      role
+    ) {
       const response =
         await fetch("/login", {
           method: "POST",
@@ -1205,7 +1391,8 @@
 
           body: JSON.stringify({
             email: email,
-            password: password
+            password: password,
+            role: role
           })
         });
 
@@ -1225,7 +1412,7 @@
       return data;
     }
 
-    /* Richiesta di registrazione */
+    /* Richiesta registrazione */
     async function registerUser(
       username,
       email,
@@ -1243,9 +1430,8 @@
 
           body: JSON.stringify({
             /*
-             * username è il nuovo campo.
-             * name viene inviato anche per mantenere
-             * la compatibilità con il backend attuale.
+             * name viene mantenuto per compatibilità
+             * con il backend precedente.
              */
             username: username,
             name: username,
@@ -1270,7 +1456,7 @@
       return data;
     }
 
-    /* Scheda Accesso */
+    /* Scheda login */
     loginTabButton.addEventListener(
       "click",
       function () {
@@ -1278,7 +1464,7 @@
       }
     );
 
-    /* Scheda Registrazione */
+    /* Scheda registrazione */
     registerTabButton.addEventListener(
       "click",
       function () {
@@ -1286,7 +1472,7 @@
       }
     );
 
-    /* Collegamenti testuali per cambiare scheda */
+    /* Pulsanti testuali di cambio scheda */
     document
       .querySelectorAll("[data-switch]")
       .forEach(function (button) {
@@ -1298,7 +1484,7 @@
         );
       });
 
-    /* Mostra o nasconde le password */
+    /* Mostra o nasconde la password */
     document
       .querySelectorAll(".password-toggle")
       .forEach(function (button) {
@@ -1336,7 +1522,7 @@
         );
       });
 
-    /* Aggiorna il controllo delle password */
+    /* Aggiornamento controllo password */
     registerPassword.addEventListener(
       "input",
       updatePasswordMatchState
@@ -1360,6 +1546,9 @@
 
         const password =
           loginPassword.value;
+
+        const role =
+          getSelectedRole();
 
         if (
           !email ||
@@ -1392,10 +1581,12 @@
         );
 
         try {
-          await loginUser(
-            email,
-            password
-          );
+          const loginResult =
+            await loginUser(
+              email,
+              password,
+              role
+            );
 
           saveRememberedEmail();
 
@@ -1404,9 +1595,20 @@
             "success"
           );
 
+          const authenticatedRole =
+            loginResult.user &&
+            loginResult.user.role
+              ? loginResult.user.role
+              : role;
+
           setTimeout(function () {
-            window.location.href =
-              redirectUrl;
+            if (authenticatedRole === "admin") {
+              window.location.href =
+                "/admin.html";
+            } else {
+              window.location.href =
+                redirectUrl;
+            }
           }, 500);
         } catch (error) {
           showMessage(
@@ -1522,11 +1724,12 @@
 
           /*
            * Dopo la registrazione viene effettuato
-           * automaticamente anche l'accesso.
+           * automaticamente il login come utente.
            */
           await loginUser(
             email,
-            password
+            password,
+            "user"
           );
 
           localStorage.setItem(
