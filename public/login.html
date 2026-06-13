@@ -10,10 +10,9 @@
 
   <title>KiRating | Accesso e registrazione</title>
 
-  <!-- Collegamento al manifest della PWA -->
+  <!-- Configurazione PWA -->
   <link rel="manifest" href="/manifest.json" />
 
-  <!-- Impostazioni per l'installazione come applicazione -->
   <meta name="theme-color" content="#b90006" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -25,7 +24,7 @@
 
   <link rel="apple-touch-icon" href="/icon-192.png" />
 
-  <!-- Icone Font Awesome -->
+  <!-- Font Awesome -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -71,9 +70,14 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* Contenitore principale */
@@ -81,27 +85,35 @@
       width: 100%;
       min-height: 100vh;
 
-      padding:
-        calc(env(safe-area-inset-top, 0px) + 18px)
-        18px
-        calc(env(safe-area-inset-bottom, 0px) + 28px);
+      padding-top:
+        calc(18px + env(safe-area-inset-top, 0px));
+
+      padding-right:
+        calc(18px + env(safe-area-inset-right, 0px));
+
+      padding-bottom:
+        calc(28px + env(safe-area-inset-bottom, 0px));
+
+      padding-left:
+        calc(18px + env(safe-area-inset-left, 0px));
 
       display: flex;
       flex-direction: column;
     }
 
-    /* Barra superiore con pulsante Home */
+    /* Pulsante per tornare alla home */
     .top-actions {
       width: 100%;
       max-width: 520px;
-      margin: 42px auto 18px;
+      min-height: 50px;
+      margin: 14px auto 16px;
 
       display: flex;
       align-items: center;
       justify-content: flex-end;
 
       position: relative;
-      z-index: 30;
+      z-index: 50;
     }
 
     .home-link {
@@ -112,7 +124,10 @@
       align-items: center;
       justify-content: center;
 
-      border: 1px solid rgba(255, 255, 255, 0.32);
+      position: relative;
+      z-index: 60;
+
+      border: 1px solid rgba(255, 255, 255, 0.34);
       border-radius: 50%;
 
       background-color: rgba(255, 255, 255, 0.18);
@@ -121,6 +136,10 @@
       font-size: 18px;
 
       box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+
+      cursor: pointer;
+      pointer-events: auto;
+      touch-action: manipulation;
 
       transition:
         background-color 0.2s ease,
@@ -132,7 +151,7 @@
       transform: translateY(-1px);
     }
 
-    /* Scheda accesso e registrazione */
+    /* Scheda principale */
     .auth-card {
       width: 100%;
       max-width: 520px;
@@ -149,8 +168,10 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.72);
 
       backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
+    /* Intestazione */
     .auth-header {
       margin-bottom: 18px;
     }
@@ -174,7 +195,7 @@
       font-weight: 700;
     }
 
-    /* Messaggi di errore e conferma */
+    /* Messaggi */
     .message {
       margin-bottom: 14px;
       padding: 12px 13px;
@@ -206,7 +227,7 @@
       color: #246b38;
     }
 
-    /* Selettore Accedi / Registrati */
+    /* Pulsanti Accedi e Registrati */
     .tabs {
       margin-bottom: 18px;
       padding: 5px;
@@ -235,10 +256,6 @@
       font-weight: 900;
 
       cursor: pointer;
-
-      transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
     }
 
     .tab-button.active {
@@ -272,6 +289,7 @@
       font-weight: 900;
     }
 
+    /* Contenitore degli input */
     .input-wrapper {
       min-height: 54px;
       padding: 0 14px;
@@ -300,6 +318,12 @@
       border-color: #b40000;
 
       box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.1);
+    }
+
+    .input-wrapper.valid {
+      border-color: #2c7a3f;
+
+      box-shadow: 0 0 0 4px rgba(44, 122, 63, 0.08);
     }
 
     .input-wrapper > i {
@@ -331,6 +355,7 @@
       font-weight: 650;
     }
 
+    /* Mostra o nasconde la password */
     .password-toggle {
       width: 36px;
       height: 36px;
@@ -354,7 +379,18 @@
       pointer-events: none;
     }
 
-    /* Indicatore corrispondenza password */
+    /* Indicatore password */
+    .password-requirements {
+      margin-top: 8px;
+      padding-left: 2px;
+
+      color: #8a8178;
+
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
     .password-match-message {
       margin-top: 7px;
 
@@ -408,7 +444,7 @@
     }
 
     .small-note {
-      max-width: 210px;
+      max-width: 220px;
 
       color: #8a8178;
 
@@ -441,115 +477,14 @@
       box-shadow: 0 14px 30px rgba(180, 0, 0, 0.26);
 
       cursor: pointer;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .submit-button:hover {
-      transform: translateY(-1px);
-
-      box-shadow: 0 17px 34px rgba(180, 0, 0, 0.3);
     }
 
     .submit-button:disabled {
       opacity: 0.68;
       cursor: wait;
-      transform: none;
     }
 
-    /* Separatore accesso social */
-    .social-separator {
-      margin: 20px 0 14px;
-
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      color: #938a82;
-
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .social-separator::before,
-    .social-separator::after {
-      content: "";
-
-      height: 1px;
-      flex: 1;
-
-      background-color: #e6ddd5;
-    }
-
-    /* Pulsanti Google e Apple */
-    .social-buttons {
-      display: grid;
-      gap: 10px;
-    }
-
-    .social-button {
-      width: 100%;
-      min-height: 54px;
-      padding: 13px 16px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-
-      border-radius: 999px;
-
-      font-size: 15px;
-      font-weight: 900;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .social-button:hover {
-      transform: translateY(-1px);
-    }
-
-    .google-button {
-      border: 1px solid #ded7cf;
-
-      background-color: #ffffff;
-      color: #2b2118;
-
-      box-shadow: 0 8px 20px rgba(38, 27, 18, 0.07);
-    }
-
-    .google-button i {
-      color: #4285f4;
-    }
-
-    .apple-button {
-      border: 1px solid #111111;
-
-      background-color: #111111;
-      color: #ffffff;
-
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-    }
-
-    .social-note {
-      margin-top: 10px;
-
-      color: #8a8178;
-
-      font-size: 11px;
-      line-height: 1.4;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    /* Cambio modalità */
+    /* Cambio tra login e registrazione */
     .switch-text {
       margin-top: 16px;
 
@@ -564,7 +499,7 @@
     .switch-text button {
       border: none;
 
-      background: transparent;
+      background-color: transparent;
       color: #b40000;
 
       font-size: 14px;
@@ -573,7 +508,7 @@
       cursor: pointer;
     }
 
-    /* Logo sotto la scheda */
+    /* Logo sotto il modulo */
     .bottom-brand {
       width: 100%;
       max-width: 520px;
@@ -605,7 +540,7 @@
       max-width: 520px;
       margin: 12px auto 0;
 
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.82);
 
       font-size: 12px;
       line-height: 1.45;
@@ -613,21 +548,19 @@
       text-align: center;
     }
 
-    /* Ottimizzazione smartphone */
+    /* Smartphone */
     @media (max-width: 430px) {
       .page {
-        padding-right: 14px;
-        padding-left: 14px;
+        padding-right:
+          calc(14px + env(safe-area-inset-right, 0px));
+
+        padding-left:
+          calc(14px + env(safe-area-inset-left, 0px));
       }
 
       .top-actions {
-        margin-top: 48px;
-        margin-bottom: 16px;
-      }
-
-      .home-link {
-        width: 48px;
-        height: 48px;
+        margin-top: 10px;
+        margin-bottom: 14px;
       }
 
       .auth-card {
@@ -659,7 +592,7 @@
       }
     }
 
-    /* Impostazione per schermi più grandi */
+    /* Desktop */
     @media (min-width: 760px) {
       .page {
         justify-content: center;
@@ -674,7 +607,7 @@
 
 <body>
   <main class="page">
-    <!-- Pulsante per tornare alla home -->
+    <!-- Pulsante Home -->
     <div class="top-actions">
       <a
         class="home-link"
@@ -685,7 +618,7 @@
       </a>
     </div>
 
-    <!-- Scheda accesso e registrazione -->
+    <!-- Scheda di autenticazione -->
     <section class="auth-card">
       <div class="auth-header">
         <h1 id="authTitle">
@@ -693,22 +626,23 @@
         </h1>
 
         <p id="authSubtitle">
-          Accedi per aggiungere ristoranti, scrivere recensioni e ritrovare
-          tutto più velocemente.
+          Accedi al tuo account KiRating per aggiungere ristoranti e
+          pubblicare recensioni.
         </p>
       </div>
 
-      <!-- Messaggi applicativi -->
+      <!-- Messaggi di errore e conferma -->
       <div
         id="authMessage"
         class="message"
         role="alert"
+        aria-live="polite"
       ></div>
 
-      <!-- Schede Accedi e Registrati -->
+      <!-- Selezione modalità -->
       <div
         class="tabs"
-        aria-label="Seleziona accesso o registrazione"
+        aria-label="Accesso o registrazione"
       >
         <button
           id="loginTabButton"
@@ -765,7 +699,7 @@
               id="loginPassword"
               type="password"
               name="password"
-              placeholder="La tua password"
+              placeholder="Inserisci la password"
               autocomplete="current-password"
               required
             />
@@ -792,7 +726,7 @@
           </label>
 
           <p class="small-note">
-            Salva l’email e mantiene la sessione attiva.
+            Salva soltanto l’indirizzo email sul dispositivo.
           </p>
         </div>
 
@@ -805,34 +739,6 @@
           Accedi
         </button>
 
-        <!-- Accesso con provider esterni -->
-        <div class="social-separator">
-          oppure
-        </div>
-
-        <div class="social-buttons">
-          <a
-            class="social-button google-button"
-            href="/auth/google"
-          >
-            <i class="fa-brands fa-google"></i>
-            Continua con Google
-          </a>
-
-          <a
-            class="social-button apple-button"
-            href="/auth/apple"
-          >
-            <i class="fa-brands fa-apple"></i>
-            Continua con Apple
-          </a>
-        </div>
-
-        <p class="social-note">
-          L’accesso Google e Apple richiede la configurazione delle relative
-          route nel server.
-        </p>
-
         <p class="switch-text">
           Non hai ancora un account?
 
@@ -840,7 +746,7 @@
             type="button"
             data-switch="register"
           >
-            Registrati ora
+            Registrati
           </button>
         </p>
       </form>
@@ -851,45 +757,50 @@
         class="form"
         novalidate
       >
+        <!-- Username -->
         <div class="field">
-          <label for="registerName">
-            Nome
+          <label for="registerUsername">
+            Username
           </label>
 
           <div class="input-wrapper">
             <i class="fa-solid fa-user"></i>
 
             <input
-              id="registerName"
+              id="registerUsername"
               type="text"
-              name="name"
-              placeholder="Il tuo nome"
-              autocomplete="name"
+              name="username"
+              placeholder="Scegli il tuo username"
+              autocomplete="username"
+              minlength="3"
+              maxlength="30"
               required
             />
           </div>
         </div>
 
+        <!-- Email -->
         <div class="field">
-  <label for="registerUsername">
-    Username
-  </label>
+          <label for="registerEmail">
+            Email
+          </label>
 
-  <div class="input-wrapper">
-    <i class="fa-solid fa-user"></i>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
 
-    <input
-      id="registerUsername"
-      type="text"
-      name="username"
-      placeholder="Scegli il tuo username"
-      autocomplete="username"
-      minlength="3"
-      required
-    />
-  </div>
-</div>
+            <input
+              id="registerEmail"
+              type="email"
+              name="email"
+              placeholder="nome@email.com"
+              autocomplete="email"
+              inputmode="email"
+              required
+            />
+          </div>
+        </div>
 
+        <!-- Password -->
         <div class="field">
           <label for="registerPassword">
             Password
@@ -902,7 +813,7 @@
               id="registerPassword"
               type="password"
               name="password"
-              placeholder="Minimo 6 caratteri"
+              placeholder="Crea una password"
               autocomplete="new-password"
               minlength="6"
               required
@@ -917,8 +828,13 @@
               <i class="fa-solid fa-eye"></i>
             </button>
           </div>
+
+          <p class="password-requirements">
+            La password deve contenere almeno 6 caratteri.
+          </p>
         </div>
 
+        <!-- Conferma password -->
         <div class="field">
           <label for="registerConfirmPassword">
             Conferma password
@@ -965,34 +881,6 @@
           Crea account
         </button>
 
-        <!-- Registrazione con provider esterni -->
-        <div class="social-separator">
-          oppure
-        </div>
-
-        <div class="social-buttons">
-          <a
-            class="social-button google-button"
-            href="/auth/google"
-          >
-            <i class="fa-brands fa-google"></i>
-            Registrati con Google
-          </a>
-
-          <a
-            class="social-button apple-button"
-            href="/auth/apple"
-          >
-            <i class="fa-brands fa-apple"></i>
-            Registrati con Apple
-          </a>
-        </div>
-
-        <p class="social-note">
-          L’accesso Google e Apple sarà disponibile dopo la configurazione
-          OAuth nel backend.
-        </p>
-
         <p class="switch-text">
           Hai già un account?
 
@@ -1006,7 +894,7 @@
       </form>
     </section>
 
-    <!-- Logo del sito -->
+    <!-- Logo KiRating -->
     <a
       class="bottom-brand"
       href="/"
@@ -1020,41 +908,49 @@
     </a>
 
     <p class="privacy-note">
-      Per sicurezza KiRating non salva la password nel browser. Il browser può
-      ricordarla tramite il proprio gestore password.
+      KiRating non salva la password nel browser. La password viene inviata
+      al server tramite connessione HTTPS.
     </p>
   </main>
 
   <script>
-    /* Riferimenti agli elementi della pagina */
+    /* Pulsanti delle schede */
     const loginTabButton =
       document.getElementById("loginTabButton");
 
     const registerTabButton =
       document.getElementById("registerTabButton");
 
+    /* Moduli */
     const loginForm =
       document.getElementById("loginForm");
 
     const registerForm =
       document.getElementById("registerForm");
 
+    /* Titoli */
     const authTitle =
       document.getElementById("authTitle");
 
     const authSubtitle =
       document.getElementById("authSubtitle");
 
+    /* Messaggio generale */
     const authMessage =
       document.getElementById("authMessage");
 
+    /* Campi login */
     const loginEmail =
       document.getElementById("loginEmail");
 
     const loginPassword =
       document.getElementById("loginPassword");
 
-    const registerName =
+    const rememberMe =
+      document.getElementById("rememberMe");
+
+    /* Campi registrazione */
+    const registerUsername =
       document.getElementById("registerUsername");
 
     const registerEmail =
@@ -1072,9 +968,7 @@
     const passwordMatchMessage =
       document.getElementById("passwordMatchMessage");
 
-    const rememberMe =
-      document.getElementById("rememberMe");
-
+    /* Pulsanti di invio */
     const loginSubmitButton =
       document.getElementById("loginSubmitButton");
 
@@ -1082,13 +976,14 @@
       document.getElementById("registerSubmitButton");
 
     /*
-     * Se la pagina di login viene aperta da una pagina protetta,
-     * il parametro redirect permette di tornare alla pagina precedente.
+     * Pagina alla quale tornare dopo l'accesso.
+     * Esempio:
+     * /login.html?redirect=/account.html
      */
     const redirectUrl =
       new URLSearchParams(window.location.search).get("redirect") || "/";
 
-    /* Mostra un messaggio di errore o conferma */
+    /* Mostra un messaggio */
     function showMessage(message, type) {
       authMessage.textContent =
         message;
@@ -1102,7 +997,7 @@
       });
     }
 
-    /* Nasconde il messaggio applicativo */
+    /* Cancella il messaggio */
     function clearMessage() {
       authMessage.textContent =
         "";
@@ -1111,7 +1006,7 @@
         "message";
     }
 
-    /* Cambia tra modalità accesso e registrazione */
+    /* Cambia tra accesso e registrazione */
     function setMode(mode) {
       clearMessage();
 
@@ -1145,17 +1040,17 @@
 
       authSubtitle.textContent =
         isLoginMode
-          ? "Accedi per aggiungere ristoranti, scrivere recensioni e ritrovare tutto più velocemente."
-          : "Registrati in pochi secondi e inizia a usare KiRating dal telefono come un’app.";
+          ? "Accedi al tuo account KiRating per aggiungere ristoranti e pubblicare recensioni."
+          : "Scegli uno username, inserisci la tua email e crea una password.";
 
       if (isLoginMode) {
         loginEmail.focus();
       } else {
-        registerName.focus();
+        registerUsername.focus();
       }
     }
 
-    /* Gestisce lo stato di caricamento dei pulsanti */
+    /* Modifica lo stato di caricamento di un pulsante */
     function setButtonLoading(
       button,
       isLoading,
@@ -1171,12 +1066,17 @@
           : defaultHtml;
     }
 
-    /* Controlla che l'indirizzo email abbia un formato valido */
+    /* Controlla il formato dell'email */
     function isValidEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    /* Salva o rimuove l'email ricordata */
+    /* Controlla il formato dello username */
+    function isValidUsername(username) {
+      return /^[a-zA-Z0-9._-]{3,30}$/.test(username);
+    }
+
+    /* Salva l'email se l'utente seleziona Ricordami */
     function saveRememberedEmail() {
       if (rememberMe.checked) {
         localStorage.setItem(
@@ -1199,7 +1099,7 @@
       }
     }
 
-    /* Carica l'email ricordata dal dispositivo */
+    /* Recupera l'email ricordata */
     function loadRememberedEmail() {
       const shouldRemember =
         localStorage.getItem("kiratingRememberMe") === "true";
@@ -1219,7 +1119,7 @@
       }
     }
 
-    /* Controlla in tempo reale se le password coincidono */
+    /* Controllo in tempo reale della conferma password */
     function updatePasswordMatchState() {
       const password =
         registerPassword.value;
@@ -1228,7 +1128,8 @@
         registerConfirmPassword.value;
 
       confirmPasswordWrapper.classList.remove(
-        "invalid"
+        "invalid",
+        "valid"
       );
 
       passwordMatchMessage.className =
@@ -1242,6 +1143,10 @@
       }
 
       if (password === confirmPassword) {
+        confirmPasswordWrapper.classList.add(
+          "valid"
+        );
+
         passwordMatchMessage.textContent =
           "Le password coincidono.";
 
@@ -1260,7 +1165,7 @@
       }
     }
 
-    /* Controlla se l'utente ha già una sessione attiva */
+    /* Controlla se l'utente è già autenticato */
     async function checkIfAlreadyLoggedIn() {
       try {
         const response =
@@ -1286,27 +1191,23 @@
       }
     }
 
-    /* Effettua la richiesta di login al backend */
+    /* Richiesta di accesso */
     async function loginUser(email, password) {
       const response =
-        await fetch(
-          "/login",
-          {
-            method: "POST",
+        await fetch("/login", {
+          method: "POST",
 
-            credentials: "same-origin",
+          credentials: "same-origin",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+          headers: {
+            "Content-Type": "application/json"
+          },
 
-            body: JSON.stringify({
-  name: username,
-  email: email,
-  password: password
-})
-          }
-        );
+          body: JSON.stringify({
+            email: email,
+            password: password
+          })
+        });
 
       const data =
         await response.json();
@@ -1324,31 +1225,34 @@
       return data;
     }
 
-    /* Effettua la richiesta di registrazione al backend */
+    /* Richiesta di registrazione */
     async function registerUser(
-      name,
+      username,
       email,
       password
     ) {
       const response =
-        await fetch(
-          "/register",
-          {
-            method: "POST",
+        await fetch("/register", {
+          method: "POST",
 
-            credentials: "same-origin",
+          credentials: "same-origin",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+          headers: {
+            "Content-Type": "application/json"
+          },
 
-            body: JSON.stringify({
-              name: name,
-              email: email,
-              password: password
-            })
-          }
-        );
+          body: JSON.stringify({
+            /*
+             * username è il nuovo campo.
+             * name viene inviato anche per mantenere
+             * la compatibilità con il backend attuale.
+             */
+            username: username,
+            name: username,
+            email: email,
+            password: password
+          })
+        });
 
       const data =
         await response.json();
@@ -1366,7 +1270,7 @@
       return data;
     }
 
-    /* Apertura della scheda di accesso */
+    /* Scheda Accesso */
     loginTabButton.addEventListener(
       "click",
       function () {
@@ -1374,7 +1278,7 @@
       }
     );
 
-    /* Apertura della scheda di registrazione */
+    /* Scheda Registrazione */
     registerTabButton.addEventListener(
       "click",
       function () {
@@ -1382,7 +1286,7 @@
       }
     );
 
-    /* Pulsanti testuali per cambiare scheda */
+    /* Collegamenti testuali per cambiare scheda */
     document
       .querySelectorAll("[data-switch]")
       .forEach(function (button) {
@@ -1432,7 +1336,7 @@
         );
       });
 
-    /* Controllo password durante la digitazione */
+    /* Aggiorna il controllo delle password */
     registerPassword.addEventListener(
       "input",
       updatePasswordMatchState
@@ -1443,7 +1347,7 @@
       updatePasswordMatchState
     );
 
-    /* Invio del modulo di accesso */
+    /* Invio login */
     loginForm.addEventListener(
       "submit",
       async function (event) {
@@ -1520,7 +1424,7 @@
       }
     );
 
-    /* Invio del modulo di registrazione */
+    /* Invio registrazione */
     registerForm.addEventListener(
       "submit",
       async function (event) {
@@ -1529,7 +1433,7 @@
         clearMessage();
 
         const username =
-          registerName.value.trim();
+          registerUsername.value.trim();
 
         const email =
           registerEmail.value.trim().toLowerCase();
@@ -1541,11 +1445,11 @@
           registerConfirmPassword.value;
 
         if (
-  !username ||
-  !email ||
-  !password ||
-  !confirmPassword
-) {
+          !username ||
+          !email ||
+          !password ||
+          !confirmPassword
+        ) {
           showMessage(
             "Compila tutti i campi.",
             "error"
@@ -1554,16 +1458,16 @@
           return;
         }
 
-        if (username.length < 3) {
-  showMessage(
-    "Lo username deve contenere almeno 3 caratteri.",
-    "error"
-  );
+        if (!isValidUsername(username)) {
+          showMessage(
+            "Lo username deve contenere da 3 a 30 caratteri. Puoi usare lettere, numeri, punto, trattino e trattino basso.",
+            "error"
+          );
 
-  registerUsername.focus();
+          registerUsername.focus();
 
-  return;
-}
+          return;
+        }
 
         if (!isValidEmail(email)) {
           showMessage(
@@ -1578,7 +1482,7 @@
 
         if (password.length < 6) {
           showMessage(
-            "La password deve avere almeno 6 caratteri.",
+            "La password deve contenere almeno 6 caratteri.",
             "error"
           );
 
@@ -1611,14 +1515,14 @@
 
         try {
           await registerUser(
-  username,
-  email,
-  password
-);
+            username,
+            email,
+            password
+          );
 
           /*
            * Dopo la registrazione viene effettuato
-           * automaticamente anche il login.
+           * automaticamente anche l'accesso.
            */
           await loginUser(
             email,
@@ -1643,7 +1547,7 @@
           setTimeout(function () {
             window.location.href =
               redirectUrl;
-          }, 600);
+          }, 700);
         } catch (error) {
           showMessage(
             error.message,
@@ -1660,12 +1564,12 @@
       }
     );
 
-    /* Caricamento iniziale */
+    /* Inizializzazione */
     loadRememberedEmail();
 
     checkIfAlreadyLoggedIn();
 
-    /* Registrazione del service worker della PWA */
+    /* Registrazione service worker */
     if ("serviceWorker" in navigator) {
       window.addEventListener(
         "load",
