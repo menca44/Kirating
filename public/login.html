@@ -8,24 +8,31 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>KiRating | Accesso</title>
+  <title>KiRating | Accesso e registrazione</title>
 
+  <!-- Collegamento al manifest della PWA -->
   <link rel="manifest" href="/manifest.json" />
 
+  <!-- Impostazioni per l'installazione come applicazione -->
   <meta name="theme-color" content="#b90006" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  />
   <meta name="apple-mobile-web-app-title" content="KiRating" />
 
   <link rel="apple-touch-icon" href="/icon-192.png" />
 
+  <!-- Icone Font Awesome -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
   />
 
   <style>
+    /* Reset generale */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -43,11 +50,19 @@
       min-height: 100vh;
 
       background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.16), transparent 32%),
-        linear-gradient(145deg, #8f0000 0%, #b90006 45%, #7e0000 100%);
+        radial-gradient(
+          circle at top left,
+          rgba(255, 255, 255, 0.16),
+          transparent 32%
+        ),
+        linear-gradient(
+          145deg,
+          #8f0000 0%,
+          #b90006 45%,
+          #7e0000 100%
+        );
 
       color: #2b2118;
-
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -61,59 +76,73 @@
       text-decoration: none;
     }
 
+    /* Contenitore principale */
     .page {
+      width: 100%;
       min-height: 100vh;
-      padding: 18px 18px 28px;
+
+      padding:
+        calc(env(safe-area-inset-top, 0px) + 18px)
+        18px
+        calc(env(safe-area-inset-bottom, 0px) + 28px);
 
       display: flex;
       flex-direction: column;
     }
 
+    /* Barra superiore con pulsante Home */
     .top-actions {
       width: 100%;
       max-width: 520px;
-      margin: 52 auto 18px;
+      margin: 42px auto 18px;
 
       display: flex;
       align-items: center;
       justify-content: flex-end;
 
       position: relative;
-      z-index: 20;
+      z-index: 30;
     }
 
-   .home-link {
-  width: 48px;
-  height: 48px;
+    .home-link {
+      width: 48px;
+      height: 48px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-  position: relative;
-  z-index: 30;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 50%;
 
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
 
-  background-color: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
+      font-size: 18px;
 
-  font-size: 18px;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
 
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
-}
+      transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+    }
 
+    .home-link:hover {
+      background-color: rgba(255, 255, 255, 0.28);
+      transform: translateY(-1px);
+    }
+
+    /* Scheda accesso e registrazione */
     .auth-card {
       width: 100%;
       max-width: 520px;
-      margin: auto auto 0;
+      margin: 0 auto;
       padding: 20px;
 
       border: 1px solid rgba(255, 255, 255, 0.26);
       border-radius: 30px;
 
-      background-color: rgba(255, 250, 245, 0.96);
+      background-color: rgba(255, 250, 245, 0.97);
 
       box-shadow:
         0 28px 80px rgba(0, 0, 0, 0.28),
@@ -124,8 +153,6 @@
 
     .auth-header {
       margin-bottom: 18px;
-
-      text-align: left;
     }
 
     .auth-header h1 {
@@ -135,7 +162,7 @@
 
       font-size: 30px;
       line-height: 1.05;
-      font-weight: 950;
+      font-weight: 900;
       letter-spacing: -0.8px;
     }
 
@@ -147,6 +174,39 @@
       font-weight: 700;
     }
 
+    /* Messaggi di errore e conferma */
+    .message {
+      margin-bottom: 14px;
+      padding: 12px 13px;
+
+      display: none;
+
+      border-radius: 15px;
+
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      border: 1px solid rgba(180, 0, 0, 0.2);
+
+      background-color: #fff0f0;
+      color: #9b0000;
+    }
+
+    .message.success {
+      border: 1px solid rgba(44, 122, 63, 0.2);
+
+      background-color: #effaf2;
+      color: #246b38;
+    }
+
+    /* Selettore Accedi / Registrati */
     .tabs {
       margin-bottom: 18px;
       padding: 5px;
@@ -162,7 +222,7 @@
     }
 
     .tab-button {
-      min-height: 45px;
+      min-height: 46px;
       padding: 10px 12px;
 
       border: none;
@@ -175,6 +235,10 @@
       font-weight: 900;
 
       cursor: pointer;
+
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
     }
 
     .tab-button.active {
@@ -184,6 +248,7 @@
       box-shadow: 0 10px 24px rgba(180, 0, 0, 0.22);
     }
 
+    /* Moduli */
     .form {
       display: none;
     }
@@ -228,10 +293,16 @@
     .input-wrapper:focus-within {
       border-color: #b40000;
 
-      box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.10);
+      box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.1);
     }
 
-    .input-wrapper i {
+    .input-wrapper.invalid {
+      border-color: #b40000;
+
+      box-shadow: 0 0 0 4px rgba(180, 0, 0, 0.1);
+    }
+
+    .input-wrapper > i {
       width: 18px;
 
       color: #b40000;
@@ -261,8 +332,8 @@
     }
 
     .password-toggle {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
 
       display: inline-flex;
       align-items: center;
@@ -274,11 +345,39 @@
       border-radius: 50%;
 
       background-color: #f7f2ec;
-      color: #6c6259;
+      color: #b40000;
 
       cursor: pointer;
     }
 
+    .password-toggle i {
+      pointer-events: none;
+    }
+
+    /* Indicatore corrispondenza password */
+    .password-match-message {
+      margin-top: 7px;
+
+      display: none;
+
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .password-match-message.show {
+      display: block;
+    }
+
+    .password-match-message.error {
+      color: #b40000;
+    }
+
+    .password-match-message.success {
+      color: #246b38;
+    }
+
+    /* Ricordami */
     .remember-row {
       margin: 4px 0 16px;
 
@@ -302,13 +401,15 @@
     }
 
     .remember-label input {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
 
       accent-color: #b40000;
     }
 
     .small-note {
+      max-width: 210px;
+
       color: #8a8178;
 
       font-size: 12px;
@@ -317,6 +418,7 @@
       text-align: right;
     }
 
+    /* Pulsante principale */
     .submit-button {
       width: 100%;
       min-height: 56px;
@@ -334,49 +436,120 @@
       color: #ffffff;
 
       font-size: 16px;
-      font-weight: 950;
+      font-weight: 900;
 
       box-shadow: 0 14px 30px rgba(180, 0, 0, 0.26);
 
       cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-1px);
+
+      box-shadow: 0 17px 34px rgba(180, 0, 0, 0.3);
     }
 
     .submit-button:disabled {
       opacity: 0.68;
       cursor: wait;
+      transform: none;
     }
 
-    .message {
-      margin-bottom: 14px;
-      padding: 12px 13px;
+    /* Separatore accesso social */
+    .social-separator {
+      margin: 20px 0 14px;
 
-      display: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
 
-      border-radius: 15px;
+      color: #938a82;
 
-      font-size: 14px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .social-separator::before,
+    .social-separator::after {
+      content: "";
+
+      height: 1px;
+      flex: 1;
+
+      background-color: #e6ddd5;
+    }
+
+    /* Pulsanti Google e Apple */
+    .social-buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .social-button {
+      width: 100%;
+      min-height: 54px;
+      padding: 13px 16px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      border-radius: 999px;
+
+      font-size: 15px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .social-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .google-button {
+      border: 1px solid #ded7cf;
+
+      background-color: #ffffff;
+      color: #2b2118;
+
+      box-shadow: 0 8px 20px rgba(38, 27, 18, 0.07);
+    }
+
+    .google-button i {
+      color: #4285f4;
+    }
+
+    .apple-button {
+      border: 1px solid #111111;
+
+      background-color: #111111;
+      color: #ffffff;
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    }
+
+    .social-note {
+      margin-top: 10px;
+
+      color: #8a8178;
+
+      font-size: 11px;
       line-height: 1.4;
-      font-weight: 850;
+      font-weight: 700;
+      text-align: center;
     }
 
-    .message.show {
-      display: block;
-    }
-
-    .message.error {
-      border: 1px solid rgba(180, 0, 0, 0.20);
-
-      background-color: #fff0f0;
-      color: #9b0000;
-    }
-
-    .message.success {
-      border: 1px solid rgba(44, 122, 63, 0.20);
-
-      background-color: #effaf2;
-      color: #246b38;
-    }
-
+    /* Cambio modalità */
     .switch-text {
       margin-top: 16px;
 
@@ -395,11 +568,12 @@
       color: #b40000;
 
       font-size: 14px;
-      font-weight: 950;
+      font-weight: 900;
 
       cursor: pointer;
     }
 
+    /* Logo sotto la scheda */
     .bottom-brand {
       width: 100%;
       max-width: 520px;
@@ -408,20 +582,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-
-      text-decoration: none;
     }
 
     .brand-logo {
-      width: 100px;
-      height: 100px;
+      width: 92px;
+      height: 92px;
 
       display: block;
 
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
 
-      border-radius: 22px;
+      border-radius: 21px;
+
+      background-color: #b90006;
 
       box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
     }
@@ -429,9 +603,9 @@
     .privacy-note {
       width: 100%;
       max-width: 520px;
-      margin: 10px auto 0;
+      margin: 12px auto 0;
 
-      color: rgba(255, 255, 255, 0.78);
+      color: rgba(255, 255, 255, 0.8);
 
       font-size: 12px;
       line-height: 1.45;
@@ -439,32 +613,22 @@
       text-align: center;
     }
 
-    @media (min-width: 760px) {
-      .page {
-        justify-content: center;
-      }
-
-      .auth-card {
-        margin-top: 12px;
-      }
-    }
-
+    /* Ottimizzazione smartphone */
     @media (max-width: 430px) {
       .page {
-        padding: 14px 14px 24px;
+        padding-right: 14px;
+        padding-left: 14px;
       }
 
       .top-actions {
-  margin-top: 58px;
-  margin-bottom: 16px;
-}
+        margin-top: 48px;
+        margin-bottom: 16px;
+      }
 
-.home-link {
-  width: 48px;
-  height: 48px;
-
-  font-size: 18px;
-}
+      .home-link {
+        width: 48px;
+        height: 48px;
+      }
 
       .auth-card {
         padding: 18px 16px;
@@ -479,19 +643,30 @@
         font-size: 14px;
       }
 
-      .small-note {
-        max-width: 130px;
+      .remember-row {
+        align-items: flex-start;
       }
 
-      .bottom-brand {
-        margin-top: 16px;
+      .small-note {
+        max-width: 150px;
       }
 
       .brand-logo {
-        width: 88px;
-        height: 88px;
+        width: 86px;
+        height: 86px;
 
-        border-radius: 18px;
+        border-radius: 19px;
+      }
+    }
+
+    /* Impostazione per schermi più grandi */
+    @media (min-width: 760px) {
+      .page {
+        justify-content: center;
+      }
+
+      .top-actions {
+        margin-top: 0;
       }
     }
   </style>
@@ -499,6 +674,7 @@
 
 <body>
   <main class="page">
+    <!-- Pulsante per tornare alla home -->
     <div class="top-actions">
       <a
         class="home-link"
@@ -509,6 +685,7 @@
       </a>
     </div>
 
+    <!-- Scheda accesso e registrazione -->
     <section class="auth-card">
       <div class="auth-header">
         <h1 id="authTitle">
@@ -516,18 +693,22 @@
         </h1>
 
         <p id="authSubtitle">
-          Accedi per aggiungere ristoranti, scrivere recensioni e ritrovare tutto più velocemente.
+          Accedi per aggiungere ristoranti, scrivere recensioni e ritrovare
+          tutto più velocemente.
         </p>
       </div>
 
+      <!-- Messaggi applicativi -->
       <div
         id="authMessage"
         class="message"
+        role="alert"
       ></div>
 
+      <!-- Schede Accedi e Registrati -->
       <div
         class="tabs"
-        aria-label="Accesso o registrazione"
+        aria-label="Seleziona accesso o registrazione"
       >
         <button
           id="loginTabButton"
@@ -546,9 +727,11 @@
         </button>
       </div>
 
+      <!-- Modulo di accesso -->
       <form
         id="loginForm"
         class="form active"
+        novalidate
       >
         <div class="field">
           <label for="loginEmail">
@@ -564,6 +747,7 @@
               name="email"
               placeholder="nome@email.com"
               autocomplete="email"
+              inputmode="email"
               required
             />
           </div>
@@ -621,8 +805,37 @@
           Accedi
         </button>
 
+        <!-- Accesso con provider esterni -->
+        <div class="social-separator">
+          oppure
+        </div>
+
+        <div class="social-buttons">
+          <a
+            class="social-button google-button"
+            href="/auth/google"
+          >
+            <i class="fa-brands fa-google"></i>
+            Continua con Google
+          </a>
+
+          <a
+            class="social-button apple-button"
+            href="/auth/apple"
+          >
+            <i class="fa-brands fa-apple"></i>
+            Continua con Apple
+          </a>
+        </div>
+
+        <p class="social-note">
+          L’accesso Google e Apple richiede la configurazione delle relative
+          route nel server.
+        </p>
+
         <p class="switch-text">
           Non hai ancora un account?
+
           <button
             type="button"
             data-switch="register"
@@ -632,9 +845,11 @@
         </p>
       </form>
 
+      <!-- Modulo di registrazione -->
       <form
         id="registerForm"
         class="form"
+        novalidate
       >
         <div class="field">
           <label for="registerName">
@@ -669,6 +884,7 @@
               name="email"
               placeholder="nome@email.com"
               autocomplete="email"
+              inputmode="email"
               required
             />
           </div>
@@ -703,6 +919,43 @@
           </div>
         </div>
 
+        <div class="field">
+          <label for="registerConfirmPassword">
+            Conferma password
+          </label>
+
+          <div
+            id="confirmPasswordWrapper"
+            class="input-wrapper"
+          >
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <input
+              id="registerConfirmPassword"
+              type="password"
+              name="confirmPassword"
+              placeholder="Ripeti la password"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            />
+
+            <button
+              class="password-toggle"
+              type="button"
+              data-target="registerConfirmPassword"
+              aria-label="Mostra conferma password"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+
+          <p
+            id="passwordMatchMessage"
+            class="password-match-message"
+          ></p>
+        </div>
+
         <button
           id="registerSubmitButton"
           class="submit-button"
@@ -712,8 +965,37 @@
           Crea account
         </button>
 
+        <!-- Registrazione con provider esterni -->
+        <div class="social-separator">
+          oppure
+        </div>
+
+        <div class="social-buttons">
+          <a
+            class="social-button google-button"
+            href="/auth/google"
+          >
+            <i class="fa-brands fa-google"></i>
+            Registrati con Google
+          </a>
+
+          <a
+            class="social-button apple-button"
+            href="/auth/apple"
+          >
+            <i class="fa-brands fa-apple"></i>
+            Registrati con Apple
+          </a>
+        </div>
+
+        <p class="social-note">
+          L’accesso Google e Apple sarà disponibile dopo la configurazione
+          OAuth nel backend.
+        </p>
+
         <p class="switch-text">
           Hai già un account?
+
           <button
             type="button"
             data-switch="login"
@@ -724,6 +1006,7 @@
       </form>
     </section>
 
+    <!-- Logo del sito -->
     <a
       class="bottom-brand"
       href="/"
@@ -737,11 +1020,13 @@
     </a>
 
     <p class="privacy-note">
-      Per sicurezza KiRating non salva la password nel browser. Il browser può però ricordarla tramite il suo gestore password.
+      Per sicurezza KiRating non salva la password nel browser. Il browser può
+      ricordarla tramite il proprio gestore password.
     </p>
   </main>
 
   <script>
+    /* Riferimenti agli elementi della pagina */
     const loginTabButton =
       document.getElementById("loginTabButton");
 
@@ -778,6 +1063,15 @@
     const registerPassword =
       document.getElementById("registerPassword");
 
+    const registerConfirmPassword =
+      document.getElementById("registerConfirmPassword");
+
+    const confirmPasswordWrapper =
+      document.getElementById("confirmPasswordWrapper");
+
+    const passwordMatchMessage =
+      document.getElementById("passwordMatchMessage");
+
     const rememberMe =
       document.getElementById("rememberMe");
 
@@ -787,17 +1081,28 @@
     const registerSubmitButton =
       document.getElementById("registerSubmitButton");
 
+    /*
+     * Se la pagina di login viene aperta da una pagina protetta,
+     * il parametro redirect permette di tornare alla pagina precedente.
+     */
     const redirectUrl =
       new URLSearchParams(window.location.search).get("redirect") || "/";
 
+    /* Mostra un messaggio di errore o conferma */
     function showMessage(message, type) {
       authMessage.textContent =
         message;
 
       authMessage.className =
         "message show " + type;
+
+      authMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
     }
 
+    /* Nasconde il messaggio applicativo */
     function clearMessage() {
       authMessage.textContent =
         "";
@@ -806,6 +1111,7 @@
         "message";
     }
 
+    /* Cambia tra modalità accesso e registrazione */
     function setMode(mode) {
       clearMessage();
 
@@ -841,9 +1147,21 @@
         isLoginMode
           ? "Accedi per aggiungere ristoranti, scrivere recensioni e ritrovare tutto più velocemente."
           : "Registrati in pochi secondi e inizia a usare KiRating dal telefono come un’app.";
+
+      if (isLoginMode) {
+        loginEmail.focus();
+      } else {
+        registerName.focus();
+      }
     }
 
-    function setButtonLoading(button, isLoading, loadingText, defaultHtml) {
+    /* Gestisce lo stato di caricamento dei pulsanti */
+    function setButtonLoading(
+      button,
+      isLoading,
+      loadingText,
+      defaultHtml
+    ) {
       button.disabled =
         isLoading;
 
@@ -853,6 +1171,12 @@
           : defaultHtml;
     }
 
+    /* Controlla che l'indirizzo email abbia un formato valido */
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    /* Salva o rimuove l'email ricordata */
     function saveRememberedEmail() {
       if (rememberMe.checked) {
         localStorage.setItem(
@@ -875,6 +1199,7 @@
       }
     }
 
+    /* Carica l'email ricordata dal dispositivo */
     function loadRememberedEmail() {
       const shouldRemember =
         localStorage.getItem("kiratingRememberMe") === "true";
@@ -894,10 +1219,54 @@
       }
     }
 
+    /* Controlla in tempo reale se le password coincidono */
+    function updatePasswordMatchState() {
+      const password =
+        registerPassword.value;
+
+      const confirmPassword =
+        registerConfirmPassword.value;
+
+      confirmPasswordWrapper.classList.remove(
+        "invalid"
+      );
+
+      passwordMatchMessage.className =
+        "password-match-message";
+
+      passwordMatchMessage.textContent =
+        "";
+
+      if (!confirmPassword) {
+        return;
+      }
+
+      if (password === confirmPassword) {
+        passwordMatchMessage.textContent =
+          "Le password coincidono.";
+
+        passwordMatchMessage.className =
+          "password-match-message show success";
+      } else {
+        confirmPasswordWrapper.classList.add(
+          "invalid"
+        );
+
+        passwordMatchMessage.textContent =
+          "Le password non coincidono.";
+
+        passwordMatchMessage.className =
+          "password-match-message show error";
+      }
+    }
+
+    /* Controlla se l'utente ha già una sessione attiva */
     async function checkIfAlreadyLoggedIn() {
       try {
         const response =
-          await fetch("/me");
+          await fetch("/me", {
+            credentials: "same-origin"
+          });
 
         const data =
           await response.json();
@@ -917,15 +1286,20 @@
       }
     }
 
+    /* Effettua la richiesta di login al backend */
     async function loginUser(email, password) {
       const response =
         await fetch(
           "/login",
           {
             method: "POST",
+
+            credentials: "same-origin",
+
             headers: {
               "Content-Type": "application/json"
             },
+
             body: JSON.stringify({
               email: email,
               password: password
@@ -936,7 +1310,10 @@
       const data =
         await response.json();
 
-      if (!response.ok || !data.success) {
+      if (
+        !response.ok ||
+        !data.success
+      ) {
         throw new Error(
           data.message ||
           "Accesso non riuscito."
@@ -946,15 +1323,24 @@
       return data;
     }
 
-    async function registerUser(name, email, password) {
+    /* Effettua la richiesta di registrazione al backend */
+    async function registerUser(
+      name,
+      email,
+      password
+    ) {
       const response =
         await fetch(
           "/register",
           {
             method: "POST",
+
+            credentials: "same-origin",
+
             headers: {
               "Content-Type": "application/json"
             },
+
             body: JSON.stringify({
               name: name,
               email: email,
@@ -966,7 +1352,10 @@
       const data =
         await response.json();
 
-      if (!response.ok || !data.success) {
+      if (
+        !response.ok ||
+        !data.success
+      ) {
         throw new Error(
           data.message ||
           "Registrazione non riuscita."
@@ -976,6 +1365,7 @@
       return data;
     }
 
+    /* Apertura della scheda di accesso */
     loginTabButton.addEventListener(
       "click",
       function () {
@@ -983,6 +1373,7 @@
       }
     );
 
+    /* Apertura della scheda di registrazione */
     registerTabButton.addEventListener(
       "click",
       function () {
@@ -990,6 +1381,7 @@
       }
     );
 
+    /* Pulsanti testuali per cambiare scheda */
     document
       .querySelectorAll("[data-switch]")
       .forEach(function (button) {
@@ -1001,6 +1393,7 @@
         );
       });
 
+    /* Mostra o nasconde le password */
     document
       .querySelectorAll(".password-toggle")
       .forEach(function (button) {
@@ -1015,22 +1408,41 @@
             const icon =
               button.querySelector("i");
 
-            const isPassword =
+            const shouldShowPassword =
               input.type === "password";
 
             input.type =
-              isPassword
+              shouldShowPassword
                 ? "text"
                 : "password";
 
             icon.className =
-              isPassword
+              shouldShowPassword
                 ? "fa-solid fa-eye-slash"
                 : "fa-solid fa-eye";
+
+            button.setAttribute(
+              "aria-label",
+              shouldShowPassword
+                ? "Nascondi password"
+                : "Mostra password"
+            );
           }
         );
       });
 
+    /* Controllo password durante la digitazione */
+    registerPassword.addEventListener(
+      "input",
+      updatePasswordMatchState
+    );
+
+    registerConfirmPassword.addEventListener(
+      "input",
+      updatePasswordMatchState
+    );
+
+    /* Invio del modulo di accesso */
     loginForm.addEventListener(
       "submit",
       async function (event) {
@@ -1039,7 +1451,7 @@
         clearMessage();
 
         const email =
-          loginEmail.value.trim();
+          loginEmail.value.trim().toLowerCase();
 
         const password =
           loginPassword.value;
@@ -1052,6 +1464,17 @@
             "Inserisci email e password.",
             "error"
           );
+
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          showMessage(
+            "Inserisci un indirizzo email valido.",
+            "error"
+          );
+
+          loginEmail.focus();
 
           return;
         }
@@ -1096,6 +1519,7 @@
       }
     );
 
+    /* Invio del modulo di registrazione */
     registerForm.addEventListener(
       "submit",
       async function (event) {
@@ -1107,20 +1531,46 @@
           registerName.value.trim();
 
         const email =
-          registerEmail.value.trim();
+          registerEmail.value.trim().toLowerCase();
 
         const password =
           registerPassword.value;
 
+        const confirmPassword =
+          registerConfirmPassword.value;
+
         if (
           !name ||
           !email ||
-          !password
+          !password ||
+          !confirmPassword
         ) {
           showMessage(
             "Compila tutti i campi.",
             "error"
           );
+
+          return;
+        }
+
+        if (name.length < 2) {
+          showMessage(
+            "Inserisci un nome di almeno 2 caratteri.",
+            "error"
+          );
+
+          registerName.focus();
+
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          showMessage(
+            "Inserisci un indirizzo email valido.",
+            "error"
+          );
+
+          registerEmail.focus();
 
           return;
         }
@@ -1131,13 +1581,30 @@
             "error"
           );
 
+          registerPassword.focus();
+
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showMessage(
+            "Le due password non coincidono.",
+            "error"
+          );
+
+          confirmPasswordWrapper.classList.add(
+            "invalid"
+          );
+
+          registerConfirmPassword.focus();
+
           return;
         }
 
         setButtonLoading(
           registerSubmitButton,
           true,
-          "Creazione...",
+          "Creazione account...",
           '<i class="fa-solid fa-user-plus"></i> Crea account'
         );
 
@@ -1148,6 +1615,10 @@
             password
           );
 
+          /*
+           * Dopo la registrazione viene effettuato
+           * automaticamente anche il login.
+           */
           await loginUser(
             email,
             password
@@ -1164,7 +1635,7 @@
           );
 
           showMessage(
-            "Account creato. Reindirizzamento...",
+            "Account creato correttamente. Reindirizzamento...",
             "success"
           );
 
@@ -1181,17 +1652,19 @@
           setButtonLoading(
             registerSubmitButton,
             false,
-            "Creazione...",
+            "Creazione account...",
             '<i class="fa-solid fa-user-plus"></i> Crea account'
           );
         }
       }
     );
 
+    /* Caricamento iniziale */
     loadRememberedEmail();
 
     checkIfAlreadyLoggedIn();
 
+    /* Registrazione del service worker della PWA */
     if ("serviceWorker" in navigator) {
       window.addEventListener(
         "load",
